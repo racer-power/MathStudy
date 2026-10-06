@@ -1,0 +1,2342 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>육삼수학 도장</title>
+<style>
+:root{
+  --bg:#f6f4ef;
+  --panel:#ffffff;
+  --ink:#292420;
+  --ink-soft:#6b6255;
+  --accent:#c23b3b;
+  --accent-blue:#2d4f8f;
+  --good:#3f9d5c;
+  --bad:#d9534f;
+  --border:#e4ded2;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,-apple-system,sans-serif;
+  line-height:1.5;
+}
+a{color:inherit;text-decoration:none;}
+button,input{font-family:inherit;font-size:1em;}
+h1,h2,h3,h4{margin:.3em 0;}
+ul{margin:.3em 0;padding-left:1.2em;}
+#nav-main{
+  position:sticky;top:0;z-index:10;
+  background:linear-gradient(135deg,var(--accent-blue),var(--accent));
+  color:#fff;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;flex-wrap:wrap;gap:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+#nav-main .brand{font-weight:bold;font-size:1.15em;}
+#nav-main nav{display:flex;gap:4px;flex-wrap:wrap;}
+#nav-main nav a{
+  padding:6px 10px;border-radius:999px;font-size:.88em;
+  background:rgba(255,255,255,.12);
+}
+#nav-main nav a.active,#nav-main nav a:hover{background:rgba(255,255,255,.32);}
+#main{max-width:960px;margin:0 auto;padding:18px 16px 60px;}
+
+.hero{text-align:center;padding:22px 10px 6px;}
+.hero-badge{font-size:3em;}
+.hero p{color:var(--ink-soft);}
+
+.course-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:16px 0;}
+.course-card{
+  background:var(--panel);border:2px solid var(--border);border-radius:14px;
+  padding:12px;text-align:center;transition:.15s;
+}
+.course-card:hover{border-color:var(--accent-blue);transform:translateY(-2px);}
+.course-card.active{border-color:var(--accent);background:#fdf1ec;}
+.course-card.locked{opacity:.5;cursor:not-allowed;}
+.course-card.locked:hover{border-color:var(--border);transform:none;}
+.course-num{
+  width:22px;height:22px;border-radius:50%;background:var(--accent-blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:.75em;margin:0 auto 4px;
+}
+.course-ico{font-size:1.6em;}
+.course-label{font-size:.85em;margin-top:2px;}
+
+.intro-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px;}
+.intro-card{background:var(--panel);border:2px solid var(--border);border-radius:16px;padding:18px;display:block;}
+.intro-card:hover{border-color:var(--accent);}
+.intro-ico{font-size:2em;}
+
+.progress-outer{background:#eee5d8;border-radius:999px;height:14px;overflow:hidden;margin:6px 0 14px;}
+.progress-inner{background:linear-gradient(90deg,var(--accent-blue),var(--accent));height:100%;transition:width .3s;}
+
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;}
+.tab{padding:8px 14px;border-radius:999px;background:var(--panel);border:2px solid var(--border);}
+.tab.active{border-color:var(--accent-blue);background:#eaf0fa;font-weight:bold;}
+
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;}
+.chip{
+  border:2px solid var(--cc,var(--border));background:var(--panel);border-radius:999px;
+  padding:8px 14px;cursor:pointer;font-size:.9em;
+}
+.chip.selected{background:var(--cc,var(--accent-blue));color:#fff;}
+.hint{color:var(--ink-soft);font-size:.92em;}
+
+.compare-table-wrap{overflow-x:auto;margin-top:10px;}
+.compare-table{border-collapse:collapse;width:100%;background:var(--panel);}
+.compare-table th,.compare-table td{border:1px solid var(--border);padding:10px;vertical-align:top;text-align:left;font-size:.9em;}
+.compare-table th{background:#faf7f0;}
+.compare-table th[style]{border-top:4px solid var(--cc,var(--accent));}
+.row-label{font-weight:bold;white-space:nowrap;background:#faf7f0;}
+
+.scenario-list{display:flex;flex-direction:column;gap:14px;margin-top:10px;}
+.scenario-card{background:var(--panel);border:2px solid var(--border);border-radius:16px;padding:16px;}
+.scenario-card .next-subunit-link{margin-top:10px;}
+.scenario-card.done{border-color:var(--good);}
+.scenario-head{display:flex;align-items:center;gap:8px;}
+.scenario-ico{font-size:1.4em;}
+.stamp-ok{margin-left:auto;color:var(--good);font-weight:bold;font-size:.85em;}
+.opt-list{display:flex;flex-direction:column;gap:8px;margin:10px 0;}
+.opt-pill{
+  border:2px solid var(--border);border-radius:12px;padding:10px 12px;cursor:pointer;font-size:.92em;background:#fff;
+}
+.opt-pill.picked{border-color:var(--accent-blue);background:#eaf0fa;}
+.opt-pill.reveal-correct{border-color:var(--good);background:#e9f7ee;}
+.opt-pill.reveal-wrong{border-color:var(--bad);background:#fbeaea;}
+label.opt-pill{display:block;}
+label.opt-pill input{margin-right:8px;}
+
+button.primary,a.primary{
+  background:var(--accent);color:#fff;border:none;border-radius:999px;padding:10px 18px;
+  cursor:pointer;font-weight:bold;display:inline-block;
+}
+button.primary:disabled{opacity:.4;cursor:not-allowed;}
+button.ghost,a.ghost{
+  background:transparent;color:var(--ink);border:2px solid var(--border);border-radius:999px;
+  padding:9px 16px;cursor:pointer;display:inline-block;
+}
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.feedback{font-size:.92em;color:var(--ink-soft);}
+
+.game-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:14px;}
+.game-tile{border-radius:18px;padding:20px;color:#fff;display:block;}
+.game-tile h3{margin:.2em 0;}
+.game-tile p{font-size:.85em;opacity:.9;}
+.game-ico{font-size:2em;}
+.g1{background:linear-gradient(135deg,#6a4fa0,#8d6ec9);}
+.g3{background:linear-gradient(135deg,#2d4f8f,#4f78c9);}
+.g4{background:linear-gradient(135deg,#c23b3b,#e0616a);}
+
+.game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;color:var(--ink-soft);font-size:.9em;}
+.problem{font-size:1.05em;background:var(--panel);border:2px solid var(--border);border-radius:14px;padding:14px;}
+.step-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.step{border:2px solid var(--border);border-radius:12px;padding:12px;cursor:pointer;background:var(--panel);}
+.step.reveal-correct{border-color:var(--good);background:#e9f7ee;}
+.step.reveal-wrong{border-color:var(--bad);background:#fbeaea;}
+.explain-box{background:#fff8ea;border:2px solid #f0dfa6;border-radius:12px;padding:12px;margin-top:10px;font-size:.92em;}
+.result-score{font-size:1.3em;font-weight:bold;}
+
+.q-diagram{width:140px;height:140px;margin:8px 0;}
+.q-diagram svg{width:100%;height:100%;}
+
+.order-slots{display:flex;flex-direction:column;gap:8px;margin:12px 0;}
+.order-slot{min-height:44px;border:2px dashed var(--border);border-radius:12px;padding:10px;background:#fff;display:flex;align-items:center;}
+.order-slot.slot-correct{border-style:solid;border-color:var(--good);background:#e9f7ee;}
+.order-slot.slot-wrong{border-style:solid;border-color:var(--bad);background:#fbeaea;}
+.slot-num{color:var(--ink-soft);}
+.order-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.order-card{border:2px solid var(--accent-blue);background:#eaf0fa;border-radius:12px;padding:10px 12px;cursor:pointer;}
+.order-card:disabled{opacity:.25;cursor:not-allowed;}
+.order-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+
+.lives{font-size:1.3em;margin-bottom:6px;}
+.timerbar-outer{background:#eee5d8;border-radius:999px;height:10px;overflow:hidden;margin-bottom:12px;}
+.timerbar{background:var(--accent);height:100%;}
+.choice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:12px;}
+.choice-btn{border:2px solid var(--border);border-radius:12px;padding:12px;background:#fff;cursor:pointer;font-size:.95em;}
+.choice-btn.reveal-correct{border-color:var(--good);background:#e9f7ee;}
+.choice-btn.reveal-wrong{border-color:var(--bad);background:#fbeaea;}
+.choice-btn:disabled{cursor:default;}
+
+.assess-picker{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:12px;}
+.assess-card{background:var(--panel);border:2px solid var(--border);border-radius:16px;padding:16px;display:block;}
+.assess-card:hover{border-color:var(--accent-blue);}
+.assess-card.locked{opacity:.5;cursor:not-allowed;}
+.diff-tag{color:var(--ink-soft);font-size:.82em;font-weight:normal;}
+.assess-q{background:var(--panel);border:2px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px;}
+.fill-input{width:100%;padding:10px;border:2px solid var(--border);border-radius:10px;margin-top:6px;}
+.assess-review{margin-top:16px;}
+.review-item{border-left:4px solid var(--bad);background:var(--panel);border-radius:8px;padding:10px 12px;margin-bottom:8px;}
+.review-item.ok{border-left-color:var(--good);}
+
+.portfolio-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0;}
+.stat-card{background:var(--panel);border:2px solid var(--border);border-radius:14px;padding:14px;text-align:center;}
+.stat-num{font-size:1.5em;font-weight:bold;color:var(--accent-blue);}
+.stat-label{font-size:.82em;color:var(--ink-soft);}
+.stamp-row{display:flex;flex-wrap:wrap;gap:8px;}
+.stamp{
+  width:44px;height:44px;border-radius:50%;border:2px dashed var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:1.3em;color:#ccc;
+}
+.stamp.earned{border-style:solid;border-color:var(--good);background:#e9f7ee;color:inherit;}
+.trend-chart{display:flex;align-items:flex-end;gap:8px;height:90px;background:var(--panel);border:2px solid var(--border);border-radius:14px;padding:10px;}
+.trend-bar{width:24px;background:linear-gradient(180deg,var(--accent-blue),var(--accent));border-radius:4px 4px 0 0;}
+.assess-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
+.assess-status-card{background:var(--panel);border:2px solid var(--border);border-radius:14px;padding:12px;}
+.badge-row{display:flex;flex-wrap:wrap;gap:14px;}
+.badge{width:110px;text-align:center;filter:grayscale(1);opacity:.35;}
+.badge.earned{filter:none;opacity:1;}
+.badge-ico{font-size:2.2em;}
+.badge-label{font-size:.8em;}
+.cert-cta{margin-top:18px;background:#fff8ea;border:2px solid #f0dfa6;border-radius:16px;padding:16px;text-align:center;}
+
+.cert-frame{border:6px double var(--accent);border-radius:8px;padding:30px;background:#fffdf7;text-align:center;margin-top:16px;}
+.cert-inner{max-width:520px;margin:0 auto;}
+.cert-eyebrow{letter-spacing:.2em;color:var(--ink-soft);font-size:.85em;}
+.cert-title{font-size:2.2em;letter-spacing:.3em;color:var(--accent);}
+.cert-body{margin:18px 0;font-size:1.02em;}
+.cert-name-row{margin:22px 0;font-size:1.15em;}
+.cert-name-row input{border:none;border-bottom:2px solid var(--ink);text-align:center;padding:4px 8px;background:transparent;font-size:1em;}
+.cert-date{color:var(--ink-soft);margin-top:8px;}
+.cert-seal{margin-top:18px;font-weight:bold;}
+
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);
+  background:#22201d;color:#fff;padding:10px 18px;border-radius:999px;font-size:.9em;
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:50;
+}
+#toast.show{opacity:1;transform:translate(-50%,0);}
+
+@media print{
+  #nav-main,.course-nav,.no-print{display:none!important;}
+  body{background:#fff;}
+  #main{padding:0;max-width:none;}
+}
+</style>
+</head>
+<body>
+<header id="nav-main">
+  <div class="brand">🥋 육삼수학 도장</div>
+  <nav>
+    <a href="#/">🏠 도장 정문</a>
+  </nav>
+</header>
+<main id="main"></main>
+
+<script>
+(function(){
+'use strict';
+
+function nowISO(){ return new Date().toISOString(); }
+
+/* ===== DATA ===== */
+const UNITS = {
+  unit1: {
+    id:'unit1', title:'분수의 나눗셈', icon:'🥋', unitNumber:1, tagline:'분수 ÷ 분수, 자연수·대분수의 나눗셈을 정복해요.',
+    subunits:[
+      { id:'fracByFrac', title:'1관 · 분수 ÷ 분수', icon:'🥋', tagline:'분모가 같은/다른 분수끼리 나누는 두 가지 초식을 익혀요.', categories:[
+        { id:'sd', label:'분모가 같은 (분수)÷(분수)', icon:'🟰', color:'#b9a98f', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'sd-co-1', text:'분모가 같은 분수끼리 나눌 때는 분자끼리 나누면 돼요: (a/c)÷(b/c) = a÷b'},
+            {id:'sd-co-2', text:'분모가 같으므로 분모는 계산 결과에 영향을 주지 않고, 분자의 나눗셈만 생각하면 돼요.'}
+          ]},
+          { groupId:'steps', label:'계산 순서', icon:'👣', items:[
+            {id:'sd-st-1', text:'1) 두 분수의 분모가 같은지 확인한다.'},
+            {id:'sd-st-2', text:'2) 분자를 분자로 나눈다.'},
+            {id:'sd-st-3', text:'3) 나누어떨어지지 않으면 분수(또는 대분수)로 나타낸다.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'sd-ex-1', text:'8/9 ÷ 2/9 = 8÷2 = 4'},
+            {id:'sd-ex-2', text:'3/5 ÷ 4/5 = 3÷4 = 3/4'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'sd-ca-1', text:'분모끼리는 나누지 않아요 — 분모가 같다는 사실만 확인하고, 분자끼리 나눠요.'},
+            {id:'sd-ca-2', text:'몫이 항상 자연수로 딱 나누어떨어지는 건 아니라는 걸 기억하세요.'}
+          ]}
+        ]},
+        { id:'dd', label:'분모가 다른 (분수)÷(분수)', icon:'🔀', color:'#d9b23c', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'dd-co-1', text:'분모가 다르면 먼저 통분해서 분모를 같게 만든 뒤, 분자끼리 나눠요.'},
+            {id:'dd-co-2', text:'통분하지 않고 나누는 분수의 역수를 바로 곱해서 계산할 수도 있어요: (a/b)÷(c/d) = (a/b)×(d/c)'}
+          ]},
+          { groupId:'steps', label:'계산 순서', icon:'👣', items:[
+            {id:'dd-st-1', text:'1) 두 분수를 통분한다.'},
+            {id:'dd-st-2', text:'2) 분자끼리 나눈다. (또는 나누는 분수의 역수를 바로 곱한다.)'},
+            {id:'dd-st-3', text:'3) 나누어떨어지지 않으면 분수로 나타내고 약분한다.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'dd-ex-1', text:'2/3 ÷ 1/4 → 통분: 8/12 ÷ 3/12 = 8÷3 = 8/3 = 2 2/3'},
+            {id:'dd-ex-2', text:'3/4 ÷ 2/5 = 3/4 × 5/2 = 15/8 = 1 7/8'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'dd-ca-1', text:'통분할 때 분자도 함께 바뀐다는 것을 잊지 마세요 (분모만 맞추면 안 돼요).'},
+            {id:'dd-ca-2', text:'역수는 나누는 분수(÷ 뒤의 분수)만 뒤집어요.'}
+          ]}
+        ]}
+      ]},
+      { id:'natMix', title:'2관 · 자연수·대분수의 나눗셈', icon:'🥊', tagline:'자연수와 대분수를 분수로 나누는 역수 곱셈의 원리를 완성해요.', categories:[
+        { id:'nat', label:'자연수÷분수', icon:'🔢', color:'#7a4fa0', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'nat-co-1', text:'자연수를 분수로 나눌 때는 나누는 분수의 역수를 자연수에 곱해요: 자연수 ÷ (a/b) = 자연수 × (b/a)'}
+          ]},
+          { groupId:'steps', label:'계산 순서', icon:'👣', items:[
+            {id:'nat-st-1', text:'1) 자연수를 분수(자연수/1)로 생각한다.'},
+            {id:'nat-st-2', text:'2) 나누는 분수의 역수를 구한다 (분자·분모를 바꾼다).'},
+            {id:'nat-st-3', text:'3) 자연수 × 역수로 계산한다.'},
+            {id:'nat-st-4', text:'4) 약분하여 기약분수 또는 자연수로 나타낸다.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'nat-ex-1', text:'4 ÷ 2/3 = 4 × 3/2 = 12/2 = 6'},
+            {id:'nat-ex-2', text:'6 ÷ 4/5 = 6 × 5/4 = 30/4 = 7 1/2'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'nat-ca-1', text:'역수는 나누는 분수(뒤에 있는 분수)의 것만 구해요. 앞의 자연수는 바뀌지 않아요.'}
+          ]}
+        ]},
+        { id:'mix', label:'대분수÷분수', icon:'🎂', color:'#c23b3b', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'mix-co-1', text:'대분수가 있는 나눗셈은 먼저 대분수를 가분수로 바꾼 뒤, 나누는 분수의 역수를 곱해서 계산해요.'},
+            {id:'mix-co-2', text:'분모가 같든 다르든, 대분수는 항상 먼저 가분수로 바꾸는 게 첫 단계예요.'}
+          ]},
+          { groupId:'steps', label:'계산 순서', icon:'👣', items:[
+            {id:'mix-st-1', text:'1) 대분수를 가분수로 바꾼다.'},
+            {id:'mix-st-2', text:'2) 나누는 분수의 역수를 구한다.'},
+            {id:'mix-st-3', text:'3) 가분수 × 역수로 계산한다.'},
+            {id:'mix-st-4', text:'4) 약분하고, 필요하면 다시 대분수로 나타낸다.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'mix-ex-1', text:'2 1/4 ÷ 3/7 = 9/4 ÷ 3/7 = 9/4 × 7/3 = 63/12 = 5 1/4'},
+            {id:'mix-ex-2', text:'5 1/4 ÷ 1 1/2 = 21/4 ÷ 3/2 = 21/4 × 2/3 = 42/12 = 3 1/2'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'mix-ca-1', text:'대분수를 가분수로 바꾸는 것을 잊으면 완전히 틀린 답이 나와요.'},
+            {id:'mix-ca-2', text:'대분수÷대분수인 경우, 두 대분수를 모두 가분수로 바꾼 뒤 계산해요.'}
+          ]}
+        ]}
+      ]}
+    ],
+    scenarios:[
+      { id:'sc-juice1', subunitId:'fracByFrac', categoryId:'sd', icon:'🧃', title:'주스 나누기 대련',
+        prompt:'주스 8/9L가 있어요. 한 병에 2/9L씩 담으면 몇 병이 나올까요? 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'sc-juice1-1', text:'분모가 같으므로 분자끼리 나눠 8÷2 = 4(병) 으로 계산한다.', correct:true},
+          {id:'sc-juice1-2', text:'8/9 ÷ 2/9 = 4 이다.', correct:true},
+          {id:'sc-juice1-3', text:'분모끼리 나누고 분자는 그대로 둔다.', correct:false},
+          {id:'sc-juice1-4', text:'8/9 ÷ 2/9 을 8/9 × 2/9 로 계산한다.', correct:false}
+        ]},
+      { id:'sc-ribbon', subunitId:'fracByFrac', categoryId:'sd', icon:'🎀', title:'리본 나누기 대련',
+        prompt:'리본 6/7m가 있어요. 한 사람에게 2/7m씩 나눠주면 몇 명에게 줄 수 있을까요? 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'sc-ribbon-1', text:'분모가 같으므로 분자끼리 나눠 6÷2 = 3(명) 으로 계산한다.', correct:true},
+          {id:'sc-ribbon-2', text:'6/7 ÷ 2/7 = 3 이다.', correct:true},
+          {id:'sc-ribbon-3', text:'분모끼리 나누어 7÷7 = 1 로 계산한다.', correct:false},
+          {id:'sc-ribbon-4', text:'6/7 ÷ 2/7 = 6/7 + 2/7 로 계산한다.', correct:false}
+        ]},
+      { id:'sc-paint', subunitId:'fracByFrac', categoryId:'dd', icon:'🎨', title:'물감 나누기 대련',
+        prompt:'물감 2/3L를 한 통에 1/4L씩 나눠 담으면 몇 통이 나올까요? 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'sc-paint-1', text:'먼저 통분해서 8/12 ÷ 3/12 로 만든다.', correct:true},
+          {id:'sc-paint-2', text:'8÷3 = 8/3 = 2 2/3(통) 으로 계산한다.', correct:true},
+          {id:'sc-paint-3', text:'통분하지 않고 그냥 2÷1, 3÷4를 각각 계산한다.', correct:false},
+          {id:'sc-paint-4', text:'분모만 통분하고 분자는 원래 값을 그대로 쓴다.', correct:false}
+        ]},
+      { id:'sc-string', subunitId:'fracByFrac', categoryId:'dd', icon:'🧵', title:'끈 나누기 대련',
+        prompt:'끈 7/8m를 5/6m씩 잘라 몇 도막이 나오는지 구하려고 해요. 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'sc-string-1', text:'나누는 분수 5/6의 역수 6/5를 구해 7/8 × 6/5 로 계산한다.', correct:true},
+          {id:'sc-string-2', text:'7/8 × 6/5 = 42/40 = 1 1/20(도막) 으로 계산한다.', correct:true},
+          {id:'sc-string-3', text:'나누어지는 분수 7/8의 역수를 구해서 곱한다.', correct:false},
+          {id:'sc-string-4', text:'분자는 분자끼리 더하고 분모는 분모끼리 더한다.', correct:false}
+        ]},
+      { id:'sc-bike', subunitId:'natMix', categoryId:'nat', icon:'🚴', title:'자전거 거리 대련',
+        prompt:'자전거로 4km를 가는데 2/3km마다 신호등이 있어요. 신호등이 몇 개 있는지 구하는 올바른 과정을 모두 고르세요. (식: 4 ÷ 2/3)',
+        options:[
+          {id:'sc-bike-1', text:'나누는 분수 2/3의 역수 3/2를 구한다.', correct:true},
+          {id:'sc-bike-2', text:'4 ÷ 2/3 = 4 × 3/2 = 12/2 = 6(개) 으로 계산한다.', correct:true},
+          {id:'sc-bike-3', text:'4를 분수로 바꾸지 않고 2/3만 뒤집어 나눗셈 기호를 그대로 둔다.', correct:false},
+          {id:'sc-bike-4', text:'4 ÷ 2/3 = 4 × 2/3 로 계산한다.', correct:false}
+        ]},
+      { id:'sc-paintcan', subunitId:'natMix', categoryId:'nat', icon:'🪣', title:'페인트 통 대련',
+        prompt:'페인트 9L를 한 통에 3/4L씩 나눠 담으려고 해요. 통이 몇 개 필요한지 구하는 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'sc-paintcan-1', text:'나누는 분수 3/4의 역수 4/3을 구한다.', correct:true},
+          {id:'sc-paintcan-2', text:'9 ÷ 3/4 = 9 × 4/3 = 36/3 = 12(개) 으로 계산한다.', correct:true},
+          {id:'sc-paintcan-3', text:'9의 역수를 구해서 곱한다.', correct:false},
+          {id:'sc-paintcan-4', text:'9 ÷ 3/4 = 9 × 3/4 로 계산한다.', correct:false}
+        ]},
+      { id:'sc-cake', subunitId:'natMix', categoryId:'mix', icon:'🍰', title:'케이크 나누기 대련',
+        prompt:'케이크 2 1/4판이 있어요. 한 사람에게 3/8판씩 나눠주면 몇 명에게 줄 수 있을까요? 올바른 과정을 모두 고르세요. (식: 2 1/4 ÷ 3/8)',
+        options:[
+          {id:'sc-cake-1', text:'대분수 2 1/4를 가분수 9/4로 바꾼다.', correct:true},
+          {id:'sc-cake-2', text:'9/4 × 8/3 = 72/12 = 6(명) 으로 계산한다.', correct:true},
+          {id:'sc-cake-3', text:'대분수를 가분수로 바꾸지 않고 자연수 부분 2만 사용해 2 ÷ 3/8 로 계산한다.', correct:false},
+          {id:'sc-cake-4', text:'나누는 분수가 아니라 나누어지는 분수 9/4의 역수를 구해서 곱한다.', correct:false}
+        ]},
+      { id:'sc-thread', subunitId:'natMix', categoryId:'mix', icon:'🧶', title:'실 나누기 대련',
+        prompt:'실 3 1/3m가 있어요. 한 도막을 5/6m씩 자르면 몇 도막이 나올까요? 올바른 과정을 모두 고르세요. (식: 3 1/3 ÷ 5/6)',
+        options:[
+          {id:'sc-thread-1', text:'대분수 3 1/3을 가분수 10/3으로 바꾼다.', correct:true},
+          {id:'sc-thread-2', text:'10/3 × 6/5 = 60/15 = 4(도막) 으로 계산한다.', correct:true},
+          {id:'sc-thread-3', text:'대분수를 가분수로 바꾸지 않고 자연수 부분 3만 사용해 3 ÷ 5/6 으로 계산한다.', correct:false},
+          {id:'sc-thread-4', text:'나누는 분수 5/6이 아니라 대분수 10/3의 역수를 구해서 곱한다.', correct:false}
+        ]}
+    ],
+    quiz:{ pool:[
+      {id:'w1', categoryId:'sd', kind:'word', prompt:'주스 6/7L를 2/7L씩 나눠 담으면 몇 병이 될까요? 필요한 식은?', choices:['6/7 ÷ 2/7','2/7 ÷ 6/7','6/7 × 2/7','6/7 + 2/7'], answerIndex:0, explanation:'분모가 같은 분수끼리 나누는 상황이에요.'},
+      {id:'w2', categoryId:'sd', kind:'word', prompt:'리본 5/8m를 1/8m씩 잘라 몇 도막이 나오는지 구하는 식은?', choices:['5/8 ÷ 1/8','1/8 ÷ 5/8','5/8 × 1/8','5/8 - 1/8'], answerIndex:0, explanation:'전체를 한 도막의 길이로 나눠요.'},
+      {id:'w3', categoryId:'sd', kind:'word', prompt:'물 9/10L를 3/10L씩 나눠 담으면 몇 병이 될까요? 필요한 식은?', choices:['9/10 ÷ 3/10','3/10 ÷ 9/10','9/10 × 3/10','9/10 + 3/10'], answerIndex:0, explanation:'전체를 한 병의 양으로 나눠요.'},
+      {id:'w4', categoryId:'dd', kind:'word', prompt:'물감 2/3L를 1/4L씩 나눠 담으면 몇 통이 될까요? 필요한 식은?', choices:['2/3 ÷ 1/4','1/4 ÷ 2/3','2/3 × 1/4','2/3 + 1/4'], answerIndex:0, explanation:'전체를 한 통의 양으로 나눠요.'},
+      {id:'w5', categoryId:'dd', kind:'word', prompt:'밀가루 3/4kg을 2/5kg씩 나눠 담으면 몇 봉지가 될까요? 필요한 식은?', choices:['3/4 ÷ 2/5','2/5 ÷ 3/4','3/4 × 2/5','3/4 - 2/5'], answerIndex:0, explanation:'전체를 한 봉지의 양으로 나눠요.'},
+      {id:'w6', categoryId:'dd', kind:'word', prompt:'끈 7/8m를 5/6m씩 잘라 몇 도막이 나오는지 구하는 식은?', choices:['7/8 ÷ 5/6','5/6 ÷ 7/8','7/8 × 5/6','5/6 × 7/8'], answerIndex:0, explanation:'전체를 한 도막의 길이로 나눠요.'},
+      {id:'w7', categoryId:'nat', kind:'word', prompt:'쌀 6kg을 한 봉지에 3/4kg씩 나눠 담으려 해요. 봉지가 몇 개 필요한지 구하는 식은?', choices:['6 ÷ 3/4','3/4 ÷ 6','6 × 3/4','3/4 - 6'], answerIndex:0, explanation:'전체를 한 봉지의 양으로 나눠요.'},
+      {id:'w8', categoryId:'nat', kind:'word', prompt:'리본 5m를 2/3m씩 잘라 몇 도막이 나오는지 구하는 식은?', choices:['5 ÷ 2/3','2/3 ÷ 5','5 × 2/3','5 + 2/3'], answerIndex:0, explanation:'전체를 한 도막의 길이로 나눠요.'},
+      {id:'w9', categoryId:'nat', kind:'word', prompt:'물 8L를 1/5L씩 나눠 담으면 몇 병이 될까요? 필요한 식은?', choices:['8 ÷ 1/5','1/5 ÷ 8','8 × 1/5','8 - 1/5'], answerIndex:0, explanation:'전체를 한 병의 양으로 나눠요.'},
+      {id:'w10', categoryId:'mix', kind:'word', prompt:'케이크 2 1/4판이 있어요. 한 사람에게 3/8판씩 나눠주면 몇 명에게 줄 수 있는지 구하는 식은?', choices:['2 1/4 ÷ 3/8','3/8 ÷ 2 1/4','2 1/4 × 3/8','2 1/4 - 3/8'], answerIndex:0, explanation:'전체를 한 사람 몫으로 나눠요.'},
+      {id:'w11', categoryId:'mix', kind:'word', prompt:'우유 3 1/3L가 있어요. 한 병에 5/6L씩 담으면 몇 병이 되는지 구하는 식은?', choices:['3 1/3 ÷ 5/6','5/6 ÷ 3 1/3','3 1/3 × 5/6','3 1/3 + 5/6'], answerIndex:0, explanation:'전체를 한 병의 양으로 나눠요.'},
+      {id:'w12', categoryId:'mix', kind:'word', prompt:'철사 1 3/4m가 있어요. 5/8m씩 잘라 몇 도막이 나오는지 구하는 식은?', choices:['1 3/4 ÷ 5/8','5/8 ÷ 1 3/4','1 3/4 × 5/8','1 3/4 - 5/8'], answerIndex:0, explanation:'전체를 한 도막의 길이로 나눠요.'},
+      {id:'f1', categoryId:'sd', kind:'fact', prompt:'8/9 ÷ 2/9 = ?', choices:['4','4/9','2/9','1/4'], answerIndex:0, explanation:'분모가 같으므로 8÷2 = 4 예요.'},
+      {id:'f2', categoryId:'sd', kind:'fact', prompt:'5/6 ÷ 1/6 = ?', choices:['5','1/5','6/5','1/6'], answerIndex:0, explanation:'분모가 같으므로 5÷1 = 5 예요.'},
+      {id:'f3', categoryId:'sd', kind:'fact', prompt:'3/5 ÷ 4/5 = ?', choices:['3/4','4/3','3/20','12/5'], answerIndex:0, explanation:'분모가 같으므로 3÷4 = 3/4 예요.'},
+      {id:'f4', categoryId:'dd', kind:'fact', prompt:'2/3 ÷ 1/4 = ?', choices:['2 2/3','1 1/2','3/8','4/3'], answerIndex:0, explanation:'통분 후 8÷3 = 8/3 = 2 2/3 이에요.'},
+      {id:'f5', categoryId:'dd', kind:'fact', prompt:'3/4 ÷ 2/5 = ?', choices:['1 7/8','1 1/8','8/15','2 3/8'], answerIndex:0, explanation:'3/4 × 5/2 = 15/8 = 1 7/8 이에요.'},
+      {id:'f6', categoryId:'dd', kind:'fact', prompt:'5/9 ÷ 2/3 = ?', choices:['5/6','5/27','10/27','3/2'], answerIndex:0, explanation:'5/9 × 3/2 = 15/18 = 5/6 이에요.'},
+      {id:'f7', categoryId:'nat', kind:'fact', prompt:'4 ÷ 2/3 = ?', choices:['6','2/3','1 1/3','8/3'], answerIndex:0, explanation:'4 × 3/2 = 6 이에요.'},
+      {id:'f8', categoryId:'nat', kind:'fact', prompt:'6 ÷ 4/5 = ?', choices:['7 1/2','4 4/5','6 4/5','24/5'], answerIndex:0, explanation:'6 × 5/4 = 30/4 = 7 1/2 예요.'},
+      {id:'f9', categoryId:'nat', kind:'fact', prompt:'9 ÷ 2/3 = ?', choices:['13 1/2','6','2/3','4 1/2'], answerIndex:0, explanation:'9 × 3/2 = 27/2 = 13 1/2 예요.'},
+      {id:'f10', categoryId:'mix', kind:'fact', prompt:'5 1/4 ÷ 1 1/2 = ?', choices:['3 1/2','1 3/4','7 1/4','2 1/4'], answerIndex:0, explanation:'21/4 ÷ 3/2 = 21/4 × 2/3 = 3 1/2 예요.'},
+      {id:'f11', categoryId:'mix', kind:'fact', prompt:'2 1/4 ÷ 3/7 = ?', choices:['5 1/4','2 1/3','3 3/4','6 3/4'], answerIndex:0, explanation:'9/4 × 7/3 = 63/12 = 5 1/4 예요.'},
+      {id:'f12', categoryId:'mix', kind:'fact', prompt:'4 2/3 ÷ 1 1/6 = ?', choices:['4','2','1/4','8'], answerIndex:0, explanation:'14/3 × 6/7 = 84/21 = 4 예요.'}
+    ]},
+    detectivePool:[
+      { id:'det1', categoryId:'sd', problem:'8/9 ÷ 2/9 을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['분모가 같은지 확인한다 (둘 다 9로 같음)','분모끼리 나누고 분자는 그대로 둔다 (9÷9=1, 답 8/1)'], errorStepIndex:1,
+        explanation:'분모가 같을 때는 분자끼리 나눠야 해요. 8÷2 = 4 가 맞는 답이에요.' },
+      { id:'det2', categoryId:'sd', problem:'5/6 ÷ 1/6 을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['분모가 같은지 확인한다 (둘 다 6으로 같음)','분자끼리 더해서 5+1=6 으로 계산한다','답은 6 이다'], errorStepIndex:1,
+        explanation:'분모가 같을 때는 분자끼리 나눠야 해요(더하면 안 돼요). 5÷1 = 5 가 맞는 답이에요.' },
+      { id:'det3', categoryId:'dd', problem:'2/3 ÷ 1/4 를 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['통분해서 8/12 ÷ 3/12 로 만든다','분모만 12로 맞추고 분자는 원래 값(2, 1)을 그대로 쓴다','2÷1 = 2 로 답을 낸다'], errorStepIndex:1,
+        explanation:'통분할 때는 분모뿐 아니라 분자도 함께 바뀌어요. 8÷3 = 8/3 = 2 2/3 이 맞는 답이에요.' },
+      { id:'det4', categoryId:'dd', problem:'3/4 ÷ 2/5 를 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누는 분수 2/5의 역수 5/2를 구한다','3/4 × 5/2 로 바꾼다','분자끼리 더하고 분모끼리 더해서 8/6 으로 계산한다'], errorStepIndex:2,
+        explanation:'분수의 곱셈은 더하는 게 아니라 곱해야 해요. 3×5=15, 4×2=8 이므로 15/8 = 1 7/8 이 맞는 답이에요.' },
+      { id:'det5', categoryId:'dd', problem:'7/8 ÷ 5/6 을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누는 분수 5/6의 역수 6/5를 구한다','나누어지는 분수 7/8의 역수도 함께 구해 8/7 × 6/5 로 계산한다'], errorStepIndex:1,
+        explanation:'역수는 나누는 분수(5/6)만 뒤집어요. 나누어지는 분수(7/8)는 그대로 두고 7/8 × 6/5 로 계산해야 해요.' },
+      { id:'det6', categoryId:'nat', problem:'4 ÷ 2/3 을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누는 분수 2/3의 역수 3/2를 구한다','4 × 2/3 으로 계산한다','= 8/3 로 답을 낸다'], errorStepIndex:1,
+        explanation:'역수(3/2)를 구했다면 그 역수를 곱해야 해요. 4×3/2 = 6 이 맞는 답이에요.' },
+      { id:'det7', categoryId:'nat', problem:'9 ÷ 3/4 를 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['9를 분수 9/1로 생각한다','9의 역수 1/9를 구한다','1/9 × 3/4 로 계산한다'], errorStepIndex:1,
+        explanation:'역수는 나누는 분수(3/4)의 것을 구해야 해요. 9는 그대로 두고, 3/4의 역수 4/3을 곱해 9×4/3=12 가 맞는 답이에요.' },
+      { id:'det8', categoryId:'mix', problem:'2 1/4 ÷ 3/8 을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['대분수 2 1/4를 가분수 9/4로 바꾼다','나누는 분수가 아니라 9/4의 역수 4/9를 구한다','4/9 × 3/8 = 12/72 = 1/6 로 계산한다'], errorStepIndex:1,
+        explanation:'역수는 나누는 분수(3/8)를 뒤집어야 해요. 나누어지는 분수(9/4)를 뒤집으면 안 돼요. 9/4 × 8/3 = 6 이 맞는 답이에요.' },
+      { id:'det9', categoryId:'mix', problem:'3 1/3 ÷ 5/6 을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['대분수 3 1/3을 가분수 10/3으로 바꾼다','나누는 분수 5/6의 역수 6/5를 구한다','10/3 + 6/5 로 계산한다'], errorStepIndex:2,
+        explanation:'역수를 구했다면 더하지 말고 곱해야 해요. 10/3 × 6/5 = 60/15 = 4 가 맞는 답이에요.' },
+      { id:'det10', categoryId:'mix', problem:'4 2/3 ÷ 1 1/6 을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['4 2/3을 가분수 14/3으로 바꾼다','1 1/6은 대분수가 아니라고 생각해 그대로 6분의 1을 뒤집어 6을 곱한다','14/3 × 6 = 28 로 답을 낸다'], errorStepIndex:1,
+        explanation:'1 1/6도 대분수이므로 먼저 가분수 7/6으로 바꿔야 해요. 14/3 ÷ 7/6 = 14/3 × 6/7 = 4 가 맞는 답이에요.' }
+    ],
+    procedureRecipes:[
+      { id:'recipe-dd', categoryId:'dd', title:'분모가 다른 분수÷분수 품새', steps:[
+        '두 분수를 통분한다','분자끼리 나눈다','나누어떨어지지 않으면 분수로 나타낸다','약분하여 기약분수로 정리한다'
+      ]},
+      { id:'recipe-nat', categoryId:'nat', title:'자연수 ÷ 분수 품새', steps:[
+        '자연수를 분수(자연수/1) 형태로 생각한다','나누는 분수의 역수를 구한다','자연수 × 역수로 계산한다','약분하여 답을 정리한다'
+      ]},
+      { id:'recipe-mix', categoryId:'mix', title:'대분수 ÷ 분수 품새', steps:[
+        '대분수를 가분수로 바꾼다','나누는 분수의 역수를 구한다','가분수 × 역수로 계산한다','약분하고 필요하면 다시 대분수로 나타낸다'
+      ]}
+    ],
+    assessment:{ pool:[
+      /* ===== fracByFrac / 기본 (basic) ===== */
+      {id:'fb-b1', subunitId:'fracByFrac', tier:'basic', difficulty:'하', type:'mcq', prompt:'6/11 ÷ 2/11 = ?', choices:['3','3/11','2/11','1/3'], answerIndex:0, explanation:'분모가 같으므로 6÷2 = 3 이에요.'},
+      {id:'fb-b2', subunitId:'fracByFrac', tier:'basic', difficulty:'하', type:'mcq', prompt:'7/10 ÷ 3/10 = ?', choices:['2 1/3','3/7','1 1/3','2 1/10'], answerIndex:0, explanation:'분모가 같으므로 7÷3 = 7/3 = 2 1/3 이에요.'},
+      {id:'fb-b3', subunitId:'fracByFrac', tier:'basic', difficulty:'하', type:'fill', prompt:'8/13 ÷ 5/13 을 기약분수 또는 대분수로 답하세요.', answer:'8/5', explanation:'분모가 같으므로 8÷5 = 8/5 = 1 3/5 이에요.'},
+      {id:'fb-b4', subunitId:'fracByFrac', tier:'basic', difficulty:'중', type:'mcq', prompt:'3/5 ÷ 1/4 = ?', choices:['2 2/5','1 1/5','3/20','4/15'], answerIndex:0, explanation:'3/5 × 4 = 12/5 = 2 2/5 예요.'},
+      {id:'fb-b5', subunitId:'fracByFrac', tier:'basic', difficulty:'중', type:'mcq', prompt:'5/6 ÷ 2/9 = ?', choices:['3 3/4','1 4/5','5/27','2 1/4'], answerIndex:0, explanation:'5/6 × 9/2 = 45/12 = 3 3/4 예요.'},
+      {id:'fb-b6', subunitId:'fracByFrac', tier:'basic', difficulty:'중', type:'mcq', prompt:'4/9 ÷ 5/6 = ?', choices:['8/15','5/9','3/10','2/3'], answerIndex:0, explanation:'4/9 × 6/5 = 24/45 = 8/15 예요.'},
+      {id:'fb-b7', subunitId:'fracByFrac', tier:'basic', difficulty:'중', type:'fill', prompt:'7/12 ÷ 5/8 을 기약분수로 답하세요.', answer:'14/15', explanation:'7/12 × 8/5 = 56/60 = 14/15 예요.'},
+      {id:'fb-b8', subunitId:'fracByFrac', tier:'basic', difficulty:'상', type:'mcq', prompt:'다음 중 몫이 가장 큰 것은?', choices:['9/10 ÷ 2/10','9/10 ÷ 7/10','9/10 ÷ 5/10','9/10 ÷ 8/10'], answerIndex:0, explanation:'분모가 같을 때는 나누는 수가 작을수록 몫이 커요.'},
+      {id:'fb-b9', subunitId:'fracByFrac', tier:'basic', difficulty:'상', type:'mcq', prompt:'가로 3/4m, 세로 2/5m인 직사각형이 있습니다. 가로는 세로의 몇 배인가요?', choices:['1 7/8','2 1/8','8/15','1 1/4'], answerIndex:0, explanation:'3/4 ÷ 2/5 = 3/4 × 5/2 = 15/8 = 1 7/8 배예요.'},
+      {id:'fb-b10', subunitId:'fracByFrac', tier:'basic', difficulty:'중', type:'mcq', prompt:'다음 중 분모가 다른 (분수)÷(분수)를 계산하는 방법으로 옳지 않은 것은?', choices:['통분한 뒤 분자끼리 나눈다','나누는 분수의 역수를 곱한다','분모끼리 나누고 분자는 그대로 둔다','통분한 뒤 나온 분자를 자연수의 나눗셈처럼 계산한다'], answerIndex:2, explanation:'분모가 다를 때는 분모끼리 나누면 안 되고, 통분해서 분자끼리 나누거나 역수를 곱해야 해요.'},
+      /* ===== fracByFrac / 보충 (extra) ===== */
+      {id:'fb-e1', subunitId:'fracByFrac', tier:'extra', difficulty:'하', type:'mcq', prompt:'10/13 ÷ 5/13 = ?', choices:['2','5/13','10/13','1/2'], answerIndex:0, explanation:'분모가 같으므로 10÷5 = 2 예요.'},
+      {id:'fb-e2', subunitId:'fracByFrac', tier:'extra', difficulty:'하', type:'fill', prompt:'12/17 ÷ 4/17 을 답하세요.', answer:'3', explanation:'분모가 같으므로 12÷4 = 3 이에요.'},
+      {id:'fb-e3', subunitId:'fracByFrac', tier:'extra', difficulty:'하', type:'mcq', prompt:'6/13 ÷ 6/13 = ?', choices:['1','0','6/13','2'], answerIndex:0, explanation:'같은 분수끼리 나누면 몫은 항상 1이에요.'},
+      {id:'fb-e4', subunitId:'fracByFrac', tier:'extra', difficulty:'하', type:'mcq', prompt:'9/16 ÷ 3/16 = ?', choices:['3','1/3','3/16','16/3'], answerIndex:0, explanation:'분모가 같으므로 9÷3 = 3 이에요.'},
+      {id:'fb-e5', subunitId:'fracByFrac', tier:'extra', difficulty:'중', type:'mcq', prompt:'1/2 ÷ 1/5 = ?', choices:['2 1/2','1/10','2/5','5/10'], answerIndex:0, explanation:'1/2 × 5 = 5/2 = 2 1/2 예요.'},
+      {id:'fb-e6', subunitId:'fracByFrac', tier:'extra', difficulty:'중', type:'fill', prompt:'2/7 ÷ 3/5 를 기약분수로 답하세요.', answer:'10/21', explanation:'2/7 × 5/3 = 10/21 이에요.'},
+      {id:'fb-e7', subunitId:'fracByFrac', tier:'extra', difficulty:'중', type:'mcq', prompt:'5/9 ÷ 2/3 = ?', choices:['5/6','5/27','10/27','3/2'], answerIndex:0, explanation:'5/9 × 3/2 = 15/18 = 5/6 이에요.'},
+      {id:'fb-e8', subunitId:'fracByFrac', tier:'extra', difficulty:'중', type:'mcq', prompt:'7/12 ÷ 3/8 = ?', choices:['1 5/9','7/32','2 1/12','9/14'], answerIndex:0, explanation:'7/12 × 8/3 = 56/36 = 14/9 = 1 5/9 예요.'},
+      {id:'fb-e9', subunitId:'fracByFrac', tier:'extra', difficulty:'상', type:'fill', prompt:'11/12 ÷ 5/9 를 기약분수 또는 대분수로 답하세요.', answer:'33/20', explanation:'11/12 × 9/5 = 99/60 = 33/20 이에요.'},
+      {id:'fb-e10', subunitId:'fracByFrac', tier:'extra', difficulty:'상', type:'mcq', prompt:'8/15 ÷ 6/25 = ?', choices:['2 2/9','1 7/9','4/5','15/8'], answerIndex:0, explanation:'8/15 × 25/6 = 200/90 = 20/9 = 2 2/9 예요.'},
+      /* ===== fracByFrac / 심화 (advanced) ===== */
+      {id:'fb-a1', subunitId:'fracByFrac', tier:'advanced', difficulty:'하', type:'mcq', prompt:'11/15 ÷ 3/15 = ?', choices:['3 2/3','5','3/11','11/45'], answerIndex:0, explanation:'분모가 같으므로 11÷3 = 11/3 = 3 2/3 이에요.'},
+      {id:'fb-a2', subunitId:'fracByFrac', tier:'advanced', difficulty:'하', type:'fill', prompt:'13/20 ÷ 7/20 을 기약분수 또는 대분수로 답하세요.', answer:'13/7', explanation:'분모가 같으므로 13÷7 = 13/7 = 1 6/7 이에요.'},
+      {id:'fb-a3', subunitId:'fracByFrac', tier:'advanced', difficulty:'중', type:'mcq', prompt:'4/9 ÷ 5/12 = ?', choices:['1 1/15','5/27','1/3','16/45'], answerIndex:0, explanation:'4/9 × 12/5 = 48/45 = 16/15 = 1 1/15 예요.'},
+      {id:'fb-a4', subunitId:'fracByFrac', tier:'advanced', difficulty:'중', type:'mcq', prompt:'3/10 ÷ 4/15 = ?', choices:['1 1/8','2/25','9/40','8/9'], answerIndex:0, explanation:'3/10 × 15/4 = 45/40 = 9/8 = 1 1/8 이에요.'},
+      {id:'fb-a5', subunitId:'fracByFrac', tier:'advanced', difficulty:'중', type:'fill', prompt:'7/9 ÷ 5/6 을 기약분수로 답하세요.', answer:'14/15', explanation:'7/9 × 6/5 = 42/45 = 14/15 예요.'},
+      {id:'fb-a6', subunitId:'fracByFrac', tier:'advanced', difficulty:'중', type:'mcq', prompt:'5/12 ÷ 7/18 = ?', choices:['1 1/14','35/216','5/14','14/15'], answerIndex:0, explanation:'5/12 × 18/7 = 90/84 = 15/14 = 1 1/14 예요.'},
+      {id:'fb-a7', subunitId:'fracByFrac', tier:'advanced', difficulty:'중', type:'mcq', prompt:'다음 중 몫이 1보다 작은 것은?', choices:['3/8 ÷ 5/8','5/8 ÷ 3/8','7/9 ÷ 2/9','9/10 ÷ 1/10'], answerIndex:0, explanation:'나누어지는 수가 나누는 수보다 작으면 몫이 1보다 작아요.'},
+      {id:'fb-a8', subunitId:'fracByFrac', tier:'advanced', difficulty:'상', type:'mcq', prompt:'13/14 ÷ 5/7 = ?', choices:['1 3/10','5/7','91/98','1 1/2'], answerIndex:0, explanation:'13/14 × 7/5 = 91/70 = 13/10 = 1 3/10 이에요.'},
+      {id:'fb-a9', subunitId:'fracByFrac', tier:'advanced', difficulty:'상', type:'fill', prompt:'17/18 ÷ 4/9 를 기약분수 또는 대분수로 답하세요.', answer:'17/8', explanation:'17/18 × 9/4 = 153/72 = 17/8 = 2 1/8 이에요.'},
+      {id:'fb-a10', subunitId:'fracByFrac', tier:'advanced', difficulty:'상', type:'mcq', prompt:'밭 5/6㎡에 거름을 주는데 2/9㎡마다 거름 한 포대가 필요합니다. 거름은 모두 몇 포대 필요할까요?', choices:['3 3/4포대','2 5/12포대','12/45포대','4포대'], answerIndex:0, explanation:'5/6 ÷ 2/9 = 5/6 × 9/2 = 45/12 = 3 3/4(포대) 예요.'},
+      /* ===== natMix / 기본 (basic) ===== */
+      {id:'nm-b1', subunitId:'natMix', tier:'basic', difficulty:'하', type:'mcq', prompt:'5 ÷ 2/7 = ?', choices:['17 1/2','10/7','7 1/2','2 4/7'], answerIndex:0, explanation:'5 × 7/2 = 35/2 = 17 1/2 예요.'},
+      {id:'nm-b2', subunitId:'natMix', tier:'basic', difficulty:'하', type:'mcq', prompt:'8 ÷ 5/6 = ?', choices:['9 3/5','6 2/3','5 3/5','40/48'], answerIndex:0, explanation:'8 × 6/5 = 48/5 = 9 3/5 예요.'},
+      {id:'nm-b3', subunitId:'natMix', tier:'basic', difficulty:'하', type:'fill', prompt:'7 ÷ 3/5 를 기약분수 또는 대분수로 답하세요.', answer:'35/3', explanation:'7 × 5/3 = 35/3 = 11 2/3 이에요.'},
+      {id:'nm-b4', subunitId:'natMix', tier:'basic', difficulty:'중', type:'mcq', prompt:'리본 10m를 3/4m씩 잘라 몇 도막이 나올까요?', choices:['13 1/3','7 1/2','6 2/3','3/40'], answerIndex:0, explanation:'10 × 4/3 = 40/3 = 13 1/3(도막) 이에요.'},
+      {id:'nm-b5', subunitId:'natMix', tier:'basic', difficulty:'중', type:'mcq', prompt:'3 1/5 ÷ 2/3 = ?', choices:['4 4/5','2 2/5','1 3/5','5 1/3'], answerIndex:0, explanation:'16/5 × 3/2 = 48/10 = 4 4/5 예요.'},
+      {id:'nm-b6', subunitId:'natMix', tier:'basic', difficulty:'중', type:'mcq', prompt:'1 5/6 ÷ 3/4 = ?', choices:['2 4/9','1 3/8','4/9','3 2/3'], answerIndex:0, explanation:'11/6 × 4/3 = 44/18 = 2 4/9 예요.'},
+      {id:'nm-b7', subunitId:'natMix', tier:'basic', difficulty:'중', type:'fill', prompt:'2 5/8 ÷ 1 3/4 를 기약분수로 답하세요.', answer:'3/2', explanation:'21/8 × 4/7 = 84/56 = 3/2 예요.'},
+      {id:'nm-b8', subunitId:'natMix', tier:'basic', difficulty:'상', type:'mcq', prompt:'우유 4 1/2L가 있어요. 한 병에 3/4L씩 담으면 몇 병이 될까요?', choices:['6병','4 1/2병','3/8병','8병'], answerIndex:0, explanation:'9/2 × 4/3 = 36/6 = 6(병) 이에요.'},
+      {id:'nm-b9', subunitId:'natMix', tier:'basic', difficulty:'상', type:'mcq', prompt:'다음 중 계산 결과가 가장 큰 것은?', choices:['8 ÷ 2/5','8 ÷ 4/5','8 ÷ 6/5','8 ÷ 8/5'], answerIndex:0, explanation:'나누는 분수가 작을수록 몫이 커요.'},
+      {id:'nm-b10', subunitId:'natMix', tier:'basic', difficulty:'중', type:'mcq', prompt:'대분수가 있는 나눗셈을 계산할 때 가장 먼저 해야 할 일은 무엇인가요?', choices:['대분수를 가분수로 바꾼다','나누는 수의 역수부터 구한다','분모끼리 먼저 나눈다','자연수 부분만 따로 계산한다'], answerIndex:0, explanation:'대분수는 항상 먼저 가분수로 바꾼 뒤 계산을 시작해요.'},
+      /* ===== natMix / 보충 (extra) ===== */
+      {id:'nm-e1', subunitId:'natMix', tier:'extra', difficulty:'하', type:'mcq', prompt:'8 ÷ 4/9 = ?', choices:['18','1/18','4/8','8/4'], answerIndex:0, explanation:'8 × 9/4 = 72/4 = 18 이에요.'},
+      {id:'nm-e2', subunitId:'natMix', tier:'extra', difficulty:'하', type:'mcq', prompt:'9 ÷ 3/5 = ?', choices:['15','1/15','3/9','9/3'], answerIndex:0, explanation:'9 × 5/3 = 45/3 = 15 예요.'},
+      {id:'nm-e3', subunitId:'natMix', tier:'extra', difficulty:'하', type:'fill', prompt:'10 ÷ 2/7 을 답하세요.', answer:'35', explanation:'10 × 7/2 = 70/2 = 35 예요.'},
+      {id:'nm-e4', subunitId:'natMix', tier:'extra', difficulty:'하', type:'mcq', prompt:'6 ÷ 5/6 = ?', choices:['7 1/5','5/36','6/5','5/6'], answerIndex:0, explanation:'6 × 6/5 = 36/5 = 7 1/5 예요.'},
+      {id:'nm-e5', subunitId:'natMix', tier:'extra', difficulty:'중', type:'mcq', prompt:'3 1/3 ÷ 1/2 = ?', choices:['6 2/3','1 2/3','5/3','3/20'], answerIndex:0, explanation:'10/3 × 2 = 20/3 = 6 2/3 예요.'},
+      {id:'nm-e6', subunitId:'natMix', tier:'extra', difficulty:'중', type:'mcq', prompt:'1 5/8 ÷ 3/4 = ?', choices:['2 1/6','1 1/32','39/32','6/13'], answerIndex:0, explanation:'13/8 × 4/3 = 52/24 = 13/6 = 2 1/6 이에요.'},
+      {id:'nm-e7', subunitId:'natMix', tier:'extra', difficulty:'중', type:'fill', prompt:'12 ÷ 5/6 을 기약분수 또는 대분수로 답하세요.', answer:'72/5', explanation:'12 × 6/5 = 72/5 = 14 2/5 예요.'},
+      {id:'nm-e8', subunitId:'natMix', tier:'extra', difficulty:'중', type:'mcq', prompt:'2 3/5 ÷ 3/10 = ?', choices:['8 2/3','1 3/25','39/50','7 4/5'], answerIndex:0, explanation:'13/5 × 10/3 = 130/15 = 26/3 = 8 2/3 이에요.'},
+      {id:'nm-e9', subunitId:'natMix', tier:'extra', difficulty:'상', type:'mcq', prompt:'4 1/6 ÷ 5/9 = ?', choices:['7 1/2','2 1/4','1 1/2','5 5/6'], answerIndex:0, explanation:'25/6 × 9/5 = 225/30 = 15/2 = 7 1/2 예요.'},
+      {id:'nm-e10', subunitId:'natMix', tier:'extra', difficulty:'상', type:'fill', prompt:'5 2/7 ÷ 4/7 를 답하세요.', answer:'37/4', explanation:'37/7 × 7/4 = 37/4 = 9 1/4 예요.'},
+      /* ===== natMix / 심화 (advanced) ===== */
+      {id:'nm-a1', subunitId:'natMix', tier:'advanced', difficulty:'하', type:'mcq', prompt:'11 ÷ 4/7 = ?', choices:['19 1/4','4/77','7/44','3 3/4'], answerIndex:0, explanation:'11 × 7/4 = 77/4 = 19 1/4 예요.'},
+      {id:'nm-a2', subunitId:'natMix', tier:'advanced', difficulty:'하', type:'fill', prompt:'13 ÷ 5/8 을 답하세요.', answer:'104/5', explanation:'13 × 8/5 = 104/5 = 20 4/5 예요.'},
+      {id:'nm-a3', subunitId:'natMix', tier:'advanced', difficulty:'중', type:'mcq', prompt:'3 3/4 ÷ 5/6 = ?', choices:['4 1/2','3 1/8','2 1/2','1 7/8'], answerIndex:0, explanation:'15/4 × 6/5 = 90/20 = 9/2 = 4 1/2 예요.'},
+      {id:'nm-a4', subunitId:'natMix', tier:'advanced', difficulty:'중', type:'mcq', prompt:'2 5/6 ÷ 3/4 = ?', choices:['3 7/9','2 1/8','17/8','1 2/9'], answerIndex:0, explanation:'17/6 × 4/3 = 68/18 = 34/9 = 3 7/9 예요.'},
+      {id:'nm-a5', subunitId:'natMix', tier:'advanced', difficulty:'중', type:'fill', prompt:'4 4/5 ÷ 6/7 를 기약분수 또는 대분수로 답하세요.', answer:'28/5', explanation:'24/5 × 7/6 = 168/30 = 28/5 = 5 3/5 예요.'},
+      {id:'nm-a6', subunitId:'natMix', tier:'advanced', difficulty:'중', type:'mcq', prompt:'15 ÷ 4/9 = ?', choices:['33 3/4','4/135','9/60','20/3'], answerIndex:0, explanation:'15 × 9/4 = 135/4 = 33 3/4 예요.'},
+      {id:'nm-a7', subunitId:'natMix', tier:'advanced', difficulty:'중', type:'mcq', prompt:'다음 중 계산 결과가 가장 작은 것은?', choices:['2 1/2 ÷ 1/4','2 1/2 ÷ 1/2','2 1/2 ÷ 3/4','2 1/2 ÷ 5/6'], answerIndex:3, explanation:'나누는 분수가 클수록 몫은 작아져요.'},
+      {id:'nm-a8', subunitId:'natMix', tier:'advanced', difficulty:'상', type:'mcq', prompt:'6 1/4 ÷ 5/8 = ?', choices:['10','3 1/8','1 9/16','2 1/2'], answerIndex:0, explanation:'25/4 × 8/5 = 200/20 = 10 이에요.'},
+      {id:'nm-a9', subunitId:'natMix', tier:'advanced', difficulty:'상', type:'fill', prompt:'7 1/5 ÷ 8/15 를 답하세요.', answer:'27/2', explanation:'36/5 × 15/8 = 540/40 = 27/2 = 13 1/2 예요.'},
+      {id:'nm-a10', subunitId:'natMix', tier:'advanced', difficulty:'상', type:'mcq', prompt:'철사 5 1/4m를 3/8m씩 잘라 도막을 만들면 몇 도막이 나올까요?', choices:['14도막','5 5/8도막','3/56도막','21도막'], answerIndex:0, explanation:'21/4 × 8/3 = 168/12 = 14(도막) 이에요.'}
+    ]}
+  },
+  unit2: {
+    id:'unit2', title:'소수의 나눗셈', icon:'📐', unitNumber:2, tagline:'소수 ÷ 소수, 자연수의 나눗셈과 몫 다루기를 정복해요.',
+    subunits:[
+      { id:'decByDec', title:'3관 · 소수 ÷ 소수', icon:'👊', tagline:'자릿수가 같은/다른 소수끼리 나누는 두 가지 초식을 익혀요.', categories:[
+        { id:'sameDigit', label:'자릿수가 같은 (소수)÷(소수)', icon:'🧮', color:'#3f9d5c', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'sdg-co-1', text:'자릿수가 같은 소수끼리 나눌 때는 두 수에 똑같이 10, 100…을 곱해 자연수의 나눗셈으로 바꿔서 계산해요: 1.8÷0.3 → 18÷3'},
+            {id:'sdg-co-2', text:'두 소수를 분모가 같은 분수로 바꾸면 분자끼리 나누는 것과 같은 원리예요: 1.8=18/10, 0.3=3/10 → 18÷3'}
+          ]},
+          { groupId:'steps', label:'계산 순서', icon:'👣', items:[
+            {id:'sdg-st-1', text:'1) 나누는 수와 나누어지는 수의 소수점을 오른쪽으로 같은 자리 수만큼 옮겨 자연수로 만든다.'},
+            {id:'sdg-st-2', text:'2) 자연수의 나눗셈으로 계산한다.'},
+            {id:'sdg-st-3', text:'3) 그 몫이 바로 원래 나눗셈의 답이다(다시 소수점을 붙이지 않는다).'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'sdg-ex-1', text:'1.8÷0.3 → 18÷3 = 6'},
+            {id:'sdg-ex-2', text:'7.2÷0.9 → 72÷9 = 8'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'sdg-ca-1', text:'소수점은 나누어지는 수와 나누는 수 양쪽을 반드시 같은 자리만큼 옮겨야 해요 — 한쪽만 옮기면 몫이 완전히 달라져요.'},
+            {id:'sdg-ca-2', text:'몫이 항상 자연수로 딱 나누어떨어지는 건 아니에요(예: 1.5÷0.6=2.5).'}
+          ]}
+        ]},
+        { id:'diffDigit', label:'자릿수가 다른 (소수)÷(소수)', icon:'🔁', color:'#2d4f8f', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'ddg-co-1', text:'자릿수가 다른 소수끼리 나눌 때도 두 수의 소수점을 같은 자리 수만큼 오른쪽으로 옮겨 자연수의 나눗셈으로 바꿔요.'},
+            {id:'ddg-co-2', text:'옮기는 자리 수는 나누는 수(÷ 뒤의 수)의 소수점 자리 수에 맞춰요.'}
+          ]},
+          { groupId:'steps', label:'계산 순서', icon:'👣', items:[
+            {id:'ddg-st-1', text:'1) 나누는 수의 소수점이 몇 자리인지 확인한다.'},
+            {id:'ddg-st-2', text:'2) 나누는 수와 나누어지는 수의 소수점을 그 자리 수만큼 똑같이 오른쪽으로 옮긴다(자리가 모자라면 0을 채운다).'},
+            {id:'ddg-st-3', text:'3) 자연수(또는 자릿수가 줄어든 소수)의 나눗셈으로 계산한다.'},
+            {id:'ddg-st-4', text:'4) 그 몫이 바로 원래 나눗셈의 답이다.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'ddg-ex-1', text:'3.15÷0.7 → 31.5÷7 = 4.5'},
+            {id:'ddg-ex-2', text:'6.4÷0.16 → 640÷16 = 40'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'ddg-ca-1', text:'나누어지는 수의 자릿수가 나누는 수보다 적으면 0을 채워서 자리를 맞춰야 해요(예: 3÷0.25 → 300÷25).'},
+            {id:'ddg-ca-2', text:'두 수를 옮기는 자리 수가 서로 다르면(한쪽만 더 많이 옮기면) 몫이 틀려져요 — 항상 같은 자리 수만큼 옮기세요.'}
+          ]}
+        ]}
+      ]},
+      { id:'natByDec', title:'4관 · 나눗셈의 활용', icon:'🎯', tagline:'자연수를 소수로 나누고, 몫을 반올림·나머지·어림셈으로 다루는 법을 완성해요.', categories:[
+        { id:'natDivDec', label:'(자연수)÷(소수)', icon:'➗', color:'#e0a458', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'ndv-co-1', text:'자연수를 소수로 나눌 때도 나누는 소수의 소수점을 자연수로 만들 만큼 오른쪽으로 옮기고, 나누어지는 자연수에도 같은 자리만큼 0을 붙여 옮겨요: 15÷0.6 → 150÷6'},
+            {id:'ndv-co-2', text:'자연수는 분모가 1인 분수(자연수/1)로 생각하면, 분모·분자에 10, 100…을 곱해 자연수의 나눗셈으로 만드는 것과 같은 원리예요.'}
+          ]},
+          { groupId:'steps', label:'계산 순서', icon:'👣', items:[
+            {id:'ndv-st-1', text:'1) 나누는 소수의 소수점 자리 수를 확인한다.'},
+            {id:'ndv-st-2', text:'2) 나누는 수는 소수점을 옮겨 자연수로 만든다.'},
+            {id:'ndv-st-3', text:'3) 나누어지는 자연수에는 그만큼 0을 붙여 같이 옮긴다.'},
+            {id:'ndv-st-4', text:'4) 자연수의 나눗셈으로 계산한다.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'ndv-ex-1', text:'15÷0.6 → 150÷6 = 25'},
+            {id:'ndv-ex-2', text:'12÷0.75 → 1200÷75 = 16'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'ndv-ca-1', text:'나누어지는 자연수에 0을 붙이는 것을 잊으면 몫이 10배, 100배 틀려져요.'},
+            {id:'ndv-ca-2', text:'나누는 소수가 1보다 작으면 몫은 나누어지는 자연수보다 커진다는 걸 기억하면 검산에 도움이 돼요.'}
+          ]}
+        ]},
+        { id:'quotientSkills', label:'몫 다루기 (반올림·나머지·어림셈)', icon:'🧠', color:'#5c6bc0', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'qsk-co-1', text:'나눗셈이 끝없이 나누어떨어지지 않을 때는 몫을 반올림해서 정해진 자리까지 나타낼 수 있어요.'},
+            {id:'qsk-co-2', text:'소수의 나눗셈에서도 자연수의 나눗셈처럼 몫과 나머지를 구할 수 있어요 — 나머지의 소수점은 나누어지는 수의 원래 소수점 위치에 맞춰요.'},
+            {id:'qsk-co-3', text:'실제로 나누기 전에 두 수를 가까운 수로 어림해서 몫을 대략 짐작해볼 수 있어요(어림셈).'}
+          ]},
+          { groupId:'steps', label:'계산 순서', icon:'👣', items:[
+            {id:'qsk-st-1', text:'반올림: 구하려는 자리의 바로 아랫자리 숫자를 보고 반올림한다.'},
+            {id:'qsk-st-2', text:'나머지: 몫을 자연수까지만 구한 뒤, (나누는 수)×(몫)을 나누어지는 수에서 뺀 값을 나머지로 한다.'},
+            {id:'qsk-st-3', text:'어림셈: 두 수를 각각 가까운 자연수(또는 간단한 소수)로 바꿔 대략적인 몫을 짐작한다.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'qsk-ex-1', text:'17÷6=2.833… → 반올림하여 소수 첫째 자리까지 나타내면 2.8'},
+            {id:'qsk-ex-2', text:'5.4÷1.6=3…0.6 → 몫 3, 나머지 0.6'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'qsk-ca-1', text:'나머지는 나누는 수보다 항상 작아야 해요 — 나머지가 나누는 수보다 크거나 같으면 몫을 다시 확인하세요.'},
+            {id:'qsk-ca-2', text:'나머지의 소수점 위치는 몫이 아니라 나누어지는 수의 원래 소수점 위치와 같아요.'}
+          ]}
+        ]}
+      ]}
+    ],
+    scenarios:[
+      { id:'ds1', subunitId:'decByDec', categoryId:'sameDigit', icon:'🧃', title:'주스 나누기 대련',
+        prompt:'주스 1.8L를 한 병에 0.3L씩 나눠 담으려고 해요. 병이 몇 개 필요한지 구하는 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'ds1-1', text:'나누는 수와 나누어지는 수의 소수점을 각각 오른쪽으로 한 자리씩 옮겨 18÷3으로 바꾼다.', correct:true},
+          {id:'ds1-2', text:'18÷3 = 6이므로 병이 6개 필요하다.', correct:true},
+          {id:'ds1-3', text:'나누어지는 수 1.8의 소수점만 옮겨 18÷0.3으로 계산한다.', correct:false},
+          {id:'ds1-4', text:'1.8÷0.3을 1.8×0.3으로 계산한다.', correct:false}
+        ]},
+      { id:'ds2', subunitId:'decByDec', categoryId:'sameDigit', icon:'🧵', title:'철사 나누기 대련',
+        prompt:'철사 4.8m를 0.6m씩 잘라 몇 도막이 나오는지 구하는 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'ds2-1', text:'나누는 수와 나누어지는 수의 소수점을 각각 오른쪽으로 한 자리씩 옮겨 48÷6으로 바꾼다.', correct:true},
+          {id:'ds2-2', text:'48÷6 = 8이므로 8도막이 나온다.', correct:true},
+          {id:'ds2-3', text:'나누는 수 0.6의 소수점만 옮겨 4.8÷6으로 계산한다.', correct:false},
+          {id:'ds2-4', text:'4.8÷0.6을 4.8-0.6으로 계산한다.', correct:false}
+        ]},
+      { id:'ds3', subunitId:'decByDec', categoryId:'diffDigit', icon:'🎀', title:'리본 비교 대련',
+        prompt:'리본 A의 길이는 3.15m, 리본 B의 길이는 0.7m예요. A는 B의 몇 배인지 구하는 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'ds3-1', text:'나누는 수 0.7의 소수점 자리 수(1자리)에 맞춰 두 수의 소수점을 오른쪽으로 한 자리씩 옮겨 31.5÷7로 바꾼다.', correct:true},
+          {id:'ds3-2', text:'31.5÷7 = 4.5(배) 이다.', correct:true},
+          {id:'ds3-3', text:'나누는 수 0.7의 소수점만 옮겨 7로 만들고, 나누어지는 수 3.15는 그대로 두어 3.15÷7로 계산한다.', correct:false},
+          {id:'ds3-4', text:'3.15÷0.7을 3.15×0.7로 계산한다.', correct:false}
+        ]},
+      { id:'ds4', subunitId:'decByDec', categoryId:'diffDigit', icon:'🍬', title:'설탕 나누기 대련',
+        prompt:'설탕 6.4kg을 0.16kg씩 봉지에 나눠 담으려고 해요. 봉지가 몇 개 필요한지 구하는 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'ds4-1', text:'나누는 수 0.16의 소수점 자리 수(2자리)에 맞춰 두 수의 소수점을 오른쪽으로 두 자리씩 옮겨 640÷16으로 바꾼다.', correct:true},
+          {id:'ds4-2', text:'640÷16 = 40(개) 이다.', correct:true},
+          {id:'ds4-3', text:'나누어지는 수 6.4의 소수점만 옮겨 64로 만들고, 나누는 수 0.16은 그대로 두어 64÷0.16으로 계산한다.', correct:false},
+          {id:'ds4-4', text:'6.4÷0.16을 6.4×0.16으로 계산한다.', correct:false}
+        ]},
+      { id:'ds5', subunitId:'natByDec', categoryId:'natDivDec', icon:'🧃', title:'주스 병 대련',
+        prompt:'주스 15L를 한 병에 0.6L씩 나눠 담으려고 해요. 병이 몇 개 필요한지 구하는 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'ds5-1', text:'나누는 수 0.6의 소수점을 오른쪽으로 한 자리 옮겨 6으로 만들고, 나누어지는 자연수 15에도 0을 하나 붙여 150으로 만든다.', correct:true},
+          {id:'ds5-2', text:'150÷6 = 25이므로 병이 25개 필요하다.', correct:true},
+          {id:'ds5-3', text:'나누는 수만 6으로 바꾸고, 나누어지는 자연수 15는 그대로 두어 15÷6으로 계산한다.', correct:false},
+          {id:'ds5-4', text:'15÷0.6을 15×0.6으로 계산한다.', correct:false}
+        ]},
+      { id:'ds6', subunitId:'natByDec', categoryId:'natDivDec', icon:'🧵', title:'철사 도막 대련',
+        prompt:'철사 12m를 0.75m씩 잘라 몇 도막이 나오는지 구하는 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'ds6-1', text:'나누는 수 0.75의 소수점을 오른쪽으로 두 자리 옮겨 75로 만들고, 나누어지는 자연수 12에도 0을 두 개 붙여 1200으로 만든다.', correct:true},
+          {id:'ds6-2', text:'1200÷75 = 16이므로 16도막이 나온다.', correct:true},
+          {id:'ds6-3', text:'나누는 수만 75로 바꾸고, 나누어지는 자연수 12는 그대로 두어 12÷75로 계산한다.', correct:false},
+          {id:'ds6-4', text:'12÷0.75를 12+0.75로 계산한다.', correct:false}
+        ]},
+      { id:'ds7', subunitId:'natByDec', categoryId:'quotientSkills', icon:'🎀', title:'리본 나눠주기 대련',
+        prompt:'리본 17.5m를 3.4m씩 잘라 나눠주려고 해요. 몇 명에게 나눠줄 수 있고, 남는 리본은 몇 m인지 구하는 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'ds7-1', text:'몫을 자연수까지만 구하면 5이다(3.4×5=17, 3.4×6=20.4로 17.5를 넘으므로).', correct:true},
+          {id:'ds7-2', text:'17.5-17 = 0.5(m)가 남는다.', correct:true},
+          {id:'ds7-3', text:'소수점을 옮겨 175÷34로 계산한 나머지 5를 그대로 남는 양으로 쓴다.', correct:false},
+          {id:'ds7-4', text:'나누어떨어지지 않으므로 몫을 5.1로 반올림하고 나머지는 없다고 한다.', correct:false}
+        ]},
+      { id:'ds8', subunitId:'natByDec', categoryId:'quotientSkills', icon:'🏃', title:'달리기 속도 대련',
+        prompt:'유진이는 8.7km를 2.6시간 동안 달렸어요. 한 시간 동안 달린 거리를 반올림하여 소수 첫째 자리까지 나타내는 올바른 과정을 모두 고르세요.',
+        options:[
+          {id:'ds8-1', text:'8.7÷2.6을 계산하면 몫은 약 3.34…이다.', correct:true},
+          {id:'ds8-2', text:'소수 둘째 자리 숫자가 4이므로 반올림하여 3.3으로 나타낸다.', correct:true},
+          {id:'ds8-3', text:'소수 첫째 자리 숫자를 보고 반올림해서 3으로 나타낸다.', correct:false},
+          {id:'ds8-4', text:'몫을 어림해서 대략 9÷3=3이라고 어림한 값을 그대로 정답으로 쓴다.', correct:false}
+        ]}
+    ],
+    quiz:{ pool:[
+      {id:'dw1', categoryId:'sameDigit', kind:'word', prompt:'주스 1.8L를 0.3L씩 나눠 담으면 몇 병이 될까요? 필요한 식은?', choices:['1.8÷0.3','0.3÷1.8','1.8×0.3','1.8+0.3'], answerIndex:0, explanation:'전체를 한 병의 양으로 나눠요.'},
+      {id:'dw2', categoryId:'sameDigit', kind:'word', prompt:'철사 4.8m를 0.6m씩 잘라 몇 도막이 나오는지 구하는 식은?', choices:['4.8÷0.6','0.6÷4.8','4.8×0.6','4.8-0.6'], answerIndex:0, explanation:'전체를 한 도막의 길이로 나눠요.'},
+      {id:'dw3', categoryId:'sameDigit', kind:'word', prompt:'우유 5.6L를 0.7L씩 나눠 담으면 몇 병이 될까요? 필요한 식은?', choices:['5.6÷0.7','0.7÷5.6','5.6×0.7','5.6+0.7'], answerIndex:0, explanation:'전체를 한 병의 양으로 나눠요.'},
+      {id:'dw4', categoryId:'diffDigit', kind:'word', prompt:'리본 A의 길이는 3.15m, 리본 B의 길이는 0.7m예요. A는 B의 몇 배인지 구하는 식은?', choices:['3.15÷0.7','0.7÷3.15','3.15×0.7','3.15-0.7'], answerIndex:0, explanation:'비교하는 양을 기준량으로 나눠요.'},
+      {id:'dw5', categoryId:'diffDigit', kind:'word', prompt:'설탕 6.4kg을 0.16kg씩 봉지에 나눠 담으면 몇 봉지가 될까요? 필요한 식은?', choices:['6.4÷0.16','0.16÷6.4','6.4×0.16','6.4+0.16'], answerIndex:0, explanation:'전체를 한 봉지의 양으로 나눠요.'},
+      {id:'dw6', categoryId:'diffDigit', kind:'word', prompt:'페인트 2.52L를 0.4L씩 통에 나눠 담으면 몇 통이 될까요? 필요한 식은?', choices:['2.52÷0.4','0.4÷2.52','2.52×0.4','2.52-0.4'], answerIndex:0, explanation:'전체를 한 통의 양으로 나눠요.'},
+      {id:'dw7', categoryId:'natDivDec', kind:'word', prompt:'주스 15L를 한 병에 0.6L씩 나눠 담으려고 해요. 병이 몇 개 필요한지 구하는 식은?', choices:['15÷0.6','0.6÷15','15×0.6','15-0.6'], answerIndex:0, explanation:'전체를 한 병의 양으로 나눠요.'},
+      {id:'dw8', categoryId:'natDivDec', kind:'word', prompt:'철사 12m를 0.75m씩 잘라 몇 도막이 나오는지 구하는 식은?', choices:['12÷0.75','0.75÷12','12×0.75','12+0.75'], answerIndex:0, explanation:'전체를 한 도막의 길이로 나눠요.'},
+      {id:'dw9', categoryId:'natDivDec', kind:'word', prompt:'쌀 20kg을 한 봉지에 2.5kg씩 나눠 담으면 몇 봉지가 될까요? 필요한 식은?', choices:['20÷2.5','2.5÷20','20×2.5','20-2.5'], answerIndex:0, explanation:'전체를 한 봉지의 양으로 나눠요.'},
+      {id:'dw10', categoryId:'quotientSkills', kind:'word', prompt:'리본 17.5m를 3.4m씩 잘라 나눠주려고 해요. 나눠줄 수 있는 사람 수를 구하는 첫 식으로 알맞은 것은?', choices:['17.5÷3.4','3.4÷17.5','17.5×3.4','17.5-3.4'], answerIndex:0, explanation:'전체를 한 사람 몫으로 나눠요.'},
+      {id:'dw11', categoryId:'quotientSkills', kind:'word', prompt:'유진이는 8.7km를 2.6시간 동안 달렸어요. 한 시간 동안 달린 거리를 구하는 식으로 알맞은 것은?', choices:['8.7÷2.6','2.6÷8.7','8.7×2.6','8.7+2.6'], answerIndex:0, explanation:'전체 거리를 걸린 시간으로 나눠요.'},
+      {id:'dw12', categoryId:'quotientSkills', kind:'word', prompt:'물 20.5L를 3L씩 나눠 담으려고 해요. 담을 수 있는 병의 수를 구하는 식으로 알맞은 것은?', choices:['20.5÷3','3÷20.5','20.5×3','20.5-3'], answerIndex:0, explanation:'전체를 한 병의 양으로 나눠요.'},
+      {id:'df1', categoryId:'sameDigit', kind:'fact', prompt:'1.8÷0.3 = ?', choices:['6','0.6','60','0.06'], answerIndex:0, explanation:'소수점을 오른쪽으로 한 자리씩 옮기면 18÷3=6이에요.'},
+      {id:'df2', categoryId:'sameDigit', kind:'fact', prompt:'4.8÷0.6 = ?', choices:['8','0.8','80','48'], answerIndex:0, explanation:'48÷6=8이에요.'},
+      {id:'df3', categoryId:'sameDigit', kind:'fact', prompt:'5.6÷0.7 = ?', choices:['8','0.8','56','5.6'], answerIndex:0, explanation:'56÷7=8이에요.'},
+      {id:'df4', categoryId:'diffDigit', kind:'fact', prompt:'3.15÷0.7 = ?', choices:['4.5','0.45','45','0.045'], answerIndex:0, explanation:'31.5÷7=4.5예요.'},
+      {id:'df5', categoryId:'diffDigit', kind:'fact', prompt:'6.4÷0.16 = ?', choices:['40','4','0.4','400'], answerIndex:0, explanation:'640÷16=40이에요.'},
+      {id:'df6', categoryId:'diffDigit', kind:'fact', prompt:'2.52÷0.4 = ?', choices:['6.3','0.63','63','2.52'], answerIndex:0, explanation:'25.2÷4=6.3이에요.'},
+      {id:'df7', categoryId:'natDivDec', kind:'fact', prompt:'15÷0.6 = ?', choices:['25','2.5','250','1.5'], answerIndex:0, explanation:'150÷6=25예요.'},
+      {id:'df8', categoryId:'natDivDec', kind:'fact', prompt:'12÷0.75 = ?', choices:['16','1.6','160','0.16'], answerIndex:0, explanation:'1200÷75=16이에요.'},
+      {id:'df9', categoryId:'natDivDec', kind:'fact', prompt:'20÷2.5 = ?', choices:['8','0.8','80','2.5'], answerIndex:0, explanation:'200÷25=8이에요.'},
+      {id:'df10', categoryId:'quotientSkills', kind:'fact', prompt:'8.3÷1.4의 몫을 반올림하여 소수 첫째 자리까지 나타내면?', choices:['5.9','5.8','6.0','5.92'], answerIndex:0, explanation:'8.3÷1.4=5.928…이므로 소수 둘째 자리에서 반올림하면 5.9예요.'},
+      {id:'df11', categoryId:'quotientSkills', kind:'fact', prompt:'5.4÷1.6을 계산했을 때 몫을 자연수까지만 구하면 3이에요. 이때 나머지는?', choices:['0.6','0.06','6','0.9'], answerIndex:0, explanation:'1.6×3=4.8, 5.4-4.8=0.6이 나머지예요.'},
+      {id:'df12', categoryId:'quotientSkills', kind:'fact', prompt:'9.2÷2.5의 몫을 반올림하여 소수 첫째 자리까지 나타내면?', choices:['3.7','3.6','4.0','3.68'], answerIndex:0, explanation:'9.2÷2.5=3.68이므로 소수 둘째 자리에서 반올림하면 3.7이에요.'}
+    ]},
+    detectivePool:[
+      { id:'ddet1', categoryId:'sameDigit', problem:'1.8÷0.3을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누는 수 0.3의 소수점을 오른쪽으로 한 자리 옮겨 3으로 만든다','나누어지는 수 1.8은 그대로 두고 1.8÷3으로 계산한다','1.8÷3 = 0.6으로 답을 낸다'], errorStepIndex:1,
+        explanation:'나누는 수의 소수점을 옮겼다면 나누어지는 수의 소수점도 같은 자리만큼 옮겨야 해요. 18÷3=6이 맞는 답이에요.' },
+      { id:'ddet2', categoryId:'sameDigit', problem:'6.3÷0.7을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누는 수와 나누어지는 수의 소수점을 각각 오른쪽으로 한 자리씩 옮겨 63÷7로 바꾼다','이제 63과 7을 곱해서 441로 계산한다','답은 441이다'], errorStepIndex:1,
+        explanation:'자연수로 바꾼 뒤에도 나눗셈을 그대로 해야 해요. 63÷7=9가 맞는 답이에요.' },
+      { id:'ddet3', categoryId:'sameDigit', problem:'5.4÷0.9를 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누어지는 수 5.4의 소수점을 오른쪽으로 한 자리 옮겨 54로 만든다','나누는 수 0.9는 그대로 두고 54÷0.9로 계산한다','54÷0.9 = 60으로 답을 낸다'], errorStepIndex:1,
+        explanation:'나누어지는 수의 소수점을 옮겼다면 나누는 수의 소수점도 같은 자리만큼 옮겨야 해요. 54÷9=6이 맞는 답이에요.' },
+      { id:'ddet4', categoryId:'diffDigit', problem:'3.15÷0.7을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누는 수 0.7의 소수점만 오른쪽으로 한 자리 옮겨 7로 만든다','나누어지는 수 3.15는 소수점을 옮기지 않고 그대로 둔다','3.15÷7 = 0.45로 계산한다'], errorStepIndex:1,
+        explanation:'나누는 수의 소수점을 옮겼다면 나누어지는 수의 소수점도 반드시 같은 자리만큼 옮겨야 해요. 두 수 모두 한 자리씩 옮기면 31.5÷7=4.5가 맞는 답이에요.' },
+      { id:'ddet5', categoryId:'diffDigit', problem:'6.4÷0.16을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누어지는 수 6.4의 소수점을 오른쪽으로 두 자리 옮겨 640으로 만든다','나누는 수 0.16은 소수점을 옮기지 않고 그대로 둔다','640÷0.16 = 4000으로 계산한다'], errorStepIndex:1,
+        explanation:'나누어지는 수의 소수점을 옮겼다면 나누는 수의 소수점도 같은 자리만큼 옮겨야 해요. 640÷16=40이 맞는 답이에요.' },
+      { id:'ddet6', categoryId:'diffDigit', problem:'2.52÷0.4를 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누는 수 0.4의 소수점 자리 수(1자리)에 맞춰 두 수 모두 옮겨야 하는데, 나누어지는 수 2.52는 원래 자릿수(2자리)대로 252로 옮긴다','나누는 수 0.4는 한 자리만 옮겨 4로 만든다','252÷4 = 63으로 계산한다'], errorStepIndex:0,
+        explanation:'두 수 모두 나누는 수(0.4)의 소수점 자리 수인 한 자리만큼만 옮겨야 해요. 2.52는 25.2로, 0.4는 4로 옮겨서 25.2÷4=6.3으로 계산해야 해요.' },
+      { id:'ddet7', categoryId:'natDivDec', problem:'15÷0.6을 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누는 수 0.6의 소수점을 오른쪽으로 한 자리 옮겨 6으로 만든다','나누어지는 자연수 15는 그대로 두고 15÷6으로 계산한다','15÷6 = 2.5로 답을 낸다'], errorStepIndex:1,
+        explanation:'나누는 수에 소수점을 옮긴 만큼 나누어지는 자연수에도 0을 붙여야 해요. 15에 0을 하나 붙인 150÷6=25가 맞는 답이에요.' },
+      { id:'ddet8', categoryId:'natDivDec', problem:'12÷0.75를 계산하는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['나누는 수 0.75의 소수점을 오른쪽으로 두 자리 옮겨 75로 만든다','나누어지는 자연수 12에는 0을 하나만 붙여 120으로 만든다','120÷75 = 1.6으로 답을 낸다'], errorStepIndex:1,
+        explanation:'나누는 수를 두 자리 옮겼다면 나누어지는 자연수에도 0을 두 개 붙여야 해요. 12에 0을 두 개 붙인 1200÷75=16이 맞는 답이에요.' },
+      { id:'ddet9', categoryId:'quotientSkills', problem:'21.2m의 철사를 4m씩 자르는 과정이에요. 나머지를 구하는 데서 어느 단계가 잘못됐을까요?',
+        wrongSteps:['21.2÷4의 몫을 자연수까지만 구하면 5이다(4×5=20)','나머지는 소수점을 무시하고 21-20=1로 계산한다','나머지는 1m이다'], errorStepIndex:1,
+        explanation:'나머지는 나누어지는 수의 원래 소수점 위치에 맞춰 구해야 해요. 21.2-20=1.2(m)가 맞는 나머지예요.' },
+      { id:'ddet10', categoryId:'quotientSkills', problem:'9.2÷2.5의 몫을 반올림하여 소수 첫째 자리까지 나타내는 과정이에요. 어느 단계에서 실수했을까요?',
+        wrongSteps:['9.2÷2.5를 계산하면 몫은 3.68이다','소수 첫째 자리 숫자(6)를 보고 반올림하여 4.0으로 나타낸다','답은 4.0이다'], errorStepIndex:1,
+        explanation:'소수 첫째 자리까지 나타내려면 그 다음 자리인 소수 둘째 자리 숫자를 봐야 해요. 둘째 자리 숫자 8을 보고 반올림하면 3.7이 맞는 답이에요.' }
+    ],
+    procedureRecipes:[
+      { id:'drecipe-diffDigit', categoryId:'diffDigit', title:'자릿수가 다른 소수÷소수 품새', steps:[
+        '나누는 수의 소수점이 몇 자리인지 확인한다','나누는 수와 나누어지는 수의 소수점을 그 자리 수만큼 오른쪽으로 옮긴다','자연수(또는 자릿수가 줄어든 소수)의 나눗셈으로 계산한다','몫의 소수점은 옮긴 나누어지는 수의 소수점 위치에 맞춰 찍는다'
+      ]},
+      { id:'drecipe-natDivDec', categoryId:'natDivDec', title:'자연수 ÷ 소수 품새', steps:[
+        '나누는 소수의 소수점 자리 수를 확인한다','나누는 수는 소수점을 옮겨 자연수로 만든다','나누어지는 자연수에는 그만큼 0을 붙여 같이 옮긴다','자연수의 나눗셈으로 계산한다'
+      ]},
+      { id:'drecipe-quotientSkills', categoryId:'quotientSkills', title:'나머지 구하기 품새', steps:[
+        '몫을 자연수까지만 구한다','나누는 수와 몫을 곱한다','나누어지는 수에서 그 곱을 뺀다','뺀 값이 나머지이며, 나누어지는 수의 원래 소수점 위치에 맞춘다'
+      ]}
+    ],
+    assessment:{ pool:[
+      /* ===== decByDec / 기본 (basic) ===== */
+      {id:'dv-b1', subunitId:'decByDec', tier:'basic', difficulty:'하', type:'mcq', prompt:'2.4 ÷ 0.3 = ?', choices:['8','0.8','80','2.7'], answerIndex:0, explanation:'24÷3=8이에요.'},
+      {id:'dv-b2', subunitId:'decByDec', tier:'basic', difficulty:'하', type:'mcq', prompt:'5.6 ÷ 0.8 = ?', choices:['7','0.7','70','4.8'], answerIndex:0, explanation:'56÷8=7이에요.'},
+      {id:'dv-b3', subunitId:'decByDec', tier:'basic', difficulty:'하', type:'fill', prompt:'3.6 ÷ 0.4 를 계산하세요.', answer:'9', explanation:'36÷4=9예요.'},
+      {id:'dv-b4', subunitId:'decByDec', tier:'basic', difficulty:'하', type:'mcq', prompt:'다음 중 1.2÷0.4를 자연수의 나눗셈으로 바르게 바꾼 것은?', choices:['12÷4','1.2÷4','12÷0.4','120÷4'], answerIndex:0, explanation:'두 수의 소수점을 똑같이 한 자리씩 옮기면 12÷4가 돼요.'},
+      {id:'dv-b5', subunitId:'decByDec', tier:'basic', difficulty:'중', type:'mcq', prompt:'7.2 ÷ 0.9 = ?', choices:['8','0.8','80','6.3'], answerIndex:0, explanation:'72÷9=8이에요.'},
+      {id:'dv-b6', subunitId:'decByDec', tier:'basic', difficulty:'중', type:'mcq', prompt:'4.55 ÷ 0.7 = ?', choices:['6.5','0.65','65','5.5'], answerIndex:0, explanation:'45.5÷7=6.5예요.'},
+      {id:'dv-b7', subunitId:'decByDec', tier:'basic', difficulty:'중', type:'fill', prompt:'6.72 ÷ 0.8 을 계산하세요.', answer:'8.4', explanation:'67.2÷8=8.4예요.'},
+      {id:'dv-b8', subunitId:'decByDec', tier:'basic', difficulty:'중', type:'mcq', prompt:'다음은 3.5÷0.5를 계산한 과정입니다. \'나누는 수만 소수점을 옮겨 3.5÷5로 계산 → 0.7\' 무엇이 잘못됐나요?', choices:['나누어지는 수 3.5의 소수점도 함께 옮겨야 한다','나누는 수를 5로 바꾼 것이 틀렸다','계산 결과 0.7은 맞다','나눗셈이 아니라 곱셈으로 계산해야 한다'], answerIndex:0, explanation:'나누는 수의 소수점을 옮겼으면 나누어지는 수도 함께 옮겨야 해요. 35÷5=7이 맞는 답이에요.'},
+      {id:'dv-b9', subunitId:'decByDec', tier:'basic', difficulty:'상', type:'mcq', prompt:'리본 A의 길이는 5.4m이고, 리본 B의 길이는 0.6m입니다. A는 B의 몇 배인가요?', choices:['9배','0.9배','90배','5.4배'], answerIndex:0, explanation:'5.4÷0.6=9(배)예요.'},
+      {id:'dv-b10', subunitId:'decByDec', tier:'basic', difficulty:'상', type:'fill', prompt:'넓이가 3.12㎡이고 가로가 0.8m인 직사각형의 세로는 몇 m인가요?', answer:'3.9', explanation:'3.12÷0.8=3.9(m)예요.'},
+      /* ===== decByDec / 보충 (extra) ===== */
+      {id:'dv-e1', subunitId:'decByDec', tier:'extra', difficulty:'하', type:'mcq', prompt:'8.1 ÷ 0.9 = ?', choices:['9','0.9','90','7.2'], answerIndex:0, explanation:'81÷9=9예요.'},
+      {id:'dv-e2', subunitId:'decByDec', tier:'extra', difficulty:'하', type:'mcq', prompt:'6.4 ÷ 0.8 = ?', choices:['8','0.8','80','5.6'], answerIndex:0, explanation:'64÷8=8이에요.'},
+      {id:'dv-e3', subunitId:'decByDec', tier:'extra', difficulty:'하', type:'fill', prompt:'4.9 ÷ 0.7 을 계산하세요.', answer:'7', explanation:'49÷7=7이에요.'},
+      {id:'dv-e4', subunitId:'decByDec', tier:'extra', difficulty:'하', type:'mcq', prompt:'1.5 ÷ 0.3 = ?', choices:['5','0.5','50','1.2'], answerIndex:0, explanation:'15÷3=5예요.'},
+      {id:'dv-e5', subunitId:'decByDec', tier:'extra', difficulty:'중', type:'mcq', prompt:'5.28 ÷ 0.6 = ?', choices:['8.8','0.88','88','4.68'], answerIndex:0, explanation:'52.8÷6=8.8이에요.'},
+      {id:'dv-e6', subunitId:'decByDec', tier:'extra', difficulty:'중', type:'mcq', prompt:'2.32 ÷ 0.4 = ?', choices:['5.8','0.58','58','1.92'], answerIndex:0, explanation:'23.2÷4=5.8이에요.'},
+      {id:'dv-e7', subunitId:'decByDec', tier:'extra', difficulty:'중', type:'fill', prompt:'7.65 ÷ 0.9 를 계산하세요.', answer:'8.5', explanation:'76.5÷9=8.5예요.'},
+      {id:'dv-e8', subunitId:'decByDec', tier:'extra', difficulty:'중', type:'mcq', prompt:'다음 중 몫이 더 큰 것은?', choices:['9.6÷1.2','9.6÷1.6','9.6÷2.4','9.6÷3.2'], answerIndex:0, explanation:'9.6÷1.2=8로 넷 중 몫이 가장 커요.'},
+      {id:'dv-e9', subunitId:'decByDec', tier:'extra', difficulty:'상', type:'mcq', prompt:'우유 4.5L의 무게는 4.95kg입니다. 우유 1L의 무게는 몇 kg인가요?', choices:['1.1kg','0.9kg','11kg','0.11kg'], answerIndex:0, explanation:'4.95÷4.5=1.1(kg)이에요.'},
+      {id:'dv-e10', subunitId:'decByDec', tier:'extra', difficulty:'상', type:'fill', prompt:'어떤 수를 0.6으로 나누어야 할 것을 잘못하여 곱하였더니 3.24가 되었습니다. 바르게 계산한 결과를 구하세요.', answer:'9', explanation:'어떤 수=3.24÷0.6=5.4, 바르게 계산하면 5.4÷0.6=9예요.'},
+      /* ===== decByDec / 심화 (advanced) ===== */
+      {id:'dv-a1', subunitId:'decByDec', tier:'advanced', difficulty:'하', type:'mcq', prompt:'9.6 ÷ 1.2 = ?', choices:['8','0.8','80','7.2'], answerIndex:0, explanation:'96÷12=8이에요.'},
+      {id:'dv-a2', subunitId:'decByDec', tier:'advanced', difficulty:'하', type:'fill', prompt:'8.4 ÷ 0.7 을 계산하세요.', answer:'12', explanation:'84÷7=12예요.'},
+      {id:'dv-a3', subunitId:'decByDec', tier:'advanced', difficulty:'중', type:'mcq', prompt:'6.44 ÷ 0.7 = ?', choices:['9.2','0.92','92','7.36'], answerIndex:0, explanation:'64.4÷7=9.2예요.'},
+      {id:'dv-a4', subunitId:'decByDec', tier:'advanced', difficulty:'중', type:'mcq', prompt:'3.48 ÷ 0.6 = ?', choices:['5.8','0.58','58','2.88'], answerIndex:0, explanation:'34.8÷6=5.8이에요.'},
+      {id:'dv-a5', subunitId:'decByDec', tier:'advanced', difficulty:'중', type:'fill', prompt:'9.18 ÷ 0.9 를 계산하세요.', answer:'10.2', explanation:'91.8÷9=10.2예요.'},
+      {id:'dv-a6', subunitId:'decByDec', tier:'advanced', difficulty:'중', type:'mcq', prompt:'몫이 큰 것부터 차례대로 나열한 것은? ㉠ 4.8÷0.6 ㉡ 5.4÷0.9 ㉢ 3.6÷0.4', choices:['㉢,㉠,㉡','㉠,㉡,㉢','㉠,㉢,㉡','㉡,㉢,㉠'], answerIndex:0, explanation:'㉠=8, ㉡=6, ㉢=9이므로 ㉢,㉠,㉡ 순서예요.'},
+      {id:'dv-a7', subunitId:'decByDec', tier:'advanced', difficulty:'중', type:'mcq', prompt:'다음은 5.13÷0.9를 계산한 과정입니다. \'나누어지는 수만 소수점을 옮겨 51.3÷0.9로 계산 → 57\' 무엇이 잘못됐나요?', choices:['나누는 수 0.9의 소수점도 함께 옮겨야 한다','나누어지는 수를 51.3으로 바꾼 것이 틀렸다','계산 결과 57은 맞다','나눗셈이 아니라 뺄셈으로 계산해야 한다'], answerIndex:0, explanation:'나누어지는 수의 소수점을 옮겼으면 나누는 수도 함께 옮겨야 해요. 51.3÷9=5.7이 맞는 답이에요.'},
+      {id:'dv-a8', subunitId:'decByDec', tier:'advanced', difficulty:'상', type:'mcq', prompt:'가로가 2.32m, 넓이가 4.176㎡인 직사각형의 세로는 몇 m인가요?', choices:['1.8m','0.18m','18m','2.32m'], answerIndex:0, explanation:'4.176÷2.32=1.8(m)이에요.'},
+      {id:'dv-a9', subunitId:'decByDec', tier:'advanced', difficulty:'상', type:'fill', prompt:'수 카드 3, 6, 9를 한 번씩만 사용하여 □.□÷0.□ 꼴의 나눗셈식을 만들 때, 몫이 가장 크게 되는 나눗셈식의 몫을 구하세요.', answer:'32', explanation:'나누는 수의 소수 한 자리를 가장 작은 숫자(3)로, 나누어지는 수를 남은 숫자로 가장 크게(9.6) 만들면 9.6÷0.3=32로 몫이 가장 커요.'},
+      {id:'dv-a10', subunitId:'decByDec', tier:'advanced', difficulty:'상', type:'mcq', prompt:'무게가 같은 상자 6개를 담은 가방의 무게는 8.4kg이고, 빈 가방의 무게는 1.8kg입니다. 상자 한 개의 무게는 몇 kg인가요?', choices:['1.1kg','1.4kg','1.6kg','6.6kg'], answerIndex:0, explanation:'(8.4-1.8)÷6=6.6÷6=1.1(kg)이에요.'},
+      /* ===== natByDec / 기본 (basic) ===== */
+      {id:'nq-b1', subunitId:'natByDec', tier:'basic', difficulty:'하', type:'mcq', prompt:'20 ÷ 0.5 = ?', choices:['40','4','400','0.4'], answerIndex:0, explanation:'200÷5=40이에요.'},
+      {id:'nq-b2', subunitId:'natByDec', tier:'basic', difficulty:'하', type:'mcq', prompt:'18 ÷ 0.9 = ?', choices:['20','2','200','0.2'], answerIndex:0, explanation:'180÷9=20이에요.'},
+      {id:'nq-b3', subunitId:'natByDec', tier:'basic', difficulty:'하', type:'fill', prompt:'9 ÷ 0.3 을 계산하세요.', answer:'30', explanation:'90÷3=30이에요.'},
+      {id:'nq-b4', subunitId:'natByDec', tier:'basic', difficulty:'하', type:'mcq', prompt:'24 ÷ 0.6 = ?', choices:['40','4','400','2.4'], answerIndex:0, explanation:'240÷6=40이에요.'},
+      {id:'nq-b5', subunitId:'natByDec', tier:'basic', difficulty:'중', type:'mcq', prompt:'15 ÷ 0.75 = ?', choices:['20','2','200','11.25'], answerIndex:0, explanation:'1500÷75=20이에요.'},
+      {id:'nq-b6', subunitId:'natByDec', tier:'basic', difficulty:'중', type:'mcq', prompt:'36 ÷ 2.4 = ?', choices:['15','1.5','150','86.4'], answerIndex:0, explanation:'360÷24=15예요.'},
+      {id:'nq-b7', subunitId:'natByDec', tier:'basic', difficulty:'중', type:'fill', prompt:'8.5÷2의 몫을 반올림하여 소수 첫째 자리까지 나타내세요.', answer:'4.3', explanation:'8.5÷2=4.25이므로 반올림하여 소수 첫째 자리까지 나타내면 4.3이에요.'},
+      {id:'nq-b8', subunitId:'natByDec', tier:'basic', difficulty:'중', type:'mcq', prompt:'리본 14m를 1.75m씩 잘라 몇 도막이 나오는지 구하는 식으로 알맞은 것은?', choices:['14÷1.75','1.75÷14','14×1.75','14+1.75'], answerIndex:0, explanation:'전체를 한 도막의 길이로 나눠요.'},
+      {id:'nq-b9', subunitId:'natByDec', tier:'basic', difficulty:'상', type:'mcq', prompt:'쌀 25kg을 한 봉지에 0.8kg씩 나눠 담으려고 합니다. 몇 봉지에 나눠 담을 수 있고, 남는 쌀은 몇 kg인가요?', choices:['31봉지, 0.2kg','31봉지, 2kg','30봉지, 1kg','31봉지, 0.8kg'], answerIndex:0, explanation:'0.8×31=24.8, 25-24.8=0.2(kg)가 남아요.'},
+      {id:'nq-b10', subunitId:'natByDec', tier:'basic', difficulty:'상', type:'fill', prompt:'42÷0.35의 몫을 구하세요.', answer:'120', explanation:'4200÷35=120이에요.'},
+      /* ===== natByDec / 보충 (extra) ===== */
+      {id:'nq-e1', subunitId:'natByDec', tier:'extra', difficulty:'하', type:'mcq', prompt:'16 ÷ 0.4 = ?', choices:['40','4','400','6.4'], answerIndex:0, explanation:'160÷4=40이에요.'},
+      {id:'nq-e2', subunitId:'natByDec', tier:'extra', difficulty:'하', type:'mcq', prompt:'27 ÷ 0.9 = ?', choices:['30','3','300','24.3'], answerIndex:0, explanation:'270÷9=30이에요.'},
+      {id:'nq-e3', subunitId:'natByDec', tier:'extra', difficulty:'하', type:'fill', prompt:'12 ÷ 0.6 을 계산하세요.', answer:'20', explanation:'120÷6=20이에요.'},
+      {id:'nq-e4', subunitId:'natByDec', tier:'extra', difficulty:'하', type:'mcq', prompt:'35 ÷ 0.7 = ?', choices:['50','5','500','24.5'], answerIndex:0, explanation:'350÷7=50이에요.'},
+      {id:'nq-e5', subunitId:'natByDec', tier:'extra', difficulty:'중', type:'mcq', prompt:'18 ÷ 1.5 = ?', choices:['12','1.2','120','27'], answerIndex:0, explanation:'180÷15=12예요.'},
+      {id:'nq-e6', subunitId:'natByDec', tier:'extra', difficulty:'중', type:'mcq', prompt:'6.7÷3의 몫을 반올림하여 소수 첫째 자리까지 나타내면?', choices:['2.2','2.3','2.1','2.0'], answerIndex:0, explanation:'6.7÷3=2.233…이므로 반올림하면 2.2예요.'},
+      {id:'nq-e7', subunitId:'natByDec', tier:'extra', difficulty:'중', type:'fill', prompt:'물 26L를 3.5L씩 나눠 담으려고 합니다. 몇 병에 나눠 담을 수 있나요? (나누어 담고 남는 물은 버립니다)', answer:'7', explanation:'3.5×7=24.5, 3.5×8=28로 26을 넘으므로 7병에 나눠 담을 수 있어요.'},
+      {id:'nq-e8', subunitId:'natByDec', tier:'extra', difficulty:'중', type:'mcq', prompt:'무게 32.4kg인 짐을 한 사람이 1.8kg씩 나눠 메려고 합니다. 몇 명이 필요한가요?', choices:['18명','1.8명','180명','30.6명'], answerIndex:0, explanation:'32.4÷1.8=18(명)이에요.'},
+      {id:'nq-e9', subunitId:'natByDec', tier:'extra', difficulty:'상', type:'mcq', prompt:'49.3÷7.1의 몫을 어림셈으로 구할 때 가장 알맞은 식은?', choices:['49÷7=7','50÷7=7.1…','49÷8=6.1…','50÷5=10'], answerIndex:0, explanation:'49.3은 49로, 7.1은 7로 가까이 어림하면 49÷7=7로 실제 몫(약 6.9)에 가장 가까워요.'},
+      {id:'nq-e10', subunitId:'natByDec', tier:'extra', difficulty:'상', type:'fill', prompt:'어떤 수를 1.6으로 나누어야 할 것을 잘못하여 곱하였더니 51.2가 되었습니다. 바르게 계산한 결과를 구하세요.', answer:'20', explanation:'어떤 수=51.2÷1.6=32, 바르게 계산하면 32÷1.6=20이에요.'},
+      /* ===== natByDec / 심화 (advanced) ===== */
+      {id:'nq-a1', subunitId:'natByDec', tier:'advanced', difficulty:'하', type:'mcq', prompt:'48 ÷ 0.6 = ?', choices:['80','8','800','28.8'], answerIndex:0, explanation:'480÷6=80이에요.'},
+      {id:'nq-a2', subunitId:'natByDec', tier:'advanced', difficulty:'하', type:'fill', prompt:'27 ÷ 0.45 를 계산하세요.', answer:'60', explanation:'2700÷45=60이에요.'},
+      {id:'nq-a3', subunitId:'natByDec', tier:'advanced', difficulty:'중', type:'mcq', prompt:'13.7÷6의 몫을 반올림하여 소수 첫째 자리까지 나타내면?', choices:['2.3','2.2','2.4','2.28'], answerIndex:0, explanation:'13.7÷6=2.283…이므로 반올림하면 2.3이에요.'},
+      {id:'nq-a4', subunitId:'natByDec', tier:'advanced', difficulty:'중', type:'mcq', prompt:'설탕 8kg을 0.35kg씩 봉지에 나눠 담으려고 합니다. 몇 봉지에 나눠 담을 수 있고, 남는 설탕은 몇 kg인가요?', choices:['22봉지, 0.3kg','22봉지, 0.1kg','23봉지, 0.05kg','22봉지, 0.5kg'], answerIndex:0, explanation:'0.35×22=7.7, 8-7.7=0.3(kg)가 남아요.'},
+      {id:'nq-a5', subunitId:'natByDec', tier:'advanced', difficulty:'중', type:'fill', prompt:'길이가 41.4cm인 철사를 모두 사용하여 한 변이 4.6cm인 정다각형을 만들었습니다. 이 정다각형은 정몇각형인가요? (숫자만 답하세요)', answer:'9', explanation:'41.4÷4.6=9이므로 정구각형이에요.'},
+      {id:'nq-a6', subunitId:'natByDec', tier:'advanced', difficulty:'중', type:'mcq', prompt:'몫이 큰 것부터 차례대로 나열한 것은? ㉠ 27÷0.6 ㉡ 27÷0.9 ㉢ 27÷0.3', choices:['㉢,㉠,㉡','㉠,㉡,㉢','㉠,㉢,㉡','㉡,㉢,㉠'], answerIndex:0, explanation:'㉠=45, ㉡=30, ㉢=90이므로 ㉢,㉠,㉡ 순서예요.'},
+      {id:'nq-a7', subunitId:'natByDec', tier:'advanced', difficulty:'중', type:'mcq', prompt:'다음은 32÷0.8을 계산한 과정입니다. \'나누는 수만 소수점을 옮겨 8로 만들고, 나누어지는 수 32는 그대로 두어 32÷8로 계산 → 4\' 무엇이 잘못됐나요?', choices:['나누어지는 자연수 32에도 0을 붙여 320으로 만들어야 한다','나누는 수를 8로 바꾼 것이 틀렸다','계산 결과 4는 맞다','나눗셈이 아니라 곱셈으로 계산해야 한다'], answerIndex:0, explanation:'나누는 수의 소수점을 옮긴 만큼 나누어지는 자연수에도 0을 붙여야 해요. 320÷8=40이 맞는 답이에요.'},
+      {id:'nq-a8', subunitId:'natByDec', tier:'advanced', difficulty:'상', type:'mcq', prompt:'자동차가 1.5시간 동안 90.6km를 일정한 빠르기로 달렸습니다. 이 자동차가 1시간 동안 달린 거리는 몇 km인가요?', choices:['60.4km','63.6km','58.6km','60.6km'], answerIndex:0, explanation:'90.6÷1.5=60.4(km)예요.'},
+      {id:'nq-a9', subunitId:'natByDec', tier:'advanced', difficulty:'상', type:'fill', prompt:'무게가 같은 구슬 40개를 담은 상자의 무게는 15.6kg입니다. 상자에서 구슬 15개를 덜어 내고 무게를 재었더니 9.6kg이었습니다. 구슬 한 개의 무게는 몇 kg인지 반올림하여 소수 둘째 자리까지 나타내세요.', answer:'0.4', explanation:'덜어낸 구슬 15개의 무게는 15.6-9.6=6(kg)이므로, 구슬 한 개의 무게는 6÷15=0.4(kg)예요.'},
+      {id:'nq-a10', subunitId:'natByDec', tier:'advanced', difficulty:'상', type:'mcq', prompt:'수 카드 2, 4, 8을 한 번씩만 사용하여 □□÷0.□ 꼴의 나눗셈식을 만들려고 합니다. 몫이 가장 크게 되는 나눗셈식의 몫을 구하세요.', choices:['420','840','480','210'], answerIndex:0, explanation:'나누는 수를 가장 작은 숫자(2)로 만들어 0.2로 하고, 남은 숫자로 가장 큰 두 자리 수 84를 만들면 84÷0.2=420으로 몫이 가장 커요.'}
+    ]}
+  },
+
+  unit3: {
+    id:'unit3', title:'공간과 입체', icon:'🧊', unitNumber:3, tagline:'쌓기나무로 입체도형을 보고, 만들고, 설명하는 단원이에요.',
+    subunits:[
+      { id:'viewAndShape', title:'5관 · 위·앞·옆에서 본 모양', icon:'👀', tagline:'쌓기나무의 위, 앞, 옆 모양을 읽고 같은 입체도형을 찾아요.', categories:[
+        { id:'views', label:'위/앞/옆에서 본 모양', icon:'👁️', color:'#4a7bbf', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'vs-co-1', text:'입체도형은 위, 앞, 옆에서 본 모양이 각각 달라질 수 있어요.'},
+            {id:'vs-co-2', text:'쌓기나무의 높이와 넓이를 함께 보면 모양을 더 정확히 읽을 수 있어요.'}
+          ]},
+          { groupId:'steps', label:'읽는 순서', icon:'👣', items:[
+            {id:'vs-st-1', text:'1) 먼저 위에서 본 모양이 몇 칸인지 확인해요.'},
+            {id:'vs-st-2', text:'2) 앞에서 본 모양과 옆에서 본 모양을 비교해요.'},
+            {id:'vs-st-3', text:'3) 세 방향 정보가 모두 맞는지 살펴봐요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'vs-ex-1', text:'위에서 본 모양이 3칸, 앞에서 본 모양이 2칸이면 한쪽 방향으로 2층까지 쌓인 모양일 수 있어요.'},
+            {id:'vs-ex-2', text:'앞, 옆, 위의 정보가 같으면 같은 입체도형을 만들 수 있어요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'vs-ca-1', text:'위에서 본 모양만 보고 높이를 바로 알 수는 없어요.'},
+            {id:'vs-ca-2', text:'앞모양과 옆모양이 같아도 위에서 본 모양이 다를 수 있어요.'}
+          ]}
+        ]},
+        { id:'match', label:'같은 입체도형 찾기', icon:'🧩', color:'#6a8f4e', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'mt-co-1', text:'세 방향의 모양이 모두 같으면 같은 입체도형이라고 볼 수 있어요.'},
+            {id:'mt-co-2', text:'하나라도 다르면 다른 입체도형일 수 있어요.'}
+          ]},
+          { groupId:'steps', label:'읽는 순서', icon:'👣', items:[
+            {id:'mt-st-1', text:'1) 위, 앞, 옆 모양을 차례대로 확인해요.'},
+            {id:'mt-st-2', text:'2) 각 방향의 칸 수가 맞는지 비교해요.'},
+            {id:'mt-st-3', text:'3) 모양이 모두 일치하는지를 확인해요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'mt-ex-1', text:'위 4칸, 앞 2칸, 옆 2칸 모양은 서로 같은 구조일 수 있어요.'},
+            {id:'mt-ex-2', text:'위 모양은 같지만 앞 모양이 다르면 다른 입체도형이에요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'mt-ca-1', text:'시점 정보를 한 번에 읽고 비교해야 해요.'},
+            {id:'mt-ca-2', text:'겉으로 비슷해 보여도 높이가 다를 수 있어요.'}
+          ]}
+        ]}
+      ]},
+      { id:'buildAndCount', title:'6관 · 쌓기나무의 개수와 표현', icon:'🏗️', tagline:'몇 개가 더 필요한지, 위에서 본 모양에 수를 쓰고 층별로 나타내며 쌓기나무의 개수를 정확히 구해요.', categories:[
+        { id:'count', label:'쌓기나무 개수 구하기', icon:'🔢', color:'#d08a39', hideInCompare:true, sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'ct-co-1', text:'쌓기나무 개수는 층마다 더해서 세면 편해요.'},
+            {id:'ct-co-2', text:'부족한 개수는 목표 개수에서 현재 개수를 빼서 구해요.'}
+          ]},
+          { groupId:'steps', label:'계산 순서', icon:'👣', items:[
+            {id:'ct-st-1', text:'1) 층별 쌓기나무 수를 세요.'},
+            {id:'ct-st-2', text:'2) 전체 개수를 더해요.'},
+            {id:'ct-st-3', text:'3) 더 필요한 개수는 목표에서 현재를 빼요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'ct-ex-1', text:'3층에 4개씩 있으면 12개예요.'},
+            {id:'ct-ex-2', text:'10개가 필요하고 7개가 있으면 3개가 더 필요해요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'ct-ca-1', text:'층 수와 한 층의 개수를 헷갈리지 않아요.'},
+            {id:'ct-ca-2', text:'비어 있는 칸도 필요한 칸인지 잘 봐야 해요.'}
+          ]}
+        ]},
+        { id:'cube', label:'직육면체와 정육면체', icon:'⬛', color:'#5b6cae', hideInCompare:true, sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'cb-co-1', text:'가장 작은 직육면체는 가로, 세로, 높이가 모두 꽉 차야 해요.'},
+            {id:'cb-co-2', text:'정육면체는 가로, 세로, 높이가 모두 같아요.'}
+          ]},
+          { groupId:'steps', label:'계산 순서', icon:'👣', items:[
+            {id:'cb-st-1', text:'1) 필요한 가로, 세로, 높이를 확인해요.'},
+            {id:'cb-st-2', text:'2) 부족한 칸 수를 계산해요.'},
+            {id:'cb-st-3', text:'3) 같은 길이로 맞춰지면 정육면체가 돼요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'cb-ex-1', text:'2×2×2 모양은 정육면체예요.'},
+            {id:'cb-ex-2', text:'3×2×2 모양은 직육면체예요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'cb-ca-1', text:'가장 작은 모양을 만들 때는 빈칸이 없어야 해요.'},
+            {id:'cb-ca-2', text:'시점 모양만 보고 바로 정육면체라고 단정하지 않아요.'}
+          ]}
+        ]},
+        { id:'numGrid', label:'위에서 본 모양에 수 쓰기', icon:'🧮', color:'#b5546b', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'ng-co-1', text:'위에서 본 모양의 각 칸에 그 자리에 쌓인 쌓기나무의 개수를 수로 적어 나타낼 수 있어요.'},
+            {id:'ng-co-2', text:'수를 쓰면 입체 그림이 없어도 개수와 모양을 정확히 알 수 있어요.'}
+          ]},
+          { groupId:'steps', label:'읽는 순서', icon:'👣', items:[
+            {id:'ng-st-1', text:'1) 위에서 본 모양을 칸으로 나누어 그려요.'},
+            {id:'ng-st-2', text:'2) 각 칸에 그 자리에 쌓인 쌓기나무의 층수를 적어요.'},
+            {id:'ng-st-3', text:'3) 모든 칸의 수를 더하면 전체 개수를 구할 수 있어요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'ng-ex-1', text:'위에서 본 모양에 2, 1, 1, 3이라고 적혀 있으면 전체는 2+1+1+3=7개예요.'},
+            {id:'ng-ex-2', text:'어느 칸의 수가 3이면 그 자리에는 쌓기나무가 3층까지 쌓여 있다는 뜻이에요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'ng-ca-1', text:'칸에 적힌 수는 개수가 아니라 그 자리의 높이(층수)를 나타내요.'},
+            {id:'ng-ca-2', text:'수가 적혀 있지 않은 빈 칸은 쌓기나무가 하나도 없다는 뜻이에요.'}
+          ]}
+        ]},
+        { id:'byFloor', label:'층별로 나타내기', icon:'🥞', color:'#3f9e8f', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'bf-co-1', text:'쌓은 모양을 1층, 2층, 3층처럼 층마다 따로 나누어 그릴 수 있어요.'},
+            {id:'bf-co-2', text:'층별 모양은 위로 갈수록 채워진 칸 수가 같거나 줄어들어요.'}
+          ]},
+          { groupId:'steps', label:'읽는 순서', icon:'👣', items:[
+            {id:'bf-st-1', text:'1) 1층 모양부터 그려요 — 쌓기나무가 하나라도 있는 자리는 모두 표시해요.'},
+            {id:'bf-st-2', text:'2) 2층, 3층 모양은 그 층까지 쌓인 자리만 표시해요.'},
+            {id:'bf-st-3', text:'3) 각 층의 칸 수를 모두 더하면 전체 쌓기나무 개수가 나와요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'bf-ex-1', text:'1층 5칸, 2층 2칸, 3층 1칸이면 전체는 5+2+1=8개예요.'},
+            {id:'bf-ex-2', text:'2층 모양에 있는 칸은 반드시 1층 모양의 같은 자리에도 있어요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'bf-ca-1', text:'위층의 칸은 반드시 아래층의 같은 자리에도 있어야 해요 — 허공에 쌓을 수는 없어요.'},
+            {id:'bf-ca-2', text:'전체 개수를 구할 때는 층 수가 아니라 각 층의 칸 수를 모두 더해야 해요.'}
+          ]}
+        ]}
+      ]}
+    ],
+    scenarios:[
+      { id:'ss1', subunitId:'viewAndShape', categoryId:'views', icon:'👀', title:'위에서 본 모양 찾기',
+        prompt:'쌓기나무 모양을 위에서 보니 3칸이 일렬로 보였어요. 가장 알맞은 설명을 고르세요.',
+        options:[
+          {id:'ss1-1', text:'위에서 본 모양이 3칸 일렬이라면 앞에서 본 모양은 높이를 따로 봐야 해요.', correct:true},
+          {id:'ss1-2', text:'위에서 본 모양만으로 높이까지 바로 알 수 있어요.', correct:false},
+          {id:'ss1-3', text:'앞에서 본 모양과 위에서 본 모양은 항상 같아요.', correct:false},
+          {id:'ss1-4', text:'옆에서 본 모양은 필요 없어요.', correct:false}
+        ]},
+      { id:'ss2', subunitId:'viewAndShape', categoryId:'views', icon:'🧊', title:'앞모양과 옆모양',
+        prompt:'앞에서 본 모양은 2층, 옆에서 본 모양도 2층이에요. 알맞은 설명을 고르세요.',
+        options:[
+          {id:'ss2-1', text:'앞과 옆의 높이가 같으니 같은 높이의 쌓기나무일 수 있어요.', correct:true},
+          {id:'ss2-2', text:'앞과 옆이 같으면 위에서 본 모양도 무조건 같아요.', correct:false},
+          {id:'ss2-3', text:'위에서 본 모양은 볼 필요가 없어요.', correct:false},
+          {id:'ss2-4', text:'높이는 항상 1층이에요.', correct:false}
+        ]},
+      { id:'ss3', subunitId:'viewAndShape', categoryId:'match', icon:'🧩', title:'같은 입체도형 고르기',
+        prompt:'두 도형의 위, 앞, 옆 모양이 모두 같아요. 무엇이라고 할 수 있을까요?',
+        options:[
+          {id:'ss3-1', text:'같은 입체도형이라고 볼 수 있어요.', correct:true},
+          {id:'ss3-2', text:'항상 다른 입체도형이에요.', correct:false},
+          {id:'ss3-3', text:'위 모양만 같으면 충분해요.', correct:false},
+          {id:'ss3-4', text:'모양은 비교할 수 없어요.', correct:false}
+        ]},
+      { id:'ss4', subunitId:'viewAndShape', categoryId:'match', icon:'🔎', title:'틀린 설명 찾기',
+        prompt:'입체도형을 비교하는 설명 중 틀린 것을 고르세요.',
+        options:[
+          {id:'ss4-1', text:'위, 앞, 옆 모양을 함께 봐야 해요.', correct:false},
+          {id:'ss4-2', text:'한 방향 정보만으로는 모두 알 수 없어요.', correct:false},
+          {id:'ss4-3', text:'앞모양이 같아도 위모양이 다를 수 있어요.', correct:false},
+          {id:'ss4-4', text:'위에서 본 모양만 보면 항상 높이까지 알 수 있어요.', correct:true}
+        ]},
+      { id:'ss5', subunitId:'buildAndCount', categoryId:'count', icon:'🔢', title:'쌓기나무 개수 세기',
+        prompt:'3층에 각각 4개씩 쌓아 올렸어요. 총 몇 개인가요?',
+        options:[
+          {id:'ss5-1', text:'12개', correct:true},
+          {id:'ss5-2', text:'7개', correct:false},
+          {id:'ss5-3', text:'9개', correct:false},
+          {id:'ss5-4', text:'4개', correct:false}
+        ]},
+      { id:'ss6', subunitId:'buildAndCount', categoryId:'count', icon:'➕', title:'더 필요한 개수',
+        prompt:'지금 8개가 있고, 13개가 필요해요. 더 필요한 쌓기나무는 몇 개인가요?',
+        options:[
+          {id:'ss6-1', text:'5개', correct:true},
+          {id:'ss6-2', text:'3개', correct:false},
+          {id:'ss6-3', text:'21개', correct:false},
+          {id:'ss6-4', text:'8개', correct:false}
+        ]},
+      { id:'ss7', subunitId:'buildAndCount', categoryId:'cube', icon:'⬛', title:'정육면체 만들기',
+        prompt:'가로, 세로, 높이가 모두 2칸인 가장 작은 모양은 무엇인가요?',
+        options:[
+          {id:'ss7-1', text:'정육면체', correct:true},
+          {id:'ss7-2', text:'삼각형', correct:false},
+          {id:'ss7-3', text:'원기둥', correct:false},
+          {id:'ss7-4', text:'평면도형', correct:false}
+        ]},
+      { id:'ss8', subunitId:'buildAndCount', categoryId:'cube', icon:'🏗️', title:'직육면체 만들기',
+        prompt:'가로 3, 세로 2, 높이 2로 꽉 채운 모양은 무엇인가요?',
+        options:[
+          {id:'ss8-1', text:'직육면체', correct:true},
+          {id:'ss8-2', text:'정육면체', correct:false},
+          {id:'ss8-3', text:'원', correct:false},
+          {id:'ss8-4', text:'선분', correct:false}
+        ]},
+      { id:'ss9', subunitId:'buildAndCount', categoryId:'numGrid', icon:'🧮', title:'수 쓰기로 개수 구하기',
+        prompt:'위에서 본 모양의 각 칸에 적힌 수가 2, 3, 1, 4예요. 전체 쌓기나무는 몇 개인가요?',
+        options:[
+          {id:'ss9-1', text:'10개', correct:true},
+          {id:'ss9-2', text:'9개', correct:false},
+          {id:'ss9-3', text:'24개', correct:false},
+          {id:'ss9-4', text:'4개', correct:false}
+        ]},
+      { id:'ss10', subunitId:'buildAndCount', categoryId:'numGrid', icon:'🔍', title:'수 그림의 빈 칸',
+        prompt:'위에서 본 모양에 수를 쓰는데, 어떤 칸에는 수를 쓰지 않았어요. 그 칸이 뜻하는 것은 무엇일까요?',
+        options:[
+          {id:'ss10-1', text:'그 자리에는 쌓기나무가 없다', correct:true},
+          {id:'ss10-2', text:'그 자리에 무한히 쌓여 있다', correct:false},
+          {id:'ss10-3', text:'수 쓰는 것을 깜빡한 것뿐이다', correct:false},
+          {id:'ss10-4', text:'항상 1개가 있다는 뜻이다', correct:false}
+        ]},
+      { id:'ss11', subunitId:'buildAndCount', categoryId:'byFloor', icon:'🥞', title:'층별 모양으로 개수 구하기',
+        prompt:'쌓기나무를 층별로 나타냈습니다. 1층은 6칸, 2층은 3칸, 3층은 1칸이 채워져 있어요. 전체 쌓기나무는 몇 개인가요?',
+        options:[
+          {id:'ss11-1', text:'10개', correct:true},
+          {id:'ss11-2', text:'9개', correct:false},
+          {id:'ss11-3', text:'18개', correct:false},
+          {id:'ss11-4', text:'3개', correct:false}
+        ]},
+      { id:'ss12', subunitId:'buildAndCount', categoryId:'byFloor', icon:'🧱', title:'층별 모양이 가능한 조건',
+        prompt:'2층 모양에 색칠된 칸이 있으려면, 그 칸은 1층 모양에서 어떻게 되어 있어야 할까요?',
+        options:[
+          {id:'ss12-1', text:'1층의 같은 자리에도 칸이 색칠되어 있어야 한다', correct:true},
+          {id:'ss12-2', text:'1층에는 칸이 없어도 된다', correct:false},
+          {id:'ss12-3', text:'1층의 다른 자리에 있으면 된다', correct:false},
+          {id:'ss12-4', text:'2층 모양과는 관계없다', correct:false}
+        ]}
+    ],
+    quiz:{ pool:[
+      {id:'s3-q1', categoryId:'views', kind:'word', prompt:'위, 앞, 옆에서 본 모양을 함께 비교할 때 가장 중요한 것은?', choices:['세 방향 모두 보기','위만 보기','앞만 보기','옆만 보기'], answerIndex:0, explanation:'세 방향을 함께 봐야 입체도형을 제대로 읽을 수 있어요.'},
+      {id:'s3-q2', categoryId:'views', kind:'fact', prompt:'쌓기나무 모양에서 위에서 본 모양은 높이를 바로 알려준다.', choices:['맞다','틀리다','항상 같다','모르겠다'], answerIndex:1, explanation:'위에서 본 모양만으로 높이를 바로 알 수는 없어요.'},
+      {id:'s3-q3', categoryId:'views', kind:'word', prompt:'앞에서 본 모양과 옆에서 본 모양이 모두 2층이면 알 수 있는 것은?', choices:['높이를 비교할 수 있다','위 모양이 무조건 같다','모양을 볼 필요가 없다','개수가 항상 2개다'], answerIndex:0, explanation:'앞과 옆의 높이를 비교해 입체도형을 읽을 수 있어요.'},
+      {id:'s3-q4', categoryId:'match', kind:'fact', prompt:'세 방향 정보가 모두 같으면 같은 입체도형이라고 볼 수 있다.', choices:['맞다','틀리다','항상 아니다','모르겠다'], answerIndex:0, explanation:'세 방향이 같으면 같은 입체도형일 수 있어요.'},
+      {id:'s3-q5', categoryId:'match', kind:'word', prompt:'다른 입체도형을 가르는 데 특히 중요한 것은?', choices:['위, 앞, 옆 모양','색깔','무게','가로 글자 수'], answerIndex:0, explanation:'시점 정보가 입체도형을 구별하는 핵심이에요.'},
+      {id:'s3-q6', categoryId:'match', kind:'fact', prompt:'앞 모양이 같으면 위 모양도 항상 같다.', choices:['맞다','틀리다','늘 같다','모름'], answerIndex:1, explanation:'앞 모양과 위 모양은 다를 수 있어요.'},
+      {id:'s3-q7', categoryId:'count', kind:'word', prompt:'3층에 4개씩 쌓았을 때 전체 개수는?', diagram:[[3,3],[3,3]], choices:['12개','7개','4개','8개'], answerIndex:0, explanation:'3×4=12개예요.'},
+      {id:'s3-q8', categoryId:'count', kind:'word', prompt:'현재 8개, 목표 13개일 때 더 필요한 개수는?', choices:['5개','3개','21개','8개'], answerIndex:0, explanation:'13-8=5개예요.'},
+      {id:'s3-q9', categoryId:'count', kind:'fact', prompt:'층마다 개수를 더하면 전체 쌓기나무 수를 세기 쉽다.', choices:['맞다','틀리다','항상 아니다','모름'], answerIndex:0, explanation:'층별로 더하면 세기가 쉬워요.'},
+      {id:'s3-q10', categoryId:'cube', kind:'word', prompt:'가로, 세로, 높이가 모두 같은 입체도형은?', diagram:[[2,2],[2,2]], choices:['정육면체','원뿔','원기둥','삼각형'], answerIndex:0, explanation:'세 변의 길이가 모두 같으면 정육면체예요.'},
+      {id:'s3-q11', categoryId:'cube', kind:'word', prompt:'가로 3, 세로 2, 높이 2인 모양은?', diagram:[[2,2,2],[2,2,2]], choices:['직육면체','정육면체','원','점'], answerIndex:0, explanation:'세 변이 모두 같은 것은 아니므로 직육면체예요.'},
+      {id:'s3-q12', categoryId:'cube', kind:'fact', prompt:'가장 작은 직육면체는 빈칸 없이 꽉 차야 한다.', choices:['맞다','틀리다','항상 아니다','모름'], answerIndex:0, explanation:'가장 작은 직육면체는 빈칸 없이 채워져야 해요.'},
+      {id:'s3-q13', categoryId:'views', kind:'word', prompt:'위, 앞, 옆에서 본 모양을 그릴 때 기준이 되는 것은?', choices:['바라보는 방향','색깔','무게','이름'], answerIndex:0, explanation:'어느 방향에서 보는지가 기준이에요.'},
+      {id:'s3-q14', categoryId:'match', kind:'fact', prompt:'옆에서 본 모양이 다르면 반드시 다른 입체도형이다.', choices:['맞다','틀리다','알 수 없다','상관없다'], answerIndex:0, explanation:'한 방향이라도 모양이 다르면 서로 다른 입체도형이에요.'},
+      {id:'s3-q15', categoryId:'count', kind:'word', prompt:'5층에 3개씩 쌓았다면 전체 개수는?', diagram:[[5,5,5]], choices:['15개','8개','3개','5개'], answerIndex:0, explanation:'5×3=15개예요.'},
+      {id:'s3-q16', categoryId:'cube', kind:'word', prompt:'가로 2, 세로 3, 높이 1로 꽉 채운 모양은?', diagram:[[1,1],[1,1],[1,1]], choices:['직육면체','정육면체','원기둥','각뿔'], answerIndex:0, explanation:'세 변이 모두 같지 않으므로 직육면체예요.'},
+      {id:'s3-q17', categoryId:'numGrid', kind:'word', prompt:'위에서 본 모양에 적힌 수 3은 무엇을 뜻하나요?', choices:['그 자리에 3층까지 쌓여 있다','그 칸이 3개 있다','전체가 3개다','가로가 3칸이다'], answerIndex:0, explanation:'적힌 수는 그 자리에 쌓인 층수를 뜻해요.'},
+      {id:'s3-q18', categoryId:'numGrid', kind:'fact', prompt:'위에서 본 모양에 적힌 수를 모두 더하면 전체 쌓기나무 개수가 된다.', choices:['맞다','틀리다','가끔 그렇다','알 수 없다'], answerIndex:0, explanation:'적힌 수를 다 더하면 전체 개수예요.'},
+      {id:'s3-q19', categoryId:'numGrid', kind:'word', prompt:'수를 쓴 위 모양이 2, 1, 1, 2일 때 전체 개수는?', diagram:[[2,1],[1,2]], choices:['6개','4개','8개','2개'], answerIndex:0, explanation:'2+1+1+2=6개예요.'},
+      {id:'s3-q20', categoryId:'numGrid', kind:'word', prompt:'위에서 본 모양에 수를 쓰면 좋은 점은?', choices:['그림 없이도 개수와 모양을 알 수 있다','그리기가 더 어려워진다','색을 알 수 있다','무게를 알 수 있다'], answerIndex:0, explanation:'수로 나타내면 정확하게 전달할 수 있어요.'},
+      {id:'s3-q21', categoryId:'byFloor', kind:'word', prompt:'층별로 나타낸 모양에서 1층, 2층, 3층 칸 수가 각각 5, 2, 1이면 전체 개수는?', diagram:[[3,2,1],[1,1,0]], choices:['8개','7개','5개','3개'], answerIndex:0, explanation:'5+2+1=8개예요.'},
+      {id:'s3-q22', categoryId:'byFloor', kind:'fact', prompt:'2층 모양의 어떤 칸은 1층 모양에 없는 자리일 수도 있다.', choices:['틀리다','맞다','가끔 맞다','알 수 없다'], answerIndex:0, explanation:'위층은 반드시 아래층의 같은 자리 위에만 쌓일 수 있어요.'},
+      {id:'s3-q23', categoryId:'byFloor', kind:'word', prompt:'층별로 나타낸 모양에서 위층으로 갈수록 칸 수는 보통 어떻게 되나요?', choices:['같거나 줄어든다','항상 늘어난다','항상 2배가 된다','알 수 없다'], answerIndex:0, explanation:'위층은 아래층 자리 안에서만 쌓일 수 있어요.'},
+      {id:'s3-q24', categoryId:'byFloor', kind:'word', prompt:'층별 모양을 보고 전체 개수를 구하는 방법은?', choices:['각 층의 칸 수를 모두 더한다','층 수만 센다','가장 큰 층의 칸 수만 본다','1층 칸 수에 층 수를 곱한다'], answerIndex:0, explanation:'각 층의 칸 수를 모두 더해야 전체 개수예요.'}
+    ]},
+    detectivePool:[
+      { id:'s3-d1', categoryId:'views', errorStepIndex:1, wrongSteps:[
+        '위에서 본 모양을 먼저 본다.',
+        '높이는 굳이 보지 않아도 된다고 생각한다.',
+        '앞과 옆의 높이를 비교한다.',
+        '세 방향이 같은지 확인한다.'
+      ], problem:'쌓기나무 모양을 보고 같은 입체도형인지 판단하는 순서예요.', explanation:'위만 보고 끝내면 높이를 놓칠 수 있어요.'},
+      { id:'s3-d2', categoryId:'views', errorStepIndex:2, wrongSteps:[
+        '앞에서 본 모양을 확인한다.',
+        '옆에서 본 모양을 확인한다.',
+        '앞모양만 맞으면 같은 도형이라고 바로 정한다.',
+        '위모양도 함께 비교한다.'
+      ], problem:'어느 단계가 잘못되었을까요?', explanation:'앞모양만 같다고 같은 도형은 아니에요.'},
+      { id:'s3-d3', categoryId:'match', errorStepIndex:0, wrongSteps:[
+        '위, 앞, 옆이 모두 같으면 다른 도형이다.',
+        '세 방향을 함께 비교한다.',
+        '모양이 다르면 구분한다.',
+        '높이도 함께 본다.'
+      ], problem:'같은 입체도형을 찾는 설명에서 잘못된 부분은?', explanation:'세 방향이 같으면 같은 도형이라고 볼 수 있어요.'},
+      { id:'s3-d4', categoryId:'match', errorStepIndex:2, wrongSteps:[
+        '시점 정보를 한 번에 읽는다.',
+        '앞과 옆의 차이를 본다.',
+        '위모양은 보지 않아도 된다.',
+        '결과를 비교한다.'
+      ], problem:'같은 모양 찾기에서 틀린 단계는?', explanation:'위모양도 꼭 봐야 해요.'},
+      { id:'s3-d5', categoryId:'count', errorStepIndex:1, wrongSteps:[
+        '층별로 개수를 센다.',
+        '현재 8개와 목표 13개를 더한다.',
+        '더 필요한 개수는 뺄셈으로 구한다.',
+        '답을 확인한다.'
+      ], problem:'더 필요한 개수를 구하는 과정에서 잘못된 단계는?', explanation:'더 필요한 개수는 더하기가 아니라 빼기로 구해요.'},
+      { id:'s3-d6', categoryId:'count', errorStepIndex:2, wrongSteps:[
+        '3층에 4개씩 있는지 본다.',
+        '전체는 12개라고 계산한다.',
+        '12개에서 3개를 더해서 15개라고 한다.',
+        '문제의 조건과 비교한다.'
+      ], problem:'쌓기나무 개수 세기에서 틀린 부분은?', explanation:'전체 개수는 더해서 세어야지 3을 더하는 것이 아니에요.'},
+      { id:'s3-d7', categoryId:'cube', errorStepIndex:1, wrongSteps:[
+        '빈칸 없이 꽉 채워져 있는지 본다.',
+        '가로, 세로, 높이 중 두 변만 같아도 정육면체라고 한다.',
+        '가로, 세로, 높이의 칸 수를 각각 센다.',
+        '세 변이 모두 같을 때만 정육면체라고 한다.'
+      ], problem:'정육면체를 찾는 과정에서 잘못된 단계는?', explanation:'정육면체는 가로, 세로, 높이 세 변이 모두 같아야 해요. 두 변만 같으면 정육면체가 아니에요.'},
+      { id:'s3-d8', categoryId:'cube', errorStepIndex:3, wrongSteps:[
+        '가로 3, 세로 2, 높이 2를 본다.',
+        '직육면체인지 생각한다.',
+        '정육면체는 아닌지 확인한다.',
+        '세 변이 모두 같다고 결론낸다.'
+      ], problem:'직육면체와 정육면체를 구분하는 과정의 오류는?', explanation:'3,2,2는 세 변이 같지 않아요.'},
+      { id:'s3-d9', categoryId:'numGrid', errorStepIndex:2, wrongSteps:[
+        '위에서 본 모양을 칸으로 나눈다.',
+        '각 칸에 그 자리의 층수를 적는다.',
+        '가장 큰 수 하나만 전체 개수로 정한다.',
+        '모든 칸의 수를 더해 전체 개수를 구한다.'
+      ], problem:'위에서 본 모양에 수를 써서 전체 쌓기나무 개수를 구하는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'가장 큰 수 하나만 보면 안 되고, 모든 칸의 수를 더해야 해요.'},
+      { id:'s3-d10', categoryId:'byFloor', errorStepIndex:2, wrongSteps:[
+        '1층 모양의 칸 수를 센다.',
+        '2층, 3층 모양의 칸 수도 각각 센다.',
+        '층 수(예: 3층)를 그대로 전체 개수라고 한다.',
+        '각 층의 칸 수를 모두 더해 전체 개수를 구한다.'
+      ], problem:'층별로 나타낸 모양을 보고 전체 쌓기나무 개수를 구하는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'층 수가 아니라 각 층의 칸 수를 모두 더해야 전체 개수예요.'}
+    ],
+    procedureRecipes:[
+      { id:'s3-r1', categoryId:'views', title:'시점 읽기 순서', steps:[
+        '위에서 본 모양을 먼저 본다',
+        '앞에서 본 모양과 옆에서 본 모양을 본다',
+        '세 방향이 모두 맞는지 비교한다'
+      ]},
+      { id:'s3-r2', categoryId:'count', title:'쌓기나무 개수 세기', steps:[
+        '층별 개수를 센다',
+        '전체를 더한다',
+        '더 필요한 개수는 목표에서 현재를 뺀다'
+      ]},
+      { id:'s3-r3', categoryId:'cube', title:'가장 작은 직육면체 만들기', steps:[
+        '가로, 세로, 높이를 확인한다',
+        '빈칸이 없도록 채운다',
+        '세 변이 같으면 정육면체인지 확인한다'
+      ]},
+      { id:'s3-r4', categoryId:'numGrid', title:'수 쓰기로 개수 구하기', steps:[
+        '위에서 본 모양을 칸으로 나눈다',
+        '각 칸에 그 자리의 층수를 적는다',
+        '모든 칸의 수를 더해 전체 개수를 구한다'
+      ]},
+      { id:'s3-r5', categoryId:'byFloor', title:'층별로 나타내어 개수 구하기', steps:[
+        '1층 모양의 칸 수를 센다',
+        '2층, 3층 모양의 칸 수도 각각 센다',
+        '각 층의 칸 수를 모두 더해 전체 개수를 구한다'
+      ]}
+    ],
+    assessment:{ pool:[
+      {id:'s3-b1', subunitId:'viewAndShape', tier:'basic', difficulty:'하', type:'mcq', prompt:'위에서 본 모양만으로 바로 알 수 없는 것은?', choices:['높이','칸 수','배열','위쪽 모양'], answerIndex:0, explanation:'위모양만으로는 높이를 바로 알 수 없어요.'},
+      {id:'s3-b2', subunitId:'viewAndShape', tier:'basic', difficulty:'하', type:'mcq', prompt:'앞에서 본 모양이 2층이라는 뜻은?', choices:['앞쪽 높이가 2칸','위쪽이 2칸','옆쪽이 2칸','전체가 2개'], answerIndex:0, explanation:'앞에서 본 모양의 높이가 2칸이라는 뜻이에요.'},
+      {id:'s3-b3', subunitId:'viewAndShape', tier:'basic', difficulty:'하', type:'fill', prompt:'쌓기나무 모양은 위, 앞, 옆에서 본 모양을 함께 보아야 합니다. 위 모양만으로는 ______를 바로 알 수 없습니다.', answer:'높이', accept:['층수','층'], explanation:'위모양만으로는 높이를 바로 알 수 없어요.'},
+      {id:'s3-b4', subunitId:'viewAndShape', tier:'basic', difficulty:'중', type:'mcq', prompt:'같은 입체도형을 찾을 때 가장 먼저 할 일은?', choices:['위, 앞, 옆 모양을 함께 보기','색깔만 보기','가장 큰 것만 보기','앞모양만 보기'], answerIndex:0, explanation:'세 방향을 함께 봐야 해요.'},
+      {id:'s3-b9', subunitId:'viewAndShape', tier:'basic', difficulty:'하', type:'mcq', prompt:'쌓기나무 모양을 옆에서 볼 때 보는 방향은 어디인가요?', choices:['모양의 측면','모양의 위쪽','모양의 아래쪽','모양의 그림자'], answerIndex:0, explanation:'옆에서 본다는 것은 측면에서 보는 것을 뜻해요.'},
+      {id:'s3-b10', subunitId:'viewAndShape', tier:'basic', difficulty:'중', type:'mcq', prompt:'위에서 본 모양에 다섯 칸이 표시되어 있으면 알 수 있는 것은?', choices:['바닥에 쌓기나무가 있는 자리가 5곳이다','전체 개수가 5개다','높이가 5층이다','옆모양도 5칸이다'], answerIndex:0, explanation:'위에서 본 모양은 바닥 자리만 알려주고 높이는 알려주지 않아요.'},
+      {id:'s3-b11', subunitId:'viewAndShape', tier:'basic', difficulty:'중', type:'mcq', prompt:'앞에서 본 모양을 그릴 때 기준으로 삼는 방향은?', choices:['정면','위쪽','오른쪽 옆','대각선'], answerIndex:0, explanation:'앞에서 본 모양은 정면에서 보는 모양이에요.'},
+      {id:'s3-b12', subunitId:'viewAndShape', tier:'basic', difficulty:'중', type:'fill', prompt:'쌓기나무 모양을 표현하는 세 가지 방향은 위, 앞, ______입니다.', answer:'옆', accept:['옆쪽','옆면','측면'], explanation:'위, 앞, 옆에서 본 모양으로 표현해요.'},
+      {id:'s3-b13', subunitId:'viewAndShape', tier:'basic', difficulty:'상', type:'mcq', prompt:'위에서 본 모양과 앞에서 본 모양만으로 항상 정확한 입체도형을 알 수 있을까요?', choices:['아니다, 옆에서 본 모양도 필요할 수 있다','그렇다, 항상 충분하다','위 모양만 있으면 충분하다','앞 모양만 있으면 충분하다'], answerIndex:0, explanation:'경우에 따라 옆에서 본 모양까지 봐야 정확히 알 수 있어요.'},
+      {id:'s3-b14', subunitId:'viewAndShape', tier:'basic', difficulty:'상', type:'mcq', prompt:'쌓기나무 모양을 위, 앞, 옆에서 본 모양으로 나타낼 때 가장 중요한 이유는?', choices:['평면 그림만으로 입체 모양을 정확히 전달하기 위해','그리기를 더 어렵게 하기 위해','색을 표현하기 위해','무게를 표현하기 위해'], answerIndex:0, explanation:'세 방향의 평면 그림으로 입체 모양을 정확히 전달할 수 있어요.'},
+      {id:'s3-e1', subunitId:'viewAndShape', tier:'extra', difficulty:'하', type:'mcq', prompt:'세 방향 정보가 모두 같을 때 알맞은 말은?', choices:['같은 입체도형일 수 있다','무조건 다르다','비교할 수 없다','높이만 같다'], answerIndex:0, explanation:'세 방향이 같으면 같은 입체도형일 수 있어요.'},
+      {id:'s3-e2', subunitId:'viewAndShape', tier:'extra', difficulty:'중', type:'mcq', prompt:'앞모양이 같고 옆모양이 다르면?', choices:['다른 입체도형일 수 있다','무조건 같은 도형이다','위모양은 필요 없다','항상 정육면체다'], answerIndex:0, explanation:'시점이 다르면 다른 도형일 수 있어요.'},
+      {id:'s3-e3', subunitId:'viewAndShape', tier:'extra', difficulty:'중', type:'fill', prompt:'위, 앞, 옆에서 본 모양을 함께 비교하면 입체도형을 더 정확히 ______ 수 있습니다.', answer:'알', accept:['읽을','알아낼','알아볼','찾을','추측할','짐작할','파악할','이해할','구별할','구분할','판단할','확인할','확인'], explanation:'위, 앞, 옆 모양을 함께 비교하면 입체도형을 더 정확히 알(확인할) 수 있어요.'},
+      {id:'s3-e4', subunitId:'viewAndShape', tier:'extra', difficulty:'중', type:'mcq', prompt:'앞과 옆의 높이가 같으면 생각할 수 있는 것은?', choices:['같은 높이의 모양일 수 있다','위모양이 무조건 같다','개수는 1개다','정육면체가 확정된다'], answerIndex:0, explanation:'높이가 같을 수 있어요.'},
+      {id:'s3-e9', subunitId:'viewAndShape', tier:'extra', difficulty:'하', type:'mcq', prompt:'옆에서 본 모양은 어느 방향에서 본 것인가요?', choices:['측면','위쪽','정면','아래쪽'], answerIndex:0, explanation:'옆에서 본 모양은 측면에서 본 모양이에요.'},
+      {id:'s3-e10', subunitId:'viewAndShape', tier:'extra', difficulty:'하', type:'mcq', prompt:'위, 앞, 옆에서 본 모양을 그릴 때 사용하는 도형은?', choices:['모눈(칸) 그림','원 그래프','막대그래프','띠그래프'], answerIndex:0, explanation:'칸으로 나뉜 모눈 그림으로 나타내요.'},
+      {id:'s3-e11', subunitId:'viewAndShape', tier:'extra', difficulty:'하', type:'fill', prompt:'정면에서 본 모양을 ______에서 본 모양이라고 합니다.', answer:'앞', accept:['앞쪽','정면'], explanation:'정면 = 앞에서 본 모양이에요.'},
+      {id:'s3-e12', subunitId:'viewAndShape', tier:'extra', difficulty:'중', type:'mcq', prompt:'두 입체도형의 위, 앞에서 본 모양이 같은데 옆에서 본 모양이 다르다면?', choices:['서로 다른 입체도형이다','반드시 같은 입체도형이다','비교할 수 없다','옆모양은 무시해도 된다'], answerIndex:0, explanation:'한 방향이라도 다르면 다른 입체도형이에요.'},
+      {id:'s3-e13', subunitId:'viewAndShape', tier:'extra', difficulty:'상', type:'mcq', prompt:'여러 개의 서로 다른 입체도형이 위에서 본 모양은 모두 같을 수 있을까요?', choices:['그렇다, 높이가 다르면 가능하다','아니다, 절대 불가능하다','위 모양이 같으면 무조건 같은 도형이다','알 수 없다'], answerIndex:0, explanation:'위 모양이 같아도 높이(앞·옆 모양)가 다르면 서로 다른 입체도형이 될 수 있어요.'},
+      {id:'s3-e14', subunitId:'viewAndShape', tier:'extra', difficulty:'상', type:'fill', prompt:'입체도형의 모양을 정확히 추측하려면 위, 앞, 옆에서 본 모양을 모두 ______해야 합니다.', answer:'비교', accept:['확인','관찰'], explanation:'세 방향을 모두 비교해야 정확히 추측할 수 있어요.'},
+      {id:'s3-a1', subunitId:'viewAndShape', tier:'advanced', difficulty:'중', type:'mcq', prompt:'위모양은 같지만 앞모양이 다르면?', choices:['다른 입체도형일 수 있다','항상 같은 도형이다','비교하지 않는다','무조건 정육면체다'], answerIndex:0, explanation:'앞모양이 다르면 다른 도형일 수 있어요.'},
+      {id:'s3-a2', subunitId:'viewAndShape', tier:'advanced', difficulty:'상', type:'fill', prompt:'시점 정보를 한 번에 읽을 때 위, 앞, ______ 순서로 본다.', answer:'옆', accept:['옆쪽','측면'], explanation:'위, 앞, 옆 순서로 보는 것이 자연스러워요.'},
+      {id:'s3-a3', subunitId:'viewAndShape', tier:'advanced', difficulty:'상', type:'mcq', prompt:'같은 도형을 고르는 기준으로 가장 알맞은 것은?', choices:['세 방향 모두 비교','색깔 비교','무게 비교','가장 위만 보기'], answerIndex:0, explanation:'세 방향 비교가 핵심이에요.'},
+      {id:'s3-a4', subunitId:'viewAndShape', tier:'advanced', difficulty:'상', type:'mcq', prompt:'위모양만 보고 판단하면 안 되는 이유는?', choices:['높이를 놓칠 수 있어서','칸 수가 없어서','앞모양이 사라져서','정육면체가 되기 때문'], answerIndex:0, explanation:'높이를 놓칠 수 있어요.'},
+      {id:'s3-a9', subunitId:'viewAndShape', tier:'advanced', difficulty:'하', type:'mcq', prompt:'위에서 본 모양은 입체도형의 어느 부분을 알려주나요?', choices:['바닥에 쌓기나무가 있는 자리','전체 높이','전체 개수','색깔'], answerIndex:0, explanation:'위 모양은 바닥 자리를 알려줘요.'},
+      {id:'s3-a10', subunitId:'viewAndShape', tier:'advanced', difficulty:'하', type:'mcq', prompt:'앞과 옆에서 본 모양은 무엇을 주로 알려주나요?', choices:['높이(층수)','바닥 자리','색깔','무게'], answerIndex:0, explanation:'앞·옆 모양은 높이 정보를 알려줘요.'},
+      {id:'s3-a11', subunitId:'viewAndShape', tier:'advanced', difficulty:'중', type:'mcq', prompt:'위에서 본 모양이 정사각형(2×2)이고 앞에서 본 모양이 2층이면, 가능한 모양은?', choices:['여러 가지 배치가 가능할 수 있다','반드시 한 가지 모양만 가능하다','정육면체만 가능하다','불가능한 조건이다'], answerIndex:0, explanation:'위·앞 모양만으로는 여러 배치가 가능할 수 있어요.'},
+      {id:'s3-a12', subunitId:'viewAndShape', tier:'advanced', difficulty:'중', type:'mcq', prompt:'세 방향에서 본 모양이 모두 다른 두 입체도형은?', choices:['서로 다른 입체도형이다','서로 같은 입체도형일 수 있다','비교가 불가능하다','항상 같은 개수를 가진다'], answerIndex:0, explanation:'세 방향이 모두 다르면 서로 다른 입체도형이에요.'},
+      {id:'s3-a13', subunitId:'viewAndShape', tier:'advanced', difficulty:'중', type:'mcq', prompt:'쌓기나무 모양을 추측할 때 옆에서 본 모양이 결정적인 경우는?', choices:['위·앞 모양만으로 여러 배치가 가능할 때','항상','전혀 필요 없을 때','색깔을 볼 때'], answerIndex:0, explanation:'위·앞 모양만으로 여러 배치가 가능할 때 옆 모양이 결정적이에요.'},
+      {id:'s3-a14', subunitId:'viewAndShape', tier:'advanced', difficulty:'중', type:'fill', prompt:'위, 앞, 옆에서 본 모양이 모두 하나로 정해지면 원래의 쌓은 모양도 ______ 정해질 수 있습니다.', answer:'하나로', accept:['한 가지로','하나로만'], explanation:'세 방향 모두 맞으면 모양이 하나로 정해질 수 있어요.'},
+      {id:'s3-b5', subunitId:'buildAndCount', tier:'basic', difficulty:'하', type:'mcq', prompt:'3층에 4개씩 쌓으면 모두 몇 개인가요?', diagram:[[3,3],[3,3]], choices:['12개','7개','4개','8개'], answerIndex:0, explanation:'3×4=12개예요.'},
+      {id:'s3-b6', subunitId:'buildAndCount', tier:'basic', difficulty:'하', type:'mcq', prompt:'현재 8개, 목표 13개일 때 더 필요한 개수는?', choices:['5개','3개','21개','8개'], answerIndex:0, explanation:'13-8=5개예요.'},
+      {id:'s3-b7', subunitId:'buildAndCount', tier:'basic', difficulty:'하', type:'fill', prompt:'가로, 세로, 높이가 모두 같은 입체도형은 ______입니다.', answer:'정육면체', explanation:'세 변이 모두 같으면 정육면체예요.'},
+      {id:'s3-b8', subunitId:'buildAndCount', tier:'basic', difficulty:'중', type:'mcq', prompt:'가로 3, 세로 2, 높이 2인 모양은?', diagram:[[2,2,2],[2,2,2]], choices:['직육면체','정육면체','원기둥','삼각형'], answerIndex:0, explanation:'세 변이 모두 같은 것은 아니므로 직육면체예요.'},
+      {id:'s3-b15', subunitId:'buildAndCount', tier:'basic', difficulty:'하', type:'mcq', prompt:'위에서 본 모양에 적힌 수 4는 무엇을 뜻하나요?', choices:['그 자리에 4층까지 쌓여 있다','그 칸이 4개다','전체가 4개다','가로가 4칸이다'], answerIndex:0, explanation:'적힌 수는 그 자리의 층수(높이)를 뜻해요.'},
+      {id:'s3-b16', subunitId:'buildAndCount', tier:'basic', difficulty:'중', type:'mcq', prompt:'위에서 본 모양에 2, 3, 1, 2라고 적혀 있으면 전체 개수는?', diagram:[[2,3],[1,2]], choices:['8개','6개','2개','12개'], answerIndex:0, explanation:'2+3+1+2=8개예요.'},
+      {id:'s3-b17', subunitId:'buildAndCount', tier:'basic', difficulty:'중', type:'mcq', prompt:'층별로 나타낸 모양에서 1층 5칸, 2층 3칸이면 전체 개수는?', diagram:[[2,2,2],[1,1,0]], choices:['8개','5개','3개','15개'], answerIndex:0, explanation:'5+3=8개예요.'},
+      {id:'s3-b18', subunitId:'buildAndCount', tier:'basic', difficulty:'중', type:'fill', prompt:'층별로 나타낸 모양에서 전체 개수는 각 층의 칸 수를 모두 ______ 구합니다.', answer:'더해서', accept:['더해','더하여','합해','합해서','합하여','합쳐','합쳐서'], explanation:'각 층 칸 수를 더하면 전체 개수예요.'},
+      {id:'s3-b19', subunitId:'buildAndCount', tier:'basic', difficulty:'상', type:'mcq', prompt:'가로 2, 세로 2, 높이 3으로 꽉 채운 모양의 전체 개수는?', diagram:[[3,3],[3,3]], choices:['12개','8개','6개','7개'], answerIndex:0, explanation:'2×2×3=12개예요.'},
+      {id:'s3-b20', subunitId:'buildAndCount', tier:'basic', difficulty:'상', type:'mcq', prompt:'정육면체 모양(한 모서리 3칸)을 만드는 데 필요한 쌓기나무는?', diagram:[[3,3,3],[3,3,3],[3,3,3]], choices:['27개','9개','12개','6개'], answerIndex:0, explanation:'3×3×3=27개예요.'},
+      {id:'s3-e5', subunitId:'buildAndCount', tier:'extra', difficulty:'하', type:'mcq', prompt:'더 필요한 쌓기나무는 어떻게 구하나요?', choices:['목표에서 현재를 뺀다','현재에 목표를 더한다','곱한다','나눈다'], answerIndex:0, explanation:'부족한 개수는 빼기로 구해요.'},
+      {id:'s3-e6', subunitId:'buildAndCount', tier:'extra', difficulty:'중', type:'mcq', prompt:'빈칸 없이 꽉 찬 가장 작은 모양을 만들 때 중요한 것은?', choices:['가로, 세로, 높이 확인','색깔 보기','무게 재기','이름 쓰기'], answerIndex:0, explanation:'길이 3가지를 모두 확인해야 해요.'},
+      {id:'s3-e7', subunitId:'buildAndCount', tier:'extra', difficulty:'중', type:'fill', prompt:'2×2×2 모양은 ______입니다.', diagram:[[2,2],[2,2]], answer:'정육면체', explanation:'2×2×2는 가로, 세로, 높이 세 변이 모두 같으므로 정육면체예요.'},
+      {id:'s3-e8', subunitId:'buildAndCount', tier:'extra', difficulty:'중', type:'mcq', prompt:'층마다 개수를 더하는 이유는?', choices:['전체 개수를 쉽게 세기 위해','답을 크게 만들기 위해','높이를 없애기 위해','색깔을 보기 위해'], answerIndex:0, explanation:'층별로 더하면 전체 개수를 쉽게 셀 수 있어요.'},
+      {id:'s3-e15', subunitId:'buildAndCount', tier:'extra', difficulty:'하', type:'mcq', prompt:'층별로 나타낸 모양에서 위층으로 갈수록 칸 수는 보통 어떻게 되나요?', choices:['같거나 줄어든다','항상 늘어난다','항상 2배가 된다','항상 0이 된다'], answerIndex:0, explanation:'위층은 아래층 자리 안에서만 쌓일 수 있어 같거나 줄어들어요.'},
+      {id:'s3-e16', subunitId:'buildAndCount', tier:'extra', difficulty:'하', type:'mcq', prompt:'위에서 본 모양에 수를 적을 때, 수가 없는 빈 칸의 뜻은?', choices:['그 자리에 쌓기나무가 없다','그 자리에 1개 있다','수를 잊어버린 것이다','그 자리에 2개가 있다'], answerIndex:0, explanation:'빈 칸은 쌓기나무가 없다는 뜻이에요.'},
+      {id:'s3-e17', subunitId:'buildAndCount', tier:'extra', difficulty:'하', type:'fill', prompt:'위에서 본 모양에 적힌 수를 모두 더하면 ______ 개수를 구할 수 있습니다.', answer:'전체', accept:['총','모든','쌓기나무','쌓기나무의'], explanation:'적힌 수를 다 더하면 전체 개수예요.'},
+      {id:'s3-e18', subunitId:'buildAndCount', tier:'extra', difficulty:'중', type:'mcq', prompt:'2층 모양의 어느 칸이 채워져 있다면, 1층 모양의 같은 자리는?', choices:['반드시 채워져 있어야 한다','비어 있어도 된다','상관없다','다른 자리에 있어도 된다'], answerIndex:0, explanation:'위층은 아래층 위에만 쌓일 수 있어요.'},
+      {id:'s3-e19', subunitId:'buildAndCount', tier:'extra', difficulty:'상', type:'mcq', prompt:'가로 3, 세로 3, 높이 2로 꽉 채운 모양의 전체 개수는?', diagram:[[2,2,2],[2,2,2],[2,2,2]], choices:['18개','9개','6개','12개'], answerIndex:0, explanation:'3×3×2=18개예요.'},
+      {id:'s3-e20', subunitId:'buildAndCount', tier:'extra', difficulty:'상', type:'mcq', prompt:'층별 모양에서 1층 6칸, 2층 4칸, 3층 1칸이면 전체 개수는?', diagram:[[3,2,2],[2,1,1]], choices:['11개','10개','6개','24개'], answerIndex:0, explanation:'6+4+1=11개예요.'},
+      {id:'s3-a5', subunitId:'buildAndCount', tier:'advanced', difficulty:'중', type:'mcq', prompt:'가장 작은 직육면체는 어떤 조건이 필요할까요?', choices:['빈칸 없이 꽉 채워야 한다','칸이 비어도 된다','위모양만 맞추면 된다','옆모양은 안 본다'], answerIndex:0, explanation:'빈칸 없이 꽉 채워야 해요.'},
+      {id:'s3-a6', subunitId:'buildAndCount', tier:'advanced', difficulty:'상', type:'fill', prompt:'지금 10개가 있고 15개가 필요합니다. 더 필요한 개수는 ______개입니다.', answer:'5', explanation:'15-10=5개예요.'},
+      {id:'s3-a7', subunitId:'buildAndCount', tier:'advanced', difficulty:'상', type:'mcq', prompt:'3×2×2 모양은 무엇인가요?', diagram:[[2,2,2],[2,2,2]], choices:['직육면체','정육면체','원','선'], answerIndex:0, explanation:'세 변이 모두 같지 않아요.'},
+      {id:'s3-a8', subunitId:'buildAndCount', tier:'advanced', difficulty:'상', type:'mcq', prompt:'층별 개수를 더해 전체를 구하는 이유는?', choices:['세기가 쉽기 때문','답이 항상 같기 때문','높이가 없기 때문','모양을 숨기기 위해'], answerIndex:0, explanation:'층별로 더하면 전체 개수를 세기 쉬워요.'},
+      {id:'s3-a15', subunitId:'buildAndCount', tier:'advanced', difficulty:'하', type:'mcq', prompt:'위에서 본 모양에 수를 쓰는 표현 방법의 장점은?', choices:['그림 없이도 정확한 개수와 모양을 전달할 수 있다','더 예쁘게 그릴 수 있다','색깔을 표현할 수 있다','무게를 알 수 있다'], answerIndex:0, explanation:'수로 나타내면 정확하게 전달할 수 있어요.'},
+      {id:'s3-a16', subunitId:'buildAndCount', tier:'advanced', difficulty:'하', type:'mcq', prompt:'층별로 나타낸 모양의 가장 큰 장점은?', choices:['층마다 정확한 모양과 개수를 알 수 있다','더 빨리 그릴 수 있다','색깔을 알 수 있다','무게를 잴 수 있다'], answerIndex:0, explanation:'층마다 나누어 보면 정확한 정보를 알 수 있어요.'},
+      {id:'s3-a17', subunitId:'buildAndCount', tier:'advanced', difficulty:'중', type:'mcq', prompt:'위에서 본 모양에 3, 2, 2, 1, 1이라고 적혀 있으면 전체 개수는?', diagram:[[3,2,2],[1,1,0]], choices:['9개','8개','10개','6개'], answerIndex:0, explanation:'3+2+2+1+1=9개예요.'},
+      {id:'s3-a18', subunitId:'buildAndCount', tier:'advanced', difficulty:'중', type:'mcq', prompt:'층별 모양에서 1층 7칸, 2층 3칸, 3층 2칸이면 전체 개수는?', diagram:[[3,3,2],[1,1,1],[1,0,0]], choices:['12개','10개','7개','21개'], answerIndex:0, explanation:'7+3+2=12개예요.'},
+      {id:'s3-a19', subunitId:'buildAndCount', tier:'advanced', difficulty:'중', type:'mcq', prompt:'가장 작은 정육면체(한 모서리 4칸)를 만드는 데 필요한 쌓기나무는?', diagram:[[4,4,4,4],[4,4,4,4],[4,4,4,4],[4,4,4,4]], choices:['64개','16개','48개','12개'], answerIndex:0, explanation:'4×4×4=64개예요.'},
+      {id:'s3-a20', subunitId:'buildAndCount', tier:'advanced', difficulty:'중', type:'fill', prompt:'쌓기나무 20개가 있고 정육면체(한 모서리 3칸)를 만들려면 ______개가 더 필요합니다.', diagram:[[3,3,3],[3,3,3],[3,3,3]], answer:'7', explanation:'3×3×3=27, 27-20=7개예요.'}
+    ]}
+  }
+};
+
+/* ===== STORAGE ===== */
+const STORAGE_KEY = 'fractionDojo.state';
+function unitStateDefaults(){
+  return {
+    inputActivities:{},
+    compareViews:{ visitedCategoryIds:[] },
+    quizHistory:[],
+    assessments:{ history:{} }
+  };
+}
+const Storage = {
+  defaults(){
+    const units = {};
+    Object.keys(UNITS).forEach(uid=>{ units[uid] = unitStateDefaults(); });
+    return {
+      schemaVersion:1, createdAt:nowISO(), updatedAt:nowISO(),
+      units:units,
+      settings:{ studentName:'' }
+    };
+  },
+  load(){
+    let raw = null;
+    try{ raw = localStorage.getItem(STORAGE_KEY); }catch(e){}
+    let parsed = null;
+    if(raw){ try{ parsed = JSON.parse(raw); }catch(e){ parsed = null; } }
+    const d = this.defaults();
+    if(!parsed || typeof parsed !== 'object') return d;
+    parsed.schemaVersion = parsed.schemaVersion || 1;
+    parsed.units = parsed.units || {};
+    Object.keys(UNITS).forEach(uid=>{
+      const u = parsed.units[uid] = parsed.units[uid] || {};
+      u.inputActivities = u.inputActivities || {};
+      u.compareViews = u.compareViews || {};
+      u.compareViews.visitedCategoryIds = u.compareViews.visitedCategoryIds || [];
+      u.quizHistory = u.quizHistory || [];
+      u.assessments = u.assessments || {};
+      u.assessments.history = u.assessments.history || {};
+    });
+    parsed.settings = parsed.settings || { studentName:'' };
+    return parsed;
+  },
+  save(data){
+    data.updatedAt = nowISO();
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }catch(e){}
+  }
+};
+
+/* ===== STATE ===== */
+const State = {
+  data: Storage.load(),
+  save(){ Storage.save(this.data); },
+  unit(unitId){ return this.data.units[unitId]; }
+};
+
+/* ===== UTIL ===== */
+const Util = {
+  shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; }
+    return a;
+  },
+  sample(arr, n){ return this.shuffle(arr).slice(0, n); },
+  escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  },
+  toast(msg){
+    let t = document.getElementById('toast');
+    if(!t){ t = document.createElement('div'); t.id='toast'; document.body.appendChild(t); }
+    t.textContent = msg;
+    t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
+    clearTimeout(Util._toastTimer);
+    Util._toastTimer = setTimeout(()=>t.classList.remove('show'), 1800);
+  },
+  parseNumber(str){
+    if(str==null) return null;
+    const s = String(str).trim();
+    if(!s) return null;
+    let m = s.match(/^(-?\d+)[\s과]+(\d+)\s*\/\s*(\d+)$/);
+    if(m){
+      const whole=parseInt(m[1],10), num=parseInt(m[2],10), den=parseInt(m[3],10);
+      if(!den) return null;
+      const sign = whole<0 ? -1 : 1;
+      return { num: sign*(Math.abs(whole)*den+num), den };
+    }
+    m = s.match(/^(-?\d+)\s*\/\s*(\d+)$/);
+    if(m){
+      const num=parseInt(m[1],10), den=parseInt(m[2],10);
+      if(!den) return null;
+      return { num, den };
+    }
+    m = s.match(/^(-?\d+)\.(\d+)$/);
+    if(m){
+      const sign = m[1].charAt(0)==='-' ? -1 : 1;
+      const wholeAbs = Math.abs(parseInt(m[1],10));
+      const den = Math.pow(10, m[2].length);
+      return { num: sign*(wholeAbs*den+parseInt(m[2],10)), den };
+    }
+    m = s.match(/^(-?\d+)$/);
+    if(m) return { num:parseInt(m[1],10), den:1 };
+    return null;
+  },
+  // 주관식(fill) 채점: q.answer와 q.accept[](허용 답안) 중 하나와 맞으면 정답.
+  // 숫자 답은 값으로 비교("5개"처럼 뒤에 붙은 단위는 떼고 비교), 글자 답은 띄어쓰기·문장부호를 무시하고 비교
+  answerMatches(user, q){
+    const norm = s=>String(s).replace(/[\s.,!?~]/g,'').toLowerCase();
+    return [q.answer].concat(q.accept||[]).some(a=>{
+      if(this.parseNumber(a)){
+        return this.numbersEqual(user, a) || this.numbersEqual(String(user).replace(/\s*[가-힣a-zA-Z㎡]+$/,''), a);
+      }
+      return norm(user)!=='' && norm(user)===norm(a);
+    });
+  },
+  numbersEqual(a, b){
+    const fa = typeof a==='string' ? this.parseNumber(a) : a;
+    const fb = typeof b==='string' ? this.parseNumber(b) : b;
+    if(!fa || !fb) return false;
+    return fa.num*fb.den === fb.num*fa.den;
+  },
+  // 초식 비교표에 보이는 초식만(hideInCompare 제외). 비교표 칩과 커버리지 %(코스 잠금·급수카드)가 같은 기준을 쓰도록 공유
+  compareCategories(unit, su){
+    const cats = su ? su.categories : unit.subunits.reduce((acc,s)=>acc.concat(s.categories), []);
+    return cats.filter(c=>!c.hideInCompare);
+  },
+  compareCoverage(unit, visited){
+    const cats = this.compareCategories(unit);
+    const seen = cats.filter(c=>visited.indexOf(c.id)>=0).length;
+    return cats.length ? Math.round(seen/cats.length*100) : 0;
+  },
+  findCategory(catId){
+    for(const uid in UNITS){
+      for(const su of UNITS[uid].subunits){
+        const c = su.categories.find(c=>c.id===catId);
+        if(c) return { unitId:uid, subunit:su, category:c };
+      }
+    }
+    return null;
+  },
+  shuffleChoices(q){
+    if(!q.choices) return q;
+    const order = this.shuffle(q.choices.map((c,i)=>i));
+    const out = {};
+    for(const k in q) out[k] = q[k];
+    out.choices = order.map(i=>q.choices[i]);
+    out.answerIndex = order.indexOf(q.answerIndex);
+    return out;
+  },
+  saveQuizResult(unitId, mode, score, total){
+    const u = State.unit(unitId);
+    const pct = total>0 ? Math.round(score/total*100) : 0;
+    u.quizHistory.push({ mode, score, total, pct, playedAt: nowISO() });
+    if(u.quizHistory.length>30) u.quizHistory.shift();
+    State.save();
+  },
+  cubeStackSVG(heights, opts){
+    opts = opts || {};
+    const W = opts.size || 32, H = W/2, WALL = opts.wallH || 24;
+    const top = opts.topColor || '#eecb96', left = opts.leftColor || '#c99a5b', right = opts.rightColor || '#a97d3f', stroke = opts.stroke || '#6b4a24';
+    const rows = heights.length, cols = heights[0].length;
+    const cubes = [];
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+      const h = heights[r][c]||0;
+      for(let k=0;k<h;k++) cubes.push({r,c,k});
+    }
+    cubes.sort((a,b)=> ((a.r+a.c)-(b.r+b.c)) || (a.k-b.k));
+    const centerOf = (r,c,k)=>[ (c-r)*(W/2), (c+r)*(H/2) - k*WALL ];
+    let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+    const faces = [];
+    cubes.forEach(({r,c,k})=>{
+      const [x,y] = centerOf(r,c,k);
+      const topPoly = [[x,y-H/2],[x+W/2,y],[x,y+H/2],[x-W/2,y]];
+      const leftPoly = [[x-W/2,y],[x,y+H/2],[x,y+H/2+WALL],[x-W/2,y+WALL]];
+      const rightPoly = [[x,y+H/2],[x+W/2,y],[x+W/2,y+WALL],[x,y+H/2+WALL]];
+      [leftPoly,rightPoly,topPoly].forEach(poly=>poly.forEach(([px,py])=>{
+        if(px<minX)minX=px; if(px>maxX)maxX=px; if(py<minY)minY=py; if(py>maxY)maxY=py;
+      }));
+      faces.push(leftPoly,rightPoly,topPoly);
+    });
+    const colorOf = i=> i%3===0?left : i%3===1?right : top;
+    const pad = 4;
+    const vbW = maxX-minX+pad*2, vbH = maxY-minY+pad*2;
+    const pt = ([px,py])=>(px-minX+pad)+','+(py-minY+pad);
+    const polys = faces.map((poly,i)=>'<polygon points="'+poly.map(pt).join(' ')+'" fill="'+colorOf(i)+'" stroke="'+stroke+'" stroke-width="1" stroke-linejoin="round"/>').join('');
+    return '<svg viewBox="0 0 '+vbW+' '+vbH+'" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="쌓기나무 모양">'+polys+'</svg>';
+  }
+};
+
+/* ===== PROGRESS ===== */
+const Progress = {
+  stepComplete(unitId, step){
+    const unit = UNITS[unitId];
+    const u1 = State.unit(unitId);
+    if(step===1){
+      const done = unit.scenarios.filter(sc=>u1.inputActivities[sc.id] && u1.inputActivities[sc.id].correct).length;
+      return done===unit.scenarios.length;
+    }
+    if(step===2){
+      return Util.compareCoverage(unit, u1.compareViews.visitedCategoryIds)>=100;
+    }
+    if(step===3){
+      const bestQuizPct = u1.quizHistory.length ? Math.max.apply(null, u1.quizHistory.map(q=>q.pct)) : 0;
+      return bestQuizPct>=80;
+    }
+    if(step===4){
+      return unit.subunits.every(s=>Views.Assessment.tierPassed(u1, s.id, 'advanced'));
+    }
+    return true;
+  },
+  stepUnlocked(unitId, step){
+    if(step<=1) return true;
+    return this.stepComplete(unitId, step-1);
+  },
+  requireStep(unitId, step){
+    if(this.stepUnlocked(unitId, step)) return true;
+    const msgs = {
+      2:'실전 미션을 모두 완료해야 초식 비교표가 열려요 🔒',
+      3:'초식 비교표를 모두 살펴봐야 수련장이 열려요 🔒',
+      4:'수련장에서 80% 이상 받아야 승급심사가 열려요 🔒',
+      5:'승급심사 심화를 두 관 모두 '+Views.Assessment.PASS_PCT+'% 이상 통과해야 급수 카드가 열려요 🔒'
+    };
+    Util.toast(msgs[step] || '이전 단계를 먼저 마쳐야 열려요 🔒');
+    location.hash = '#/'+unitId;
+    return false;
+  }
+};
+
+/* ===== ROUTER ===== */
+window.routeEpoch = 0;
+window.activeGameTimer = null;
+const Router = {
+  routes:[],
+  add(pattern, handler){ this.routes.push({pattern, handler}); },
+  match(hash){
+    const path = (hash||'').replace(/^#/, '') || '/';
+    const partsH = path.split('/').filter(Boolean);
+    for(const r of this.routes){
+      const partsP = r.pattern.split('/').filter(Boolean);
+      if(partsP.length !== partsH.length) continue;
+      const params = {};
+      let ok = true;
+      for(let i=0;i<partsP.length;i++){
+        if(partsP[i].charAt(0)===':') params[partsP[i].slice(1)] = decodeURIComponent(partsH[i]);
+        else if(partsP[i] !== partsH[i]){ ok=false; break; }
+      }
+      if(ok) return { handler:r.handler, params };
+    }
+    return null;
+  },
+  render(){
+    window.routeEpoch = (window.routeEpoch||0) + 1;
+    if(window.activeGameTimer){ clearInterval(window.activeGameTimer); window.activeGameTimer=null; }
+    const main = document.getElementById('main');
+    const m = this.match(location.hash);
+    if(!m){ location.hash = '#/'; return; }
+    m.handler(main, m.params||{});
+    highlightNav();
+    window.scrollTo(0,0);
+  }
+};
+function highlightNav(){
+  const path = (location.hash||'').replace(/^#/, '') || '/';
+  document.querySelectorAll('#nav-main nav a').forEach(a=>{
+    const href = a.getAttribute('href').replace(/^#/, '') || '/';
+    const on = href==='/' ? path==='/' : path.indexOf(href)===0;
+    a.classList.toggle('active', on);
+  });
+}
+
+/* ===== UI ===== */
+const UI = {
+  progressBar(pct){
+    pct = Math.max(0, Math.min(100, pct||0));
+    return '<div class="progress-outer"><div class="progress-inner" style="width:'+pct+'%"></div></div>';
+  },
+  courseNav(active, unitId){
+    const steps = [
+      {n:1, icon:'🥋', label:'실전 미션', href:'#/'+unitId+'/input'},
+      {n:2, icon:'📊', label:'초식 비교표', href:'#/'+unitId+'/compare'},
+      {n:3, icon:'🥊', label:'수련장', href:'#/'+unitId+'/quiz'},
+      {n:4, icon:'📝', label:'승급심사', href:'#/'+unitId+'/assessment'},
+      {n:5, icon:'🎽', label:'급수 카드', href:'#/'+unitId+'/portfolio'}
+    ];
+    return '<div class="course-nav">' + steps.map(s=>{
+      const unlocked = Progress.stepUnlocked(unitId, s.n);
+      const cls = ['course-card', active===s.n?'active':'', unlocked?'':'locked'].filter(Boolean).join(' ');
+      const inner = '<div class="course-num">'+s.n+'</div>'+
+        '<div class="course-ico">'+s.icon+'</div>'+
+        '<div class="course-label">'+s.label+(unlocked?'':' 🔒')+'</div>';
+      return unlocked
+        ? '<a class="'+cls+'" href="'+s.href+'">'+inner+'</a>'
+        : '<div class="'+cls+'">'+inner+'</div>';
+    }).join('') + '</div>';
+  }
+};
+
+/* ===== VIEWS ===== */
+const Views = {};
+
+Views.Home = {
+  render(main){
+    main.innerHTML =
+      '<section class="hero">'+
+        '<div class="hero-badge">🥋</div>'+
+        '<h1>육삼수학 도장</h1>'+
+        '<p>6학년 2학기 수학을 단원별로 정복하고 단증을 받아보세요!</p>'+
+      '</section>'+
+      '<section class="intro-cards">'+
+        Object.keys(UNITS).map(uid=>{
+          const u = UNITS[uid];
+          return '<a class="intro-card" href="#/'+uid+'">'+
+            '<div class="intro-ico">'+u.icon+'</div><h3>'+(u.unitNumber||'')+'단원 · '+Util.escapeHtml(u.title)+'</h3>'+
+            '<p>'+Util.escapeHtml(u.tagline||'')+'</p>'+
+          '</a>';
+        }).join('')+
+      '</section>';
+  }
+};
+
+Views.UnitHome = {
+  render(main, params){
+    const unit = params && UNITS[params.unitId];
+    if(!unit){ Util.toast('알 수 없는 단원이에요. 도장 정문으로 돌아갈게요.'); location.hash = '#/'; return; }
+    main.innerHTML =
+      '<section class="hero">'+
+        '<div class="hero-badge">'+unit.icon+'</div>'+
+        '<h1>'+Util.escapeHtml(unit.title)+'</h1>'+
+        '<p>6학년 2학기 '+(unit.unitNumber||'')+'단원 · '+Util.escapeHtml(unit.tagline||'')+'</p>'+
+      '</section>'+
+      UI.courseNav(0, unit.id)+
+      '<section class="intro-cards">'+
+        unit.subunits.map(s=>
+          '<a class="intro-card" href="#/'+unit.id+'/input/'+s.id+'">'+
+            '<div class="intro-ico">'+s.icon+'</div><h3>'+Util.escapeHtml(s.title)+'</h3>'+
+            '<p>'+Util.escapeHtml(s.tagline||'')+'</p>'+
+          '</a>').join('')+
+      '</section>';
+  }
+};
+
+Views.Compare = {
+  selected:[],
+  currentSubunit:null,
+  render(main, params){
+    this._main = main; this._params = params;
+    const unit = params && UNITS[params.unitId];
+    if(!unit){ Util.toast('알 수 없는 단원이에요.'); location.hash = '#/'; return; }
+    if(!Progress.requireStep(unit.id, 2)) return;
+    const subunitId = (params && params.subunitId) || unit.subunits[0].id;
+    const su = unit.subunits.find(s=>s.id===subunitId) || unit.subunits[0];
+    if(this.currentSubunit !== su.id){ this.selected=[]; this.currentSubunit=su.id; }
+    const visited = State.unit(unit.id).compareViews.visitedCategoryIds;
+    const tabs = unit.subunits.map(s=>
+      '<a class="tab '+(s.id===su.id?'active':'')+'" href="#/'+unit.id+'/compare/'+s.id+'">'+s.icon+' '+s.title+'</a>').join('');
+    const shownCats = Util.compareCategories(unit, su);
+    this.selected = this.selected.filter(id=>shownCats.some(c=>c.id===id));
+    const chips = shownCats.map(c=>
+      '<button class="chip '+(this.selected.indexOf(c.id)>=0?'selected':'')+'" style="--cc:'+c.color+'" data-cat="'+c.id+'">'+
+        c.icon+' '+Util.escapeHtml(c.label)+' '+(visited.indexOf(c.id)>=0?'✅':'')+
+      '</button>').join('');
+    let tableHtml;
+    if(this.selected.length){
+      const cats = this.selected.map(id=>shownCats.find(c=>c.id===id)).filter(Boolean);
+      const groups = cats[0].sections.map(s=>({id:s.groupId, label:s.label, icon:s.icon}));
+      tableHtml = '<div class="compare-table-wrap"><table class="compare-table"><thead><tr><th></th>'+
+        cats.map(c=>'<th style="--cc:'+c.color+'">'+c.icon+' '+Util.escapeHtml(c.label)+'</th>').join('')+
+        '</tr></thead><tbody>'+
+        groups.map(g=>{
+          const row = cats.map(c=>{
+            const sec = c.sections.find(s=>s.groupId===g.id);
+            const items = sec ? sec.items : [];
+            return '<td><ul>'+items.map(it=>'<li>'+Util.escapeHtml(it.text)+'</li>').join('')+'</ul></td>';
+          }).join('');
+          return '<tr><td class="row-label">'+g.icon+' '+g.label+'</td>'+row+'</tr>';
+        }).join('')+
+        '</tbody></table></div>';
+    } else {
+      tableHtml = '<p class="hint">위에서 초식(계산 유형)을 최대 3개까지 골라 나란히 비교해보세요.</p>';
+    }
+    main.innerHTML =
+      UI.courseNav(2, unit.id)+
+      '<h2>📊 초식 비교표</h2>'+
+      '<div class="tabs">'+tabs+'</div>'+
+      '<div class="chip-row">'+chips+'</div>'+
+      tableHtml;
+    main.querySelectorAll('.chip').forEach(btn=>{
+      btn.addEventListener('click', ()=>this.toggle(btn.getAttribute('data-cat')));
+    });
+  },
+  toggle(catId){
+    const visited = State.unit(this._params.unitId).compareViews.visitedCategoryIds;
+    if(visited.indexOf(catId)<0){ visited.push(catId); State.save(); }
+    const idx = this.selected.indexOf(catId);
+    if(idx>=0) this.selected.splice(idx,1);
+    else{
+      this.selected.push(catId);
+      if(this.selected.length>3) this.selected.shift();
+    }
+    this.render(this._main, this._params);
+  }
+};
+
+Views.Input = {
+  render(main, params){
+    this._main = main; this._params = params;
+    const unit = params && UNITS[params.unitId];
+    if(!unit){ Util.toast('알 수 없는 단원이에요.'); location.hash = '#/'; return; }
+    const subunitId = (params && params.subunitId) || unit.subunits[0].id;
+    const su = unit.subunits.find(s=>s.id===subunitId) || unit.subunits[0];
+    const subIdx = unit.subunits.findIndex(s=>s.id===su.id);
+    const nextSubunit = unit.subunits[subIdx+1] || null;
+    const u1 = State.unit(unit.id);
+    const scenarios = unit.scenarios.filter(sc=>sc.subunitId===su.id);
+    const doneCount = scenarios.filter(sc=>u1.inputActivities[sc.id] && u1.inputActivities[sc.id].correct).length;
+    const tabs = unit.subunits.map(s=>
+      '<a class="tab '+(s.id===su.id?'active':'')+'" href="#/'+unit.id+'/input/'+s.id+'">'+s.icon+' '+s.title+'</a>').join('');
+    main.innerHTML =
+      UI.courseNav(1, unit.id)+
+      '<h2>🥋 실전 미션</h2>'+
+      '<div class="tabs">'+tabs+'</div>'+
+      '<p class="hint">미션 '+doneCount+'/'+scenarios.length+'개 완료</p>'+
+      UI.progressBar(Math.round(doneCount/scenarios.length*100))+
+      '<div class="scenario-list">'+scenarios.map((sc,i)=>this.scenarioCard(sc, u1.inputActivities[sc.id], i===scenarios.length-1 ? nextSubunit : null, unit.id)).join('')+'</div>';
+    main.querySelectorAll('.opt-pill[data-opt]').forEach(el=>{
+      if(el.classList.contains('locked')) return;
+      el.addEventListener('click', ()=>el.classList.toggle('picked'));
+    });
+    main.querySelectorAll('[data-submit]').forEach(btn=>{
+      btn.addEventListener('click', ()=>this.submit(btn.getAttribute('data-submit')));
+    });
+  },
+  scenarioCard(sc, record, nextSubunit, unitId){
+    const order = record ? record.order : Util.shuffle(sc.options).map(o=>o.id);
+    const orderedOptions = order.map(id=>sc.options.find(o=>o.id===id)).filter(Boolean);
+    const solved = !!(record && record.correct);
+    const picked = solved ? new Set(record.picked) : new Set();
+    // 틀린 경우 정답은 공개하지 않고, 지금까지 골랐던 오답만 빨갛게 잠가서 맞힐 때까지 다시 고르게 함
+    const tried = new Set(record && !solved ? (record.tried || record.picked) : []);
+    const opts = orderedOptions.map(o=>{
+      let cls = picked.has(o.id) ? 'picked' : '';
+      if(solved){
+        cls += o.correct ? ' reveal-correct' : (picked.has(o.id) ? ' reveal-wrong' : '');
+        cls += ' locked';
+      } else if(tried.has(o.id) && !o.correct){
+        cls += ' reveal-wrong locked';
+      }
+      return '<div class="opt-pill '+cls+'" data-opt="'+o.id+'">'+Util.escapeHtml(o.text)+'</div>';
+    }).join('');
+    return '<div class="scenario-card '+(solved ? 'done':'')+'" data-sc="'+sc.id+'" data-order=\''+JSON.stringify(order)+'\'>'+
+      '<div class="scenario-head"><span class="scenario-ico">'+sc.icon+'</span><h3>'+Util.escapeHtml(sc.title)+'</h3>'+
+      (solved ? '<span class="stamp-ok">✅ 완료</span>' : '')+'</div>'+
+      '<p>'+Util.escapeHtml(sc.prompt)+'</p>'+
+      '<div class="opt-list">'+opts+'</div>'+
+      (solved ? '<p class="feedback">🎉 완벽해요! 스탬프를 획득했어요.</p>'
+              : (record ? '<p class="feedback">🤔 아직 급소를 못 찾았어요. 빨간 답은 빼고 다시 골라봐요!</p>' : '')+
+                '<button class="primary" data-submit="'+sc.id+'">'+(record ? '다시 확인하기' : '확인하기')+'</button>')+
+      (nextSubunit ? '<a class="ghost next-subunit-link" href="#/'+unitId+'/input/'+nextSubunit.id+'">다음 단계로 이동 → '+Util.escapeHtml(nextSubunit.title)+'</a>' : '')+
+    '</div>';
+  },
+  submit(scId){
+    const card = this._main.querySelector('.scenario-card[data-sc="'+scId+'"]');
+    const order = JSON.parse(card.getAttribute('data-order'));
+    const picked = [].slice.call(card.querySelectorAll('.opt-pill.picked')).map(el=>el.getAttribute('data-opt'));
+    const unit = UNITS[this._params.unitId];
+    const sc = unit.scenarios.find(s=>s.id===scId);
+    const correctIds = sc.options.filter(o=>o.correct).map(o=>o.id);
+    let right=0, wrong=0;
+    picked.forEach(id=>{ if(correctIds.indexOf(id)>=0) right++; else wrong++; });
+    const score = correctIds.length>0 ? Math.max(0, right-wrong)/correctIds.length : 0;
+    const passed = score>=0.6 && picked.length>0;
+    const u1 = State.unit(unit.id);
+    if(!picked.length){ Util.toast('답을 먼저 골라주세요.'); return; }
+    const prev = u1.inputActivities[scId];
+    const prevTried = prev && !prev.correct ? (prev.tried || prev.picked || []) : [];
+    const tried = prevTried.concat(picked.filter(id=>correctIds.indexOf(id)<0 && prevTried.indexOf(id)<0));
+    u1.inputActivities[scId] = { order:order, picked:picked, tried:tried, correct:passed, submittedAt: nowISO() };
+    State.save();
+    if(passed) Util.toast('✅ 스탬프 획득!');
+    else Util.toast('❌ 틀렸어요. 다시 도전해봐요!');
+    this.render(this._main, this._params);
+  }
+};
+
+Views.Quiz = {
+  render(main, params){
+    const unit = params && UNITS[params.unitId];
+    if(!unit){ Util.toast('알 수 없는 단원이에요.'); location.hash = '#/'; return; }
+    if(!Progress.requireStep(unit.id, 3)) return;
+    main.innerHTML =
+      UI.courseNav(3, unit.id)+
+      '<h2>🥊 수련장</h2>'+
+      '<p class="hint">세 가지 수련으로 실력을 갈고 닦아보세요.</p>'+
+      '<div class="game-grid">'+
+        '<a class="game-tile g1" href="#/'+unit.id+'/quiz/detective"><div class="game-ico">🔍</div><h3>초식 교정소</h3><p>틀린 풀이에서 실수를 찾아내요</p></a>'+
+        '<a class="game-tile g3" href="#/'+unit.id+'/quiz/order"><div class="game-ico">🧭</div><h3>품새 순서 맞추기</h3><p>계산 순서를 올바르게 배열해요</p></a>'+
+        '<a class="game-tile g4" href="#/'+unit.id+'/quiz/speed"><div class="game-ico">⚡</div><h3>스피드 격파</h3><p>시간 안에 빠르게 계산해요</p></a>'+
+      '</div>';
+  }
+};
+
+Views.Detective = {
+  start(){
+    this._epoch = window.routeEpoch;
+    const unit = UNITS[this._params.unitId];
+    this.items = Util.sample(unit.detectivePool, Math.min(8, unit.detectivePool.length));
+    this.idx=0; this.score=0; this.answered=false; this.pickedIdx=null; this.finished=false;
+  },
+  render(main, params){
+    this._main = main; this._params = params;
+    const unit = UNITS[params.unitId];
+    if(!unit){ Util.toast('알 수 없는 단원이에요.'); location.hash = '#/'; return; }
+    if(!Progress.requireStep(unit.id, 3)) return;
+    if(this._epoch !== window.routeEpoch) this.start();
+    if(this.idx >= this.items.length){
+      if(!this.finished){ this.finished=true; Util.saveQuizResult(unit.id, 'detective', this.score, this.items.length); }
+      this.renderResult();
+      return;
+    }
+    const q = this.items[this.idx];
+    main.innerHTML =
+      UI.courseNav(3, unit.id)+
+      '<div class="game-header"><a href="#/'+unit.id+'/quiz">← 수련장</a><span>'+(this.idx+1)+' / '+this.items.length+'</span></div>'+
+      '<h2>🔍 초식 교정소</h2>'+
+      '<p class="problem">'+Util.escapeHtml(q.problem)+'</p>'+
+      '<ol class="step-list">'+
+        q.wrongSteps.map((s,i)=>{
+          let cls='step';
+          if(this.answered){ if(i===q.errorStepIndex) cls+=' reveal-correct'; else if(i===this.pickedIdx) cls+=' reveal-wrong'; }
+          return '<li class="'+cls+'" data-i="'+i+'">'+Util.escapeHtml(s)+'</li>';
+        }).join('')+
+      '</ol>'+
+      (this.answered
+        ? '<div class="explain-box">'+(this.pickedIdx===q.errorStepIndex?'🎉 정확해요! ':'🤔 아쉬워요. ')+Util.escapeHtml(q.explanation)+'</div>'+
+          '<button class="primary" data-next>다음 →</button>'
+        : '');
+    if(!this.answered){
+      main.querySelectorAll('.step').forEach(li=>li.addEventListener('click', ()=>this.answer(parseInt(li.getAttribute('data-i'),10))));
+    } else {
+      main.querySelector('[data-next]').addEventListener('click', ()=>{
+        this.idx++; this.answered=false; this.pickedIdx=null;
+        this.render(this._main, this._params);
+      });
+    }
+  },
+  answer(i){
+    const q = this.items[this.idx];
+    this.answered = true; this.pickedIdx = i;
+    if(i===q.errorStepIndex) this.score++;
+    this.render(this._main, this._params);
+  },
+  renderResult(){
+    const unit = UNITS[this._params.unitId];
+    this._main.innerHTML =
+      UI.courseNav(3, unit.id)+
+      '<h2>🔍 초식 교정소 결과</h2>'+
+      '<p class="result-score">'+this.score+' / '+this.items.length+' 정답!</p>'+
+      '<div class="result-actions">'+
+        '<button class="primary" data-retry>다시 도전</button>'+
+        '<a class="ghost" href="#/'+unit.id+'/quiz">수련장으로</a>'+
+      '</div>';
+    this._main.querySelector('[data-retry]').addEventListener('click', ()=>{ this.start(); this.render(this._main, this._params); });
+  }
+};
+
+Views.OrderGame = {
+  start(){
+    this._epoch = window.routeEpoch;
+    const unit = UNITS[this._params.unitId];
+    this.recipe = Util.sample(unit.procedureRecipes, 1)[0];
+    this.pool = Util.shuffle(this.recipe.steps);
+    this.placed = this.recipe.steps.map(()=>null);
+    this.checked = false; this.correctCount = 0; this.finished=false;
+  },
+  render(main, params){
+    this._main = main; this._params = params;
+    const unit = UNITS[params.unitId];
+    if(!unit){ Util.toast('알 수 없는 단원이에요.'); location.hash = '#/'; return; }
+    if(!Progress.requireStep(unit.id, 3)) return;
+    if(this._epoch !== window.routeEpoch) this.start();
+    const n = this.recipe.steps.length;
+    main.innerHTML =
+      UI.courseNav(3, unit.id)+
+      '<div class="game-header"><a href="#/'+unit.id+'/quiz">← 수련장</a></div>'+
+      '<h2>🧭 품새 순서 맞추기</h2>'+
+      '<h3>'+Util.escapeHtml(this.recipe.title)+'</h3>'+
+      '<p class="hint">아래 카드를 순서대로 클릭해 올바른 계산 순서를 완성해보세요.</p>'+
+      '<div class="order-slots">'+
+        this.placed.map((p,i)=>{
+          let cls='order-slot';
+          if(this.checked) cls += (p===this.recipe.steps[i] ? ' slot-correct' : ' slot-wrong');
+          return '<div class="'+cls+'">'+(p ? '<span>'+(i+1)+'. '+Util.escapeHtml(p)+'</span>' : '<span class="slot-num">'+(i+1)+'번</span>')+'</div>';
+        }).join('')+
+      '</div>'+
+      '<div class="order-pool">'+
+        this.pool.map((s,i)=>'<button class="order-card" data-i="'+i+'" '+(this.placed.indexOf(s)>=0?'disabled':'')+'>'+Util.escapeHtml(s)+'</button>').join('')+
+      '</div>'+
+      '<div class="order-actions">'+
+        '<button class="ghost" data-reshuffle>🔄 다시 섞기</button>'+
+        (this.checked
+          ? '<span class="result-score">'+this.correctCount+'/'+n+' 정답!</span>'
+          : '<button class="primary" data-check '+(this.placed.some(p=>!p)?'disabled':'')+'>확인하기</button>')+
+      '</div>';
+    main.querySelectorAll('.order-card:not([disabled])').forEach(btn=>btn.addEventListener('click', ()=>this.place(parseInt(btn.getAttribute('data-i'),10))));
+    main.querySelector('[data-reshuffle]').addEventListener('click', ()=>{ this.start(); this.render(this._main, this._params); });
+    const cb = main.querySelector('[data-check]');
+    if(cb) cb.addEventListener('click', ()=>this.check());
+  },
+  place(poolIdx){
+    if(this.checked) return;
+    const step = this.pool[poolIdx];
+    const nextEmpty = this.placed.indexOf(null);
+    if(nextEmpty===-1) return;
+    this.placed[nextEmpty] = step;
+    this.render(this._main, this._params);
+  },
+  check(){
+    this.checked = true;
+    this.correctCount = this.placed.filter((p,i)=>p===this.recipe.steps[i]).length;
+    if(!this.finished){ this.finished=true; Util.saveQuizResult(this._params.unitId, 'order', this.correctCount, this.recipe.steps.length); }
+    this.render(this._main, this._params);
+  }
+};
+
+Views.Speed = {
+  start(){
+    this._epoch = window.routeEpoch;
+    const unit = UNITS[this._params.unitId];
+    this.items = Util.sample(unit.quiz.pool, Math.min(12, unit.quiz.pool.length)).map(q=>Util.shuffleChoices(q));
+    this.idx=0; this.score=0; this.lives=3; this.finished=false;
+    this.startQuestion();
+  },
+  startQuestion(){
+    this.timeLeft = 15; this.answered=false; this.pickedIdx=null;
+    const myEpoch = this._epoch;
+    if(window.activeGameTimer) clearInterval(window.activeGameTimer);
+    window.activeGameTimer = setInterval(()=>{
+      if(myEpoch !== window.routeEpoch){ clearInterval(window.activeGameTimer); return; }
+      this.timeLeft -= 0.1;
+      if(this.timeLeft<=0 && !this.answered){ this.answer(-1); return; }
+      this.updateTimerBar();
+    }, 100);
+  },
+  updateTimerBar(){
+    if(!this._main) return;
+    const bar = this._main.querySelector('.timerbar');
+    if(bar) bar.style.width = Math.max(0, this.timeLeft/15*100)+'%';
+  },
+  render(main, params){
+    this._main = main; this._params = params;
+    const unit = UNITS[params.unitId];
+    if(!unit){ Util.toast('알 수 없는 단원이에요.'); location.hash = '#/'; return; }
+    if(!Progress.requireStep(unit.id, 3)) return;
+    if(this._epoch !== window.routeEpoch) this.start();
+    if(this.lives<=0 || this.idx>=this.items.length){
+      if(!this.finished){
+        this.finished = true;
+        if(window.activeGameTimer){ clearInterval(window.activeGameTimer); window.activeGameTimer=null; }
+        Util.saveQuizResult(unit.id, 'speed', this.score, this.items.length);
+      }
+      this.renderResult();
+      return;
+    }
+    const q = this.items[this.idx];
+    const pct = Math.max(0, this.timeLeft/15*100);
+    main.innerHTML =
+      UI.courseNav(3, unit.id)+
+      '<div class="game-header"><a href="#/'+unit.id+'/quiz">← 수련장</a><span>'+(this.idx+1)+' / '+this.items.length+'</span></div>'+
+      '<h2>⚡ 스피드 격파</h2>'+
+      '<div class="lives">'+'❤️'.repeat(Math.max(0,this.lives))+'🖤'.repeat(Math.max(0,3-this.lives))+'</div>'+
+      '<div class="timerbar-outer"><div class="timerbar" style="width:'+pct+'%"></div></div>'+
+      (q.diagram ? '<div class="q-diagram">'+Util.cubeStackSVG(q.diagram)+'</div>' : '')+
+      '<p class="problem">'+Util.escapeHtml(q.prompt)+'</p>'+
+      '<div class="choice-grid">'+
+        q.choices.map((c,i)=>{
+          let cls='choice-btn';
+          if(this.answered){ if(i===q.answerIndex) cls+=' reveal-correct'; else if(i===this.pickedIdx) cls+=' reveal-wrong'; }
+          return '<button class="'+cls+'" data-i="'+i+'" '+(this.answered?'disabled':'')+'>'+Util.escapeHtml(c)+'</button>';
+        }).join('')+
+      '</div>'+
+      (this.answered ? '<div class="explain-box">'+Util.escapeHtml(q.explanation||'')+'</div>' : '');
+    if(!this.answered){
+      main.querySelectorAll('.choice-btn').forEach(btn=>btn.addEventListener('click', ()=>this.answer(parseInt(btn.getAttribute('data-i'),10))));
+    }
+  },
+  answer(i){
+    if(this._epoch !== window.routeEpoch || this.answered) return;
+    this.answered = true; this.pickedIdx = i;
+    const q = this.items[this.idx];
+    if(i===q.answerIndex) this.score++; else this.lives--;
+    if(window.activeGameTimer){ clearInterval(window.activeGameTimer); window.activeGameTimer=null; }
+    this.render(this._main, this._params);
+    const myEpoch = this._epoch;
+    setTimeout(()=>{
+      if(myEpoch !== window.routeEpoch) return;
+      this.idx++;
+      if(this.lives>0 && this.idx<this.items.length) this.startQuestion();
+      this.render(this._main, this._params);
+    }, 1200);
+  },
+  renderResult(){
+    const unit = UNITS[this._params.unitId];
+    this._main.innerHTML =
+      UI.courseNav(3, unit.id)+
+      '<h2>⚡ 스피드 격파 결과</h2>'+
+      '<p class="result-score">'+this.score+' / '+this.items.length+' 정답! 남은 목숨: '+'❤️'.repeat(Math.max(0,this.lives))+'</p>'+
+      '<div class="result-actions">'+
+        '<button class="primary" data-retry>다시 도전</button>'+
+        '<a class="ghost" href="#/'+unit.id+'/quiz">수련장으로</a>'+
+      '</div>';
+    this._main.querySelector('[data-retry]').addEventListener('click', ()=>{ this.start(); this.render(this._main, this._params); });
+  }
+};
+
+Views.Assessment = {
+  TIERS:[
+    {id:'basic', label:'기본', icon:'🥉'},
+    {id:'extra', label:'보충', icon:'🥈'},
+    {id:'advanced', label:'심화', icon:'🥇'}
+  ],
+  PASS_PCT:80,
+  scoreLabel(pct){
+    if(pct>=85) return '🌟 우수';
+    if(pct>=this.PASS_PCT) return '✅ 통과';
+    return '🔄 재도전 필요';
+  },
+  tierHistory(u1, subunitId, tier){
+    const h = u1.assessments.history[subunitId];
+    return (h && h[tier]) || [];
+  },
+  tierPassed(u1, subunitId, tier){
+    const hist = this.tierHistory(u1, subunitId, tier);
+    const last = hist[hist.length-1];
+    return !!(last && last.scorePercent>=this.PASS_PCT);
+  },
+  // 다음 단계 응시 자격: 이 단계에서 한 번이라도 PASS_PCT 이상을 받았는지(이후 재응시 점수가 낮아도 다시 잠기지 않음)
+  tierEverPassed(u1, subunitId, tier){
+    return this.tierHistory(u1, subunitId, tier).some(h=>h.scorePercent>=this.PASS_PCT);
+  },
+  tierUnlocked(u1, subunitId, tier){
+    if(tier==='basic') return true;
+    if(tier==='extra') return this.tierEverPassed(u1, subunitId, 'basic');
+    if(tier==='advanced') return this.tierEverPassed(u1, subunitId, 'extra');
+    return false;
+  },
+  beltInfo(u1, subunitId){
+    const basicPass = this.tierPassed(u1, subunitId, 'basic');
+    const extraPass = this.tierPassed(u1, subunitId, 'extra');
+    const advHist = this.tierHistory(u1, subunitId, 'advanced');
+    const advLast = advHist[advHist.length-1];
+    if(advLast && advLast.scorePercent>=85) return {label:'⚫ 검은띠 유단자', step:4};
+    if(advLast && advLast.scorePercent>=this.PASS_PCT) return {label:'🔴 빨간띠', step:3};
+    if(basicPass && extraPass) return {label:'🔵 파란띠', step:2};
+    if(basicPass || extraPass) return {label:'🟡 노란띠', step:1};
+    return {label:'🤍 흰띠 후보생', step:0};
+  },
+  startSubunitTier(unitId, subunitId, tier){
+    this._epoch = window.routeEpoch;
+    this._activeUnit = unitId;
+    this._activeSubunit = subunitId;
+    this._activeTier = tier;
+    const pool = UNITS[unitId].assessment.pool.filter(q=>q.subunitId===subunitId && q.tier===tier);
+    this.items = Util.sample(pool, pool.length).map(q=>Util.shuffleChoices(q));
+    this.submitted = false; this.result = null;
+  },
+  render(main, params){
+    this._main = main; this._params = params;
+    const unit = params && UNITS[params.unitId];
+    if(!unit){ Util.toast('알 수 없는 단원이에요.'); location.hash = '#/'; return; }
+    if(!Progress.requireStep(unit.id, 4)) return;
+    if(!params.subunitId){ this.renderPicker(unit); return; }
+    if(!params.tier){ this.renderTierPicker(unit, params.subunitId); return; }
+    const subunitId = params.subunitId, tier = params.tier;
+    if(this._epoch !== window.routeEpoch || this._activeUnit !== unit.id || this._activeSubunit !== subunitId || this._activeTier !== tier){
+      const u1 = State.unit(unit.id);
+      const locked = !this.tierUnlocked(u1, subunitId, tier);
+      if(locked){
+        const msg = tier==='extra' ? '보충은 기본에서 '+this.PASS_PCT+'% 이상 받아야 열려요 🔒' : '심화는 보충에서 '+this.PASS_PCT+'% 이상 받아야 열려요 🔒';
+        Util.toast(msg);
+        location.hash = '#/'+unit.id+'/assessment/'+subunitId;
+        return;
+      }
+      this.startSubunitTier(unit.id, subunitId, tier);
+    }
+    if(this.submitted) this.renderResult(unit, subunitId, tier);
+    else this.renderForm(unit, subunitId, tier);
+  },
+  renderPicker(unit){
+    const u1 = State.unit(unit.id);
+    this._main.innerHTML =
+      UI.courseNav(4, unit.id)+
+      '<h2>📝 승급심사</h2>'+
+      '<p class="hint">각 관마다 기본 → 보충 → 심화 3단계 승급심사가 있어요. 심화를 통과하면 검은띠 유단자!</p>'+
+      '<div class="assess-picker">'+
+        unit.subunits.map(s=>{
+          const belt = this.beltInfo(u1, s.id);
+          return '<a class="assess-card" href="#/'+unit.id+'/assessment/'+s.id+'">'+
+            '<h3>'+s.icon+' '+Util.escapeHtml(s.title)+'</h3>'+
+            '<p>'+belt.label+'</p>'+
+          '</a>';
+        }).join('')+
+      '</div>';
+  },
+  renderTierPicker(unit, subunitId){
+    const u1 = State.unit(unit.id);
+    const su = unit.subunits.find(s=>s.id===subunitId);
+    const lockedHints = {extra:'기본에서 '+this.PASS_PCT+'% 이상 받으면 열려요', advanced:'보충에서 '+this.PASS_PCT+'% 이상 받으면 열려요'};
+    this._main.innerHTML =
+      UI.courseNav(4, unit.id)+
+      '<h2>📝 '+Util.escapeHtml(su.title)+' 승급심사</h2>'+
+      '<p class="hint">'+this.beltInfo(u1, subunitId).label+'</p>'+
+      '<div class="assess-picker">'+
+        this.TIERS.map(t=>{
+          const hist = this.tierHistory(u1, subunitId, t.id);
+          const last = hist[hist.length-1];
+          const locked = !this.tierUnlocked(u1, subunitId, t.id);
+          const inner = '<h3>'+t.icon+' '+t.label+' '+(locked?'🔒':'')+'</h3>'+
+            (last ? '<p>최근 '+last.scorePercent+'% · '+this.scoreLabel(last.scorePercent)+'</p>' : '<p class="hint">'+(locked?lockedHints[t.id]:'아직 응시하지 않았어요')+'</p>');
+          return locked
+            ? '<div class="assess-card locked">'+inner+'</div>'
+            : '<a class="assess-card" href="#/'+unit.id+'/assessment/'+subunitId+'/'+t.id+'">'+inner+'</a>';
+        }).join('')+
+      '</div>';
+  },
+  renderForm(unit, subunitId, tier){
+    const su = unit.subunits.find(s=>s.id===subunitId);
+    const tierDef = this.TIERS.find(t=>t.id===tier);
+    const fillPlaceholder = unit.id==='unit2' ? '예: 6.4' : unit.id==='unit3' ? '' : '예: 3/4 또는 1 1/2';
+    this._main.innerHTML =
+      UI.courseNav(4, unit.id)+
+      '<h2>📝 '+Util.escapeHtml(su.title)+' · '+tierDef.icon+' '+tierDef.label+'</h2>'+
+      '<form id="assess-form">'+
+        this.items.map((q,i)=>
+          '<div class="assess-q"><p><b>'+(i+1)+'.</b> <span class="diff-tag">['+Util.escapeHtml(q.difficulty||'')+']</span> '+Util.escapeHtml(q.prompt)+'</p>'+
+          (q.diagram ? '<div class="q-diagram">'+Util.cubeStackSVG(q.diagram)+'</div>' : '')+
+          (q.type==='mcq'
+            ? '<div class="opt-list">'+q.choices.map((c,ci)=>'<label class="opt-pill"><input type="radio" name="'+q.id+'" value="'+ci+'"> '+Util.escapeHtml(c)+'</label>').join('')+'</div>'
+            : '<input type="text" name="'+q.id+'" class="fill-input" placeholder="'+fillPlaceholder+'">')+
+          '</div>').join('')+
+        '<button type="submit" class="primary">제출하기</button>'+
+      '</form>';
+    this._main.querySelector('#assess-form').addEventListener('submit', (e)=>{ e.preventDefault(); this.submit(unit, subunitId, tier); });
+  },
+  submit(unit, subunitId, tier){
+    const form = this._main.querySelector('#assess-form');
+    const fd = new FormData(form);
+    let correct = 0;
+    const detail = this.items.map(q=>{
+      let userAnswer, isCorrect;
+      if(q.type==='mcq'){
+        const v = fd.get(q.id);
+        userAnswer = v===null ? null : q.choices[parseInt(v,10)];
+        isCorrect = v!==null && parseInt(v,10)===q.answerIndex;
+      } else {
+        userAnswer = (fd.get(q.id)||'').trim();
+        isCorrect = Util.answerMatches(userAnswer, q);
+      }
+      if(isCorrect) correct++;
+      return { q:q, userAnswer:userAnswer, isCorrect:isCorrect };
+    });
+    const scorePercent = Math.round(correct/this.items.length*100);
+    const u1 = State.unit(unit.id);
+    u1.assessments.history[subunitId] = u1.assessments.history[subunitId] || {basic:[], extra:[], advanced:[]};
+    const hist = u1.assessments.history[subunitId][tier] = u1.assessments.history[subunitId][tier] || [];
+    const prevLast = hist.length ? hist[hist.length-1] : null;
+    hist.push({ date: nowISO(), scorePercent:scorePercent, correct:correct, total:this.items.length });
+    if(hist.length>5) hist.shift();
+    State.save();
+    this.submitted = true;
+    this.result = { detail:detail, scorePercent:scorePercent, prevPercent: prevLast ? prevLast.scorePercent : null };
+    if(tier==='advanced' && scorePercent>=this.PASS_PCT){
+      const other = unit.subunits.find(s=>s.id!==subunitId);
+      if(other && this.tierPassed(u1, other.id, 'advanced')) Util.toast('🎉 두 관의 심화를 모두 통과했어요! 단증을 받을 수 있어요.');
+    }
+    this.render(this._main, this._params);
+  },
+  // 이 관의 심화는 통과했지만 아직 심화를 통과하지 못한 관이 남았을 때: 남은 관 이름과 바로 가기 버튼
+  remainingAdvancedNotice(unit){
+    const u1 = State.unit(unit.id);
+    const left = unit.subunits.filter(s=>!this.tierPassed(u1, s.id, 'advanced'));
+    if(!left.length) return '';
+    return '<div class="explain-box"><p>🔒 <b>급수 카드</b>는 두 관의 심화를 모두 '+this.PASS_PCT+'% 이상 통과해야 열려요. 남은 관: <b>'+
+        left.map(s=>Util.escapeHtml(s.title)).join(', ')+'</b></p>'+
+      left.map(s=>{
+        const target = this.tierUnlocked(u1, s.id, 'advanced') ? '/advanced' : '';
+        return '<a class="primary" href="#/'+unit.id+'/assessment/'+s.id+target+'">'+s.icon+' '+Util.escapeHtml(s.title)+' 승급심사 하러 가기 →</a>';
+      }).join(' ')+
+    '</div>';
+  },
+  renderResult(unit, subunitId, tier){
+    const su = unit.subunits.find(s=>s.id===subunitId);
+    const tierDef = this.TIERS.find(t=>t.id===tier);
+    const r = this.result;
+    const passedNow = r.scorePercent>=this.PASS_PCT;
+    const portfolioOpen = tier==='advanced' && passedNow && Progress.stepUnlocked(unit.id, 5);
+    let growthMsg = '';
+    if(r.prevPercent!=null){
+      if(r.scorePercent > r.prevPercent) growthMsg = '📈 지난번('+r.prevPercent+'%)보다 올랐어요!';
+      else if(r.scorePercent < r.prevPercent) growthMsg = '지난번('+r.prevPercent+'%)보다 아쉬워요. 다시 도전해 볼까요?';
+      else growthMsg = '지난번과 같은 점수예요.';
+    }
+    this._main.innerHTML =
+      UI.courseNav(4, unit.id)+
+      '<h2>📝 '+Util.escapeHtml(su.title)+' · '+tierDef.icon+' '+tierDef.label+' 결과</h2>'+
+      '<p class="result-score">'+r.scorePercent+'% · '+this.scoreLabel(r.scorePercent)+'</p>'+
+      '<p class="hint">'+growthMsg+'</p>'+
+      '<div class="assess-review">'+
+        r.detail.map((d,i)=>
+          '<div class="review-item '+(d.isCorrect?'ok':'no')+'">'+
+            '<p><b>'+(i+1)+'.</b> '+Util.escapeHtml(d.q.prompt)+'</p>'+
+            '<p>내 답: '+Util.escapeHtml(d.userAnswer || '(무응답)')+' '+(d.isCorrect?'✅':'❌')+'</p>'+
+            (!d.isCorrect && d.q.type==='fill' ? '<p><b>정답: '+Util.escapeHtml(d.q.answer)+'</b></p>' : '')+
+            (!d.isCorrect ? '<p class="explain-box">'+Util.escapeHtml(d.q.explanation||'')+'</p>' : '')+
+          '</div>').join('')+
+      '</div>'+
+      '<div class="result-actions">'+
+        '<button class="primary" data-retry>다시 응시</button>'+
+        // 이번 점수가 PASS_PCT 이상일 때만 다음 단계로 나가는 버튼을 보여줌, 급수 카드는 심화 통과로 5단계가 열렸을 때만
+        (passedNow ? '<a class="ghost" href="#/'+unit.id+'/assessment/'+subunitId+'">다른 단계 선택</a>' : '')+
+        (portfolioOpen ? '<a class="ghost" href="#/'+unit.id+'/portfolio">급수 카드로</a>' : '')+
+      '</div>'+
+      (!passedNow ? '<p class="hint">'+this.PASS_PCT+'% 이상 받아야 다음 단계로 갈 수 있어요. 다시 도전해봐요! 💪</p>'
+        : (tier==='advanced' && !portfolioOpen ? this.remainingAdvancedNotice(unit) : ''));
+    this._main.querySelector('[data-retry]').addEventListener('click', ()=>{
+      this.startSubunitTier(unit.id, subunitId, tier);
+      this.render(this._main, this._params);
+    });
+  }
+};
+
+Views.Portfolio = {
+  render(main, params){
+    const unit = params && UNITS[params.unitId];
+    if(!unit){ Util.toast('알 수 없는 단원이에요.'); location.hash = '#/'; return; }
+    if(!Progress.requireStep(unit.id, 5)) return;
+    const u1 = State.unit(unit.id);
+    const scenarios = unit.scenarios;
+    const stampsDone = scenarios.filter(sc=>u1.inputActivities[sc.id] && u1.inputActivities[sc.id].correct);
+    const compareCoverage = Util.compareCoverage(unit, u1.compareViews.visitedCategoryIds);
+    const quizHistory = u1.quizHistory;
+    const quizPlays = quizHistory.length;
+    const bestQuizPct = quizHistory.length ? Math.max.apply(null, quizHistory.map(q=>q.pct)) : 0;
+    const recent6 = quizHistory.slice(-6);
+    const subs = unit.subunits;
+    const bothPassed = subs.every(s=>Views.Assessment.tierPassed(u1, s.id, 'advanced'));
+
+    const badgeDefs = [
+      {ico:'🥋', label:'미션 완료', earned: stampsDone.length===scenarios.length},
+      {ico:'📊', label:'초식 전체 마스터', earned: compareCoverage>=100},
+      {ico:'🥊', label:'수련왕', earned: bestQuizPct>=80},
+      {ico:'🥇', label:'유단자 인증', earned: bothPassed}
+    ];
+
+    main.innerHTML =
+      UI.courseNav(5, unit.id)+
+      '<h2>🎽 급수 카드</h2>'+
+      '<section class="portfolio-stats">'+
+        '<div class="stat-card"><div class="stat-num">'+stampsDone.length+'/'+scenarios.length+'</div><div class="stat-label">미션 스탬프</div></div>'+
+        '<div class="stat-card"><div class="stat-num">'+compareCoverage+'%</div><div class="stat-label">초식 비교 커버리지</div></div>'+
+        '<div class="stat-card"><div class="stat-num">'+quizPlays+'</div><div class="stat-label">수련 횟수</div></div>'+
+        '<div class="stat-card"><div class="stat-num">'+bestQuizPct+'%</div><div class="stat-label">최고 수련 점수</div></div>'+
+      '</section>'+
+      '<section class="stamp-book"><h3>수련 스탬프</h3><div class="stamp-row">'+
+        scenarios.map(sc=>{
+          const done = u1.inputActivities[sc.id] && u1.inputActivities[sc.id].correct;
+          return '<div class="stamp '+(done?'earned':'')+'">'+(done?sc.icon:'⚪')+'</div>';
+        }).join('')+
+      '</div></section>'+
+      '<section class="quiz-trend"><h3>수련 점수 추이</h3><div class="trend-chart">'+
+        (recent6.length
+          ? recent6.map(q=>'<div class="trend-bar" style="height:'+Math.max(6,q.pct)+'%" title="'+q.mode+' '+q.pct+'%"></div>').join('')
+          : '<p class="hint">아직 수련 기록이 없어요.</p>')+
+      '</div></section>'+
+      '<section class="assess-status"><h3>승급심사 현황</h3><div class="assess-grid">'+
+        subs.map(s=>{
+          const belt = Views.Assessment.beltInfo(u1, s.id);
+          const tierRow = Views.Assessment.TIERS.map(t=>{
+            const hist = Views.Assessment.tierHistory(u1, s.id, t.id);
+            const last = hist[hist.length-1];
+            const locked = !Views.Assessment.tierUnlocked(u1, s.id, t.id);
+            const state = last ? (last.scorePercent>=Views.Assessment.PASS_PCT?'✅':'❌') : (locked?'🔒':'⬜');
+            return t.label+' '+state;
+          }).join(' · ');
+          return '<div class="assess-status-card"><h4>'+s.icon+' '+Util.escapeHtml(s.title)+'</h4>'+
+            '<p>'+belt.label+'</p><p class="hint">'+tierRow+'</p></div>';
+        }).join('')+
+      '</div></section>'+
+      '<section class="badge-wall"><h3>휘장 모음</h3><div class="badge-row">'+
+        badgeDefs.map(b=>'<div class="badge '+(b.earned?'earned':'')+'"><div class="badge-ico">'+b.ico+'</div><div class="badge-label">'+b.label+'</div></div>').join('')+
+      '</div></section>'+
+      '<section class="cert-cta">'+
+        (bothPassed
+          ? '<p>🎉 축하해요! 두 관 모두 심화를 '+Views.Assessment.PASS_PCT+'% 이상 통과해서 단증을 받을 수 있어요.</p><a class="primary" href="#/'+unit.id+'/certificate">🥋 단증 받으러 가기 →</a>'
+          : '<p class="hint">두 관 승급심사 심화에서 각각 '+Views.Assessment.PASS_PCT+'% 이상을 받으면 단증을 받을 수 있어요.</p>')+
+      '</section>';
+  }
+};
+
+Views.Certificate = {
+  render(main, params){
+    const unit = params && UNITS[params.unitId];
+    if(!unit){ Util.toast('알 수 없는 단원이에요.'); location.hash = '#/'; return; }
+    const u1 = State.unit(unit.id);
+    const subs = unit.subunits;
+    const bothPassed = subs.every(s=>Views.Assessment.tierPassed(u1, s.id, 'advanced'));
+    if(!bothPassed){
+      const missing = subs.filter(s=>!Views.Assessment.tierPassed(u1, s.id, 'advanced')).map(s=>s.title);
+      Util.toast('아직 단증을 받을 수 없어요! '+missing.join(', ')+'의 심화 승급심사를 먼저 통과해봐요 💪');
+      location.hash = '#/'+unit.id+'/portfolio';
+      return;
+    }
+    const bothMaster = subs.every(s=>{
+      const hist = Views.Assessment.tierHistory(u1, s.id, 'advanced');
+      const last = hist[hist.length-1];
+      return last && last.scorePercent>=85;
+    });
+    const finalBelt = bothMaster ? '검은띠 유단자' : '빨간띠';
+    const name = State.data.settings.studentName || '';
+    main.innerHTML =
+      '<div class="cert-frame"><div class="cert-inner">'+
+        '<p class="cert-eyebrow">육삼수학 도장</p>'+
+        '<h1 class="cert-title">단 증</h1>'+
+        '<p class="cert-body">위 수련생은 6학년 2학기 '+(unit.unitNumber||'')+'단원 「'+Util.escapeHtml(unit.title)+'」의 모든 승급심사를 통과하여<br>이에 '+finalBelt+' 단증을 수여합니다.</p>'+
+        '<div class="cert-name-row"><label>수련생 이름: </label><input id="cert-name" type="text" value="'+Util.escapeHtml(name)+'" placeholder="이름을 입력하세요"></div>'+
+        '<div class="cert-date">'+new Date().toLocaleDateString('ko-KR')+'</div>'+
+        '<div class="cert-seal">육삼수학 도장 관장 🥋</div>'+
+      '</div></div>'+
+      '<div class="no-print result-actions">'+
+        '<button class="primary" id="cert-save">이름 저장</button>'+
+        '<button class="ghost" id="cert-print">🖨️ 인쇄하기</button>'+
+        '<a class="ghost" href="#/'+unit.id+'/portfolio">급수 카드로</a>'+
+      '</div>';
+    main.querySelector('#cert-save').addEventListener('click', ()=>this.saveName());
+    main.querySelector('#cert-print').addEventListener('click', ()=>window.print());
+  },
+  saveName(){
+    const input = document.getElementById('cert-name');
+    State.data.settings.studentName = input.value.trim();
+    State.save();
+    Util.toast('✅ 이름이 저장됐어요!');
+  }
+};
+
+/* ===== DEBUG SELF-CHECK ===== */
+function debugSelfCheck(){
+  const errors = [];
+  Object.keys(UNITS).forEach(unitId=>{
+    const unit = UNITS[unitId];
+    const allCatIds = {};
+    unit.subunits.forEach(su=>su.categories.forEach(c=>{ allCatIds[c.id]=true; }));
+    const subIds = {};
+    unit.subunits.forEach(s=>{ subIds[s.id]=true; });
+
+    unit.scenarios.forEach(sc=>{
+      if(!allCatIds[sc.categoryId]) errors.push(unitId+' scenario '+sc.id+': unknown categoryId '+sc.categoryId);
+      if(!subIds[sc.subunitId]) errors.push(unitId+' scenario '+sc.id+': unknown subunitId '+sc.subunitId);
+      const ids = sc.options.map(o=>o.id);
+      if(new Set(ids).size !== ids.length) errors.push(unitId+' scenario '+sc.id+': duplicate option ids');
+      if(!sc.options.some(o=>o.correct)) errors.push(unitId+' scenario '+sc.id+': no correct option');
+    });
+    unit.quiz.pool.forEach(q=>{
+      if(!allCatIds[q.categoryId]) errors.push(unitId+' quiz '+q.id+': unknown categoryId '+q.categoryId);
+      if(q.answerIndex<0 || q.answerIndex>=q.choices.length) errors.push(unitId+' quiz '+q.id+': bad answerIndex');
+    });
+    unit.detectivePool.forEach(d=>{
+      if(!allCatIds[d.categoryId]) errors.push(unitId+' detective '+d.id+': unknown categoryId');
+      if(d.errorStepIndex<0 || d.errorStepIndex>=d.wrongSteps.length) errors.push(unitId+' detective '+d.id+': bad errorStepIndex');
+    });
+    unit.procedureRecipes.forEach(r=>{
+      if(!allCatIds[r.categoryId]) errors.push(unitId+' recipe '+r.id+': unknown categoryId');
+      if(!r.steps || r.steps.length<2) errors.push(unitId+' recipe '+r.id+': too few steps');
+    });
+    const validTiers = {basic:true, extra:true, advanced:true};
+    const tierCounts = {};
+    unit.assessment.pool.forEach(q=>{
+      if(!subIds[q.subunitId]) errors.push(unitId+' assessment '+q.id+': unknown subunitId');
+      if(!validTiers[q.tier]) errors.push(unitId+' assessment '+q.id+': unknown tier '+q.tier);
+      if(q.type==='mcq' && (q.answerIndex<0 || q.answerIndex>=q.choices.length)) errors.push(unitId+' assessment '+q.id+': bad answerIndex');
+      if(q.type==='fill' && !q.answer) errors.push(unitId+' assessment '+q.id+': missing answer');
+      const key = q.subunitId+'/'+q.tier;
+      tierCounts[key] = (tierCounts[key]||0) + 1;
+    });
+    unit.subunits.forEach(s=>{
+      Object.keys(validTiers).forEach(t=>{
+        const key = s.id+'/'+t;
+        if(!tierCounts[key]) errors.push(unitId+' assessment: no items for '+key);
+      });
+    });
+  });
+
+  if(errors.length){ console.error('DATA CHECK FAILED', errors); }
+  else console.log('DATA CHECK OK');
+}
+
+/* ===== ROUTES ===== */
+Router.add('/', function(main){ Views.Home.render(main); });
+Router.add('/:unitId', function(main, params){ Views.UnitHome.render(main, params); });
+Router.add('/:unitId/compare/:subunitId', function(main, params){ Views.Compare.render(main, params); });
+Router.add('/:unitId/compare', function(main, params){
+  const unit = UNITS[params.unitId];
+  if(!unit){ Views.Compare.render(main, params); return; }
+  Views.Compare.render(main, {unitId:params.unitId, subunitId: unit.subunits[0].id});
+});
+Router.add('/:unitId/input/:subunitId', function(main, params){ Views.Input.render(main, params); });
+Router.add('/:unitId/input', function(main, params){
+  const unit = UNITS[params.unitId];
+  if(!unit){ Views.Input.render(main, params); return; }
+  Views.Input.render(main, {unitId:params.unitId, subunitId: unit.subunits[0].id});
+});
+Router.add('/:unitId/quiz', function(main, params){ Views.Quiz.render(main, params); });
+Router.add('/:unitId/quiz/detective', function(main, params){ Views.Detective.render(main, params); });
+Router.add('/:unitId/quiz/order', function(main, params){ Views.OrderGame.render(main, params); });
+Router.add('/:unitId/quiz/speed', function(main, params){ Views.Speed.render(main, params); });
+Router.add('/:unitId/assessment', function(main, params){ Views.Assessment.render(main, params); });
+Router.add('/:unitId/assessment/:subunitId', function(main, params){ Views.Assessment.render(main, params); });
+Router.add('/:unitId/assessment/:subunitId/:tier', function(main, params){ Views.Assessment.render(main, params); });
+Router.add('/:unitId/portfolio', function(main, params){ Views.Portfolio.render(main, params); });
+Router.add('/:unitId/certificate', function(main, params){ Views.Certificate.render(main, params); });
+
+window.addEventListener('hashchange', function(){ Router.render(); });
+window.addEventListener('DOMContentLoaded', function(){
+  if(location.search.indexOf('debug=1')>=0) debugSelfCheck();
+  Router.render();
+});
+
+})();
+</script>
+</body>
+</html>

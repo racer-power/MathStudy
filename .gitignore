@@ -1,0 +1,8 @@
+debug.log
+.claude/scheduled_tasks.lock
+UserscAppDataLocalTempclaudeC--Users-c-Desktop-projects-20260825-Math-Study*
+
+# 출판사 교재 PDF(선생님용)는 공개 저장소에 올리지 않음
+*.pdf
+debug.log
+ocr-pdf.ps1
