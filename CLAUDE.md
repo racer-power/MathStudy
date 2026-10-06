@@ -10,6 +10,15 @@
 
 빌드 시스템도, 패키지 매니저도, 테스트 러너도 없습니다. 앱 전체가 `index.html` 하나입니다.
 
+## 배포 (GitHub Pages)
+
+2026-10-06부터 학생용 배포 주소는 **https://racer-power.github.io/MathStudy/** 입니다(저장소 `racer-power/MathStudy`, **공개**, Pages 소스 = `main` 브랜치 루트). 고친 뒤 `main`에 커밋하고 `git push`하면 1~2분 안에 자동으로 반영됩니다.
+
+- **브랜치 구조**: 로컬 `master`는 예전 기록 보관용입니다. 동아출판 **선생님용 단원평가 PDF**가 커밋돼 있어서 **절대 푸시하면 안 됩니다**(저작권). 공개용 `main`은 `master`의 최종 상태에서 앱 파일(`index.html`, `CLAUDE.md`, `prd.md`, `smoke-test.js`, `.gitignore`)만 담아 새로 시작한 orphan 브랜치입니다. 앞으로의 작업은 `main`에서 하세요. `.gitignore`가 `*.pdf`, `debug.log`, `ocr-pdf.ps1`을 제외하므로 PDF는 폴더에 그대로 있어도 커밋되지 않습니다. 커밋 전에 `git status`로 PDF가 끼지 않았는지 확인하세요.
+- **커밋 이메일**: GitHub 계정이 이메일 비공개 설정이라 실제 이메일로 만든 커밋은 푸시가 거부됩니다(`push declined due to email privacy restrictions`, 실제로 겪음). 그래서 이 저장소의 `git config user.email`을 `287853451+racer-power@users.noreply.github.com`으로 설정해 두었습니다.
+- **진도 데이터**: `localStorage`는 출처(주소)별로 따로 저장됩니다. 그래서 `file://`로 열던 학생이 Pages 주소로 옮기면 그 주소에서는 진도가 처음부터 시작합니다(키 `fractionDojo.state`는 같아도 출처가 다름).
+- Claude 아티팩트로 게시하는 방식은 검토만 하고 쓰지 않았습니다(샌드박스에서 localStorage가 유지되지 않을 수 있어 진도 저장이 불확실함).
+
 ## 실행 방법
 
 `index.html`을 브라우저에서 직접 열면 됩니다(더블클릭 또는 `file://...`). 설치 과정 없음.
