@@ -1211,6 +1211,411 @@ const UNITS = {
       {id:'s3-a19', subunitId:'buildAndCount', tier:'advanced', difficulty:'중', type:'mcq', prompt:'가장 작은 정육면체(한 모서리 4칸)를 만드는 데 필요한 쌓기나무는?', diagram:[[4,4,4,4],[4,4,4,4],[4,4,4,4],[4,4,4,4]], choices:['64개','16개','48개','12개'], answerIndex:0, explanation:'4×4×4=64개예요.'},
       {id:'s3-a20', subunitId:'buildAndCount', tier:'advanced', difficulty:'중', type:'fill', prompt:'쌓기나무 20개가 있고 정육면체(한 모서리 3칸)를 만들려면 ______개가 더 필요합니다.', diagram:[[3,3,3],[3,3,3],[3,3,3]], answer:'7', explanation:'3×3×3=27, 27-20=7개예요.'}
     ]}
+  },
+
+  unit4: {
+    id:'unit4', title:'비례식과 비례배분', icon:'⚖️', unitNumber:4, tagline:'비의 성질로 비례식을 세우고, 전체를 비로 똑같이 나누는 단원이에요.',
+    subunits:[
+      { id:'ratioBasics', title:'7관 · 비의 성질과 비례식', icon:'🔗', tagline:'비의 성질로 비율이 같은 비를 만들고, 간단한 자연수의 비와 비례식을 익혀요.', categories:[
+        { id:'ratioProp', label:'비의 성질', icon:'⚖️', color:'#4a7bbf', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'rp-co-1', text:'비 a:b에서 앞의 수 a를 전항, 뒤의 수 b를 후항이라고 해요.'},
+            {id:'rp-co-2', text:'전항과 후항에 0이 아닌 같은 수를 곱하거나 나누어도 비율은 같아요.'}
+          ]},
+          { groupId:'steps', label:'만드는 순서', icon:'👣', items:[
+            {id:'rp-st-1', text:'1) 비의 전항과 후항을 찾아요.'},
+            {id:'rp-st-2', text:'2) 전항과 후항에 0이 아닌 같은 수를 곱하거나 나누어요.'},
+            {id:'rp-st-3', text:'3) 새로 만든 비의 비율이 처음과 같은지 확인해요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'rp-ex-1', text:'2:3의 전항과 후항에 4를 곱하면 8:12이고, 두 비의 비율은 같아요.'},
+            {id:'rp-ex-2', text:'12:18의 전항과 후항을 6으로 나누면 2:3이에요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'rp-ca-1', text:'같은 수를 더하거나 빼면 비율이 달라져요. 2:3에 각각 4를 더한 6:7은 비율이 달라요.'},
+            {id:'rp-ca-2', text:'전항과 후항 중 한쪽에만 곱하거나 나누면 안 돼요. 반드시 둘 다 같은 수로 해야 해요.'}
+          ]}
+        ]},
+        { id:'simplify', label:'간단한 자연수의 비', icon:'🧮', color:'#6a8f4e', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'sm-co-1', text:'소수나 분수의 비도 비의 성질을 이용하면 간단한 자연수의 비로 나타낼 수 있어요.'},
+            {id:'sm-co-2', text:'소수의 비는 10, 100 등을, 분수의 비는 두 분모의 공배수를 전항과 후항에 곱해요.'}
+          ]},
+          { groupId:'steps', label:'나타내는 순서', icon:'👣', items:[
+            {id:'sm-st-1', text:'1) 소수는 10, 100…을, 분수는 분모의 공배수를 전항과 후항에 곱해요.'},
+            {id:'sm-st-2', text:'2) 두 수가 모두 자연수가 되었는지 확인해요.'},
+            {id:'sm-st-3', text:'3) 두 수의 최대공약수로 나누어 더 간단하게 만들어요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'sm-ex-1', text:'0.5:1.7은 전항과 후항에 10을 곱해 5:17이에요.'},
+            {id:'sm-ex-2', text:'1/4:1/10은 전항과 후항에 20을 곱해 5:2예요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'sm-ca-1', text:'전항과 후항에 반드시 같은 수를 곱해야 해요. 한쪽에만 곱하면 비율이 달라져요.'},
+            {id:'sm-ca-2', text:'전항과 후항의 순서는 바뀌지 않아요. 0.4:0.6은 3:2가 아니라 2:3이에요.'}
+          ]}
+        ]},
+        { id:'propDef', label:'비례식 알기', icon:'🟰', color:'#d08a39', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'pd-co-1', text:'비율이 같은 두 비를 기호 =를 사용하여 나타낸 식을 비례식이라고 해요.'},
+            {id:'pd-co-2', text:'비례식 3:4=6:8에서 바깥쪽 두 수 3과 8을 외항, 안쪽 두 수 4와 6을 내항이라고 해요.'}
+          ]},
+          { groupId:'steps', label:'세우는 순서', icon:'👣', items:[
+            {id:'pd-st-1', text:'1) 두 비의 비율을 각각 구하거나 비의 성질로 같은 비인지 확인해요.'},
+            {id:'pd-st-2', text:'2) 비율이 같으면 두 비를 기호 =로 이어 비례식으로 써요.'},
+            {id:'pd-st-3', text:'3) 바깥쪽 두 수는 외항, 안쪽 두 수는 내항으로 찾아요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'pd-ex-1', text:'1/5:1/2와 10:25는 비율이 모두 2/5로 같으니 1/5:1/2=10:25라고 쓸 수 있어요.'},
+            {id:'pd-ex-2', text:'8:13=24:39에서 외항은 8과 39, 내항은 13과 24예요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'pd-ca-1', text:'비율이 다른 두 비는 =로 이을 수 없어요. 2:3과 4:7은 비례식이 아니에요.'},
+            {id:'pd-ca-2', text:'전항·후항은 비 하나에서, 외항·내항은 비례식 전체에서 쓰는 말이에요. 서로 헷갈리지 않아요.'}
+          ]}
+        ]}
+      ]},
+      { id:'proportionApply', title:'8관 · 비례식의 성질과 비례배분', icon:'🍰', tagline:'외항의 곱과 내항의 곱으로 모르는 항을 구하고, 전체를 주어진 비로 나누어요.', categories:[
+        { id:'propRule', label:'비례식의 성질', icon:'✖️', color:'#b5546b', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'pr-co-1', text:'비례식에서 외항의 곱과 내항의 곱은 항상 같아요.'},
+            {id:'pr-co-2', text:'이 성질을 이용하면 비례식에서 모르는 항을 구할 수 있어요.'}
+          ]},
+          { groupId:'steps', label:'푸는 순서', icon:'👣', items:[
+            {id:'pr-st-1', text:'1) 모르는 항을 □로 놓아요.'},
+            {id:'pr-st-2', text:'2) 외항의 곱과 내항의 곱이 같다는 식을 세워요.'},
+            {id:'pr-st-3', text:'3) 나눗셈으로 □를 구해요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'pr-ex-1', text:'3:5=9:□에서 3×□=5×9=45이므로 □=45÷3=15예요.'},
+            {id:'pr-ex-2', text:'외항의 곱이 108인 9:4=□:□은 9×12=108이므로 9:4=27:12예요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'pr-ca-1', text:'외항은 외항끼리, 내항은 내항끼리 곱해요. 외항과 내항을 섞어 곱하면 안 돼요.'},
+            {id:'pr-ca-2', text:'곱한 값에서 □를 구할 때는 곱하기가 아니라 나누기를 해요.'}
+          ]}
+        ]},
+        { id:'propUse', label:'비례식 활용하기', icon:'🛒', color:'#3f9e8f', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'pu-co-1', text:'두 양의 비율이 늘 같은 상황은 비례식으로 나타내 문제를 풀 수 있어요.'},
+            {id:'pu-co-2', text:'모르는 양을 □로 놓고 비례식을 세운 뒤 비례식의 성질로 구해요.'}
+          ]},
+          { groupId:'steps', label:'푸는 순서', icon:'👣', items:[
+            {id:'pu-st-1', text:'1) 같은 종류의 양끼리 같은 자리에 놓아 비례식을 세워요.'},
+            {id:'pu-st-2', text:'2) 외항의 곱과 내항의 곱이 같다는 식으로 □를 구해요.'},
+            {id:'pu-st-3', text:'3) 구한 값에 알맞은 단위를 붙여 답을 써요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'pu-ex-1', text:'지우개 8개가 4000원이면 3개는 8:4000=3:□이므로 1500원이에요.'},
+            {id:'pu-ex-2', text:'밀가루와 설탕을 12:5로 섞을 때 설탕이 25g이면 12:5=□:25이므로 밀가루는 60g이에요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'pu-ca-1', text:'개수는 개수끼리, 가격은 가격끼리 같은 자리에 놓아야 해요.'},
+            {id:'pu-ca-2', text:'구한 □가 무엇을 뜻하는지 확인하고 단위를 꼭 붙여요.'}
+          ]}
+        ]},
+        { id:'share', label:'비례배분', icon:'🍰', color:'#8a5fb5', sections:[
+          { groupId:'concept', label:'원리', icon:'💡', items:[
+            {id:'sh-co-1', text:'전체를 주어진 비로 나누는 것을 비례배분이라고 해요.'},
+            {id:'sh-co-2', text:'각 몫은 전체에 (그 항)/(비의 합)을 곱해서 구해요.'}
+          ]},
+          { groupId:'steps', label:'나누는 순서', icon:'👣', items:[
+            {id:'sh-st-1', text:'1) 비의 전항과 후항을 더해 비의 합을 구해요.'},
+            {id:'sh-st-2', text:'2) 전체에 각 항/비의 합을 곱해 몫을 구해요.'},
+            {id:'sh-st-3', text:'3) 두 몫을 더해 전체와 같은지 확인해요.'}
+          ]},
+          { groupId:'example', label:'실전 예제', icon:'⚔️', items:[
+            {id:'sh-ex-1', text:'150을 2:3으로 비례배분하면 150×2/5=60, 150×3/5=90이에요.'},
+            {id:'sh-ex-2', text:'42를 3:4로 비례배분하면 42×3/7=18, 42×4/7=24예요.'}
+          ]},
+          { groupId:'caution', label:'주의 급소', icon:'⚠️', items:[
+            {id:'sh-ca-1', text:'분모는 항 하나가 아니라 비의 합이에요. 150×2/3이 아니라 150×2/5예요.'},
+            {id:'sh-ca-2', text:'비의 순서대로 몫을 짝지어요. 2:3이면 앞의 사람이 2에 해당하는 몫을 가져요.'}
+          ]}
+        ]}
+      ]}
+    ],
+    scenarios:[
+      { id:'rs1', subunitId:'ratioBasics', categoryId:'ratioProp', icon:'🔖', title:'전항과 후항 찾기',
+        prompt:'비 4:7에서 전항과 후항을 바르게 말한 것을 고르세요.',
+        options:[
+          {id:'rs1-1', text:'4가 후항이고 7이 전항이에요.', correct:false},
+          {id:'rs1-2', text:'4와 7은 모두 전항이에요.', correct:false},
+          {id:'rs1-3', text:'4가 전항이고 7이 후항이에요.', correct:true},
+          {id:'rs1-4', text:'4와 7은 모두 후항이에요.', correct:false}
+        ]},
+      { id:'rs2', subunitId:'ratioBasics', categoryId:'ratioProp', icon:'✨', title:'비율이 같은 비 만들기',
+        prompt:'2:3과 비율이 같은 비를 만들려고 해요. 알맞은 방법을 고르세요.',
+        options:[
+          {id:'rs2-1', text:'전항과 후항에 각각 4를 더해 6:7을 만들어요.', correct:false},
+          {id:'rs2-2', text:'전항과 후항에 각각 4를 곱해 8:12를 만들어요.', correct:true},
+          {id:'rs2-3', text:'전항에만 4를 곱해 8:3을 만들어요.', correct:false},
+          {id:'rs2-4', text:'후항에만 4를 곱해 2:12를 만들어요.', correct:false}
+        ]},
+      { id:'rs3', subunitId:'ratioBasics', categoryId:'simplify', icon:'🔟', title:'소수의 비 간단히 하기',
+        prompt:'0.4:0.6을 간단한 자연수의 비로 나타내면 무엇일까요?',
+        options:[
+          {id:'rs3-1', text:'3:2', correct:false},
+          {id:'rs3-2', text:'1:2', correct:false},
+          {id:'rs3-3', text:'4:3', correct:false},
+          {id:'rs3-4', text:'2:3', correct:true}
+        ]},
+      { id:'rs4', subunitId:'ratioBasics', categoryId:'simplify', icon:'🍕', title:'분수의 비 간단히 하기',
+        prompt:'1/3:1/6을 간단한 자연수의 비로 나타내면 무엇일까요? (두 분모 3과 6의 공배수 6을 곱해 보세요.)',
+        options:[
+          {id:'rs4-1', text:'2:1', correct:true},
+          {id:'rs4-2', text:'1:2', correct:false},
+          {id:'rs4-3', text:'3:6', correct:false},
+          {id:'rs4-4', text:'6:3', correct:false}
+        ]},
+      { id:'rs5', subunitId:'ratioBasics', categoryId:'propDef', icon:'🎯', title:'외항 찾기',
+        prompt:'비례식 3:4=9:12에서 외항은 어느 것일까요?',
+        options:[
+          {id:'rs5-1', text:'4와 9', correct:false},
+          {id:'rs5-2', text:'3과 4', correct:false},
+          {id:'rs5-3', text:'9와 12', correct:false},
+          {id:'rs5-4', text:'3과 12', correct:true}
+        ]},
+      { id:'rs6', subunitId:'ratioBasics', categoryId:'propDef', icon:'🟰', title:'비례식 고르기',
+        prompt:'다음 중 비례식인 것을 고르세요.',
+        options:[
+          {id:'rs6-1', text:'2:5=4:10', correct:true},
+          {id:'rs6-2', text:'2:5=4:8', correct:false},
+          {id:'rs6-3', text:'2:5=4:9', correct:false},
+          {id:'rs6-4', text:'2:5=6:10', correct:false}
+        ]},
+      { id:'rs7', subunitId:'proportionApply', categoryId:'propRule', icon:'✖️', title:'모르는 항 구하기',
+        prompt:'비례식 3:5=9:□에서 □에 알맞은 수는 얼마일까요?',
+        options:[
+          {id:'rs7-1', text:'45', correct:false},
+          {id:'rs7-2', text:'27', correct:false},
+          {id:'rs7-3', text:'21', correct:false},
+          {id:'rs7-4', text:'15', correct:true}
+        ]},
+      { id:'rs8', subunitId:'proportionApply', categoryId:'propRule', icon:'⚖️', title:'외항의 곱과 내항의 곱',
+        prompt:'어떤 비례식에서 외항의 곱이 36이에요. 내항의 곱은 얼마일까요?',
+        options:[
+          {id:'rs8-1', text:'36', correct:true},
+          {id:'rs8-2', text:'6', correct:false},
+          {id:'rs8-3', text:'72', correct:false},
+          {id:'rs8-4', text:'18', correct:false}
+        ]},
+      { id:'rs9', subunitId:'proportionApply', categoryId:'propUse', icon:'🎀', title:'리본 값 구하기',
+        prompt:'리본 4m의 값이 800원이에요. 같은 리본 10m의 값은 얼마일까요?',
+        options:[
+          {id:'rs9-1', text:'1000원', correct:false},
+          {id:'rs9-2', text:'3200원', correct:false},
+          {id:'rs9-3', text:'2000원', correct:true},
+          {id:'rs9-4', text:'8000원', correct:false}
+        ]},
+      { id:'rs10', subunitId:'proportionApply', categoryId:'propUse', icon:'📖', title:'읽을 수 있는 쪽수',
+        prompt:'3분에 15쪽을 읽는 빠르기로 12분 동안 읽으면 모두 몇 쪽을 읽을 수 있을까요?',
+        options:[
+          {id:'rs10-1', text:'60쪽', correct:true},
+          {id:'rs10-2', text:'45쪽', correct:false},
+          {id:'rs10-3', text:'36쪽', correct:false},
+          {id:'rs10-4', text:'20쪽', correct:false}
+        ]},
+      { id:'rs11', subunitId:'proportionApply', categoryId:'share', icon:'🍬', title:'사탕 나누기',
+        prompt:'사탕 40개를 3:5로 나누어 가질 때, 3에 해당하는 사람은 몇 개를 가질까요?',
+        options:[
+          {id:'rs11-1', text:'25개', correct:false},
+          {id:'rs11-2', text:'24개', correct:false},
+          {id:'rs11-3', text:'8개', correct:false},
+          {id:'rs11-4', text:'15개', correct:true}
+        ]},
+      { id:'rs12', subunitId:'proportionApply', categoryId:'share', icon:'📄', title:'색종이 나누기',
+        prompt:'색종이 48장을 현수와 지아가 5:3으로 나누어 가져요. 지아는 몇 장을 가질까요?',
+        options:[
+          {id:'rs12-1', text:'18장', correct:true},
+          {id:'rs12-2', text:'30장', correct:false},
+          {id:'rs12-3', text:'16장', correct:false},
+          {id:'rs12-4', text:'9장', correct:false}
+        ]}
+    ],
+    quiz:{ pool:[
+      {id:'s4-q1', categoryId:'ratioProp', kind:'word', prompt:'비 5:8에서 전항은 무엇인가요?', choices:['5','8','13','3'], answerIndex:0, explanation:'비 앞에 있는 수 5가 전항, 뒤에 있는 수 8이 후항이에요.'},
+      {id:'s4-q2', categoryId:'ratioProp', kind:'fact', prompt:'2:3의 전항과 후항에 각각 2를 곱한 4:6은 2:3과 비율이 같다.', choices:['맞다','틀리다','가끔 맞다','모르겠다'], answerIndex:0, explanation:'전항과 후항에 0이 아닌 같은 수를 곱해도 비율은 같아요.'},
+      {id:'s4-q3', categoryId:'ratioProp', kind:'word', prompt:'6:9와 비율이 같은 비는?', choices:['6:3','2:3','3:2','9:6'], answerIndex:1, explanation:'6:9의 전항과 후항을 3으로 나누면 2:3이에요.'},
+      {id:'s4-q4', categoryId:'ratioProp', kind:'fact', prompt:'전항과 후항에 같은 수를 더해도 비율은 변하지 않는다.', choices:['맞다','틀리다','항상 같다','모르겠다'], answerIndex:1, explanation:'비율이 변하지 않는 것은 같은 수를 곱하거나 나눌 때예요. 더하면 비율이 달라져요.'},
+      {id:'s4-q5', categoryId:'simplify', kind:'word', prompt:'0.5:0.7을 간단한 자연수의 비로 나타내면?', choices:['7:5','1:2','5:7','50:7'], answerIndex:2, explanation:'전항과 후항에 10을 곱하면 5:7이에요.'},
+      {id:'s4-q6', categoryId:'simplify', kind:'word', prompt:'1/2:1/3을 간단한 자연수의 비로 나타내면?', choices:['2:3','1:6','1:1','3:2'], answerIndex:3, explanation:'분모 2와 3의 공배수 6을 곱하면 3:2예요.'},
+      {id:'s4-q7', categoryId:'simplify', kind:'fact', prompt:'소수의 비는 전항과 후항에 10, 100 같은 수를 곱해 자연수의 비로 나타낼 수 있다.', choices:['맞다','틀리다','가끔 맞다','모르겠다'], answerIndex:0, explanation:'소수점을 없애도록 10, 100…을 곱하면 자연수의 비가 돼요.'},
+      {id:'s4-q8', categoryId:'simplify', kind:'word', prompt:'16:24를 간단한 자연수의 비로 나타내면?', choices:['3:2','8:3','4:5','2:3'], answerIndex:3, explanation:'16과 24의 최대공약수 8로 나누면 2:3이에요.'},
+      {id:'s4-q9', categoryId:'propDef', kind:'word', prompt:'비례식 3:4=6:8에서 외항은?', choices:['4와 6','3과 8','3과 4','6과 8'], answerIndex:1, explanation:'바깥쪽에 있는 3과 8이 외항이에요.'},
+      {id:'s4-q10', categoryId:'propDef', kind:'fact', prompt:'비율이 다른 두 비를 기호 =로 이으면 비례식이 된다.', choices:['맞다','틀리다','항상 맞다','모르겠다'], answerIndex:1, explanation:'비례식은 비율이 같은 두 비를 =로 나타낸 식이에요.'},
+      {id:'s4-q11', categoryId:'propDef', kind:'word', prompt:'비례식 5:7=10:14에서 내항은?', choices:['5와 14','5와 7','7과 10','10과 14'], answerIndex:2, explanation:'안쪽에 있는 7과 10이 내항이에요.'},
+      {id:'s4-q12', categoryId:'propDef', kind:'word', prompt:'다음 중 비례식은 어느 것일까요?', choices:['3:5=6:8','3:5=5:3','3:5=3:6','3:5=6:10'], answerIndex:3, explanation:'3:5와 6:10은 비율이 3/5로 같아요.'},
+      {id:'s4-q13', categoryId:'propRule', kind:'word', prompt:'비례식 3:4=6:8에서 외항의 곱은?', choices:['12','18','24','48'], answerIndex:2, explanation:'외항 3과 8을 곱하면 3×8=24예요.'},
+      {id:'s4-q14', categoryId:'propRule', kind:'fact', prompt:'비례식에서 외항의 곱과 내항의 곱은 같다.', choices:['맞다','틀리다','가끔 같다','모르겠다'], answerIndex:0, explanation:'비례식의 성질이에요.'},
+      {id:'s4-q15', categoryId:'propRule', kind:'word', prompt:'비례식 2:5=□:15에서 □에 알맞은 수는?', choices:['12','6','3','37'], answerIndex:1, explanation:'2×15=5×□이므로 □=30÷5=6이에요.'},
+      {id:'s4-q16', categoryId:'propRule', kind:'word', prompt:'비례식 4:□=12:9에서 □에 알맞은 수는?', choices:['5','27','3','48'], answerIndex:2, explanation:'4×9=□×12이므로 □=36÷12=3이에요.'},
+      {id:'s4-q17', categoryId:'propUse', kind:'word', prompt:'연필 3자루가 900원일 때 같은 연필 5자루의 값은?', choices:['540원','1200원','1500원','2700원'], answerIndex:2, explanation:'3:900=5:□이므로 □=900×5÷3=1500(원)이에요.'},
+      {id:'s4-q18', categoryId:'propUse', kind:'fact', prompt:'같은 빠르기로 달릴 때 달린 시간이 2배가 되면 달린 거리도 2배가 된다.', choices:['맞다','틀리다','그대로이다','모르겠다'], answerIndex:0, explanation:'빠르기가 일정하면 시간과 거리의 비율이 같아요.'},
+      {id:'s4-q19', categoryId:'propUse', kind:'word', prompt:'휘발유 2L로 20km를 가는 자동차는 같은 빠르기로 휘발유 10L로 몇 km를 갈까요?', choices:['40km','50km','100km','200km'], answerIndex:2, explanation:'2:20=10:□이므로 □=20×10÷2=100(km)예요.'},
+      {id:'s4-q20', categoryId:'propUse', kind:'word', prompt:'비례식을 세울 때 가장 먼저 해야 할 일은?', choices:['아무 수나 곱한다','같은 종류의 양끼리 같은 자리에 놓는다','답을 짐작해 쓴다','단위를 모두 지운다'], answerIndex:1, explanation:'같은 종류끼리 같은 자리에 놓아야 비례식이 바르게 세워져요.'},
+      {id:'s4-q21', categoryId:'share', kind:'word', prompt:'20을 1:4로 비례배분했을 때 더 큰 몫은?', choices:['4','5','16','20'], answerIndex:2, explanation:'20×4/5=16이에요.'},
+      {id:'s4-q22', categoryId:'share', kind:'word', prompt:'2:3으로 비례배분하려고 할 때, 비의 합은?', choices:['6','1','23','5'], answerIndex:3, explanation:'2+3=5예요.'},
+      {id:'s4-q23', categoryId:'share', kind:'fact', prompt:'비례배분한 두 몫을 더하면 처음 전체와 같아야 한다.', choices:['맞다','틀리다','가끔 맞다','모르겠다'], answerIndex:0, explanation:'전체를 나눈 것이므로 몫의 합은 전체와 같아요.'},
+      {id:'s4-q24', categoryId:'share', kind:'word', prompt:'60을 2:3으로 비례배분하면 각각 얼마일까요?', choices:['20과 40','30과 30','24와 36','12와 48'], answerIndex:2, explanation:'60×2/5=24, 60×3/5=36이에요.'}
+    ]},
+    detectivePool:[
+      { id:'s4-d1', categoryId:'ratioProp', errorStepIndex:1, wrongSteps:[
+        '2:3의 전항 2와 후항 3을 찾는다.',
+        '전항에는 4를 곱하고 후항에는 4를 더한다.',
+        '전항과 후항에 같은 수를 곱해야 비율이 같다는 것을 기억한다.',
+        '전항과 후항에 모두 4를 곱해 8:12를 만든다.'
+      ], problem:'2:3과 비율이 같은 비 8:12를 만드는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'전항과 후항에는 같은 수를 곱해야 해요. 한쪽은 곱하고 한쪽은 더하면 비율이 달라져요.'},
+      { id:'s4-d2', categoryId:'ratioProp', errorStepIndex:2, wrongSteps:[
+        '12:18의 전항 12와 후항 18을 찾는다.',
+        '두 수를 모두 나눌 수 있는 6을 찾는다.',
+        '전항은 6으로 나누고 후항은 그대로 둔다.',
+        '전항과 후항을 모두 6으로 나누면 2:3이 된다.'
+      ], problem:'12:18과 비율이 같은 비를 구하는 과정이에요. 어느 단계가 잘못되었을까요?', explanation:'전항과 후항을 같은 수로 나누어야 해요. 한쪽만 나누면 비율이 달라져요.'},
+      { id:'s4-d3', categoryId:'simplify', errorStepIndex:3, wrongSteps:[
+        '0.4:0.6의 전항과 후항에 각각 10을 곱한다.',
+        '4:6이 된다.',
+        '4와 6의 최대공약수 2로 전항과 후항을 나눈다.',
+        '전항과 후항의 순서를 바꿔 답을 3:2라고 한다.'
+      ], problem:'0.4:0.6을 간단한 자연수의 비로 나타내는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'전항과 후항의 순서는 바뀌지 않아요. 답은 2:3이에요.'},
+      { id:'s4-d4', categoryId:'simplify', errorStepIndex:1, wrongSteps:[
+        '1/4:1/10에서 두 분모 4와 10의 공배수 20을 찾는다.',
+        '전항 1/4에는 20을 곱하고 후항 1/10에는 10을 곱한다.',
+        '전항과 후항에 같은 수를 곱해야 하므로 후항에도 20을 곱한다.',
+        '1/4×20=5, 1/10×20=2이므로 5:2이다.'
+      ], problem:'1/4:1/10을 간단한 자연수의 비로 나타내는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'전항과 후항에는 같은 수(20)를 곱해야 해요.'},
+      { id:'s4-d5', categoryId:'propDef', errorStepIndex:3, wrongSteps:[
+        '3:4의 비율은 3/4이다.',
+        '6:8의 비율도 3/4이다.',
+        '비율이 같으므로 3:4=6:8이라고 쓴다.',
+        '안쪽 4와 6이 외항, 바깥쪽 3과 8이 내항이다.'
+      ], problem:'비례식 3:4=6:8을 쓰고 외항과 내항을 찾는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'바깥쪽 3과 8이 외항, 안쪽 4와 6이 내항이에요. 반대로 말했어요.'},
+      { id:'s4-d6', categoryId:'propRule', errorStepIndex:3, wrongSteps:[
+        '모르는 항을 □로 놓아 3:5=9:□로 쓴다.',
+        '외항은 3과 □, 내항은 5와 9이다.',
+        '외항의 곱과 내항의 곱이 같으므로 3×□=5×9=45이다.',
+        '□=45×3=135이다.'
+      ], problem:'3:5=9:□에서 □를 구하는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'3×□=45이므로 □=45÷3=15예요. 곱하는 것이 아니라 나누어야 해요.'},
+      { id:'s4-d7', categoryId:'propRule', errorStepIndex:1, wrongSteps:[
+        '4:7=20:□로 놓는다.',
+        '외항과 내항을 섞어서 4×7과 20×□가 같다고 한다.',
+        '외항은 4와 □, 내항은 7과 20이므로 4×□=7×20이다.',
+        '4×□=140이므로 □=140÷4=35이다.'
+      ], problem:'4:7=20:□에서 □를 구하는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'외항끼리(4×□), 내항끼리(7×20) 곱해서 같다고 놓아야 해요.'},
+      { id:'s4-d8', categoryId:'propUse', errorStepIndex:1, wrongSteps:[
+        '지우개 8개가 4000원이고, 3개의 값을 □원이라고 한다.',
+        '8:4000=□:3으로 비례식을 세운다.',
+        '개수는 개수끼리, 가격은 가격끼리 놓아 8:4000=3:□로 고친다.',
+        '8×□=4000×3이므로 □=1500이다.'
+      ], problem:'지우개 8개가 4000원일 때 같은 지우개 3개의 값을 구하는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'개수와 가격을 섞어 놓으면 안 돼요. 같은 종류끼리 같은 자리에 놓아야 해요.'},
+      { id:'s4-d9', categoryId:'share', errorStepIndex:2, wrongSteps:[
+        '150을 2:3으로 나누려면 비의 합 2+3=5를 구한다.',
+        '민수의 몫은 150×2/5=60이다.',
+        '지아의 몫은 150×3/2=225라고 한다.',
+        '두 몫을 더해 전체와 같은지 확인한다.'
+      ], problem:'150을 2:3으로 비례배분하는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'분모는 비의 합 5예요. 150×3/5=90이에요.'},
+      { id:'s4-d10', categoryId:'share', errorStepIndex:0, wrongSteps:[
+        '비의 합을 3×4=12로 구한다.',
+        '영지의 몫은 42×3/12이다.',
+        '성찬이의 몫은 42×4/12이다.',
+        '두 몫을 더해 42가 되는지 확인한다.'
+      ], problem:'42를 3:4로 비례배분하는 과정이에요. 잘못된 단계를 찾아보세요.', explanation:'비의 합은 곱하지 않고 더해서 3+4=7이에요.'}
+    ],
+    procedureRecipes:[
+      { id:'s4-r1', categoryId:'ratioProp', title:'비율이 같은 비 만들기', steps:[
+        '전항과 후항을 찾는다',
+        '0이 아닌 같은 수를 전항과 후항에 곱하거나 나눈다',
+        '만든 비의 비율이 처음과 같은지 확인한다'
+      ]},
+      { id:'s4-r2', categoryId:'simplify', title:'간단한 자연수의 비로 나타내기', steps:[
+        '소수는 10, 100…을, 분수는 분모의 공배수를 전항과 후항에 곱한다',
+        '두 수가 모두 자연수가 되었는지 확인한다',
+        '두 수의 최대공약수로 나누어 더 간단하게 만든다'
+      ]},
+      { id:'s4-r3', categoryId:'propRule', title:'비례식에서 모르는 항 구하기', steps:[
+        '모르는 항을 □로 놓는다',
+        '외항의 곱과 내항의 곱이 같다는 식을 세운다',
+        '나눗셈으로 □를 구한다'
+      ]},
+      { id:'s4-r4', categoryId:'propUse', title:'비례식으로 문제 풀기', steps:[
+        '같은 종류의 양끼리 같은 자리에 놓아 비례식을 세운다',
+        '외항의 곱과 내항의 곱이 같다는 식으로 □를 구한다',
+        '알맞은 단위를 붙여 답을 쓴다'
+      ]},
+      { id:'s4-r5', categoryId:'share', title:'비례배분하기', steps:[
+        '전항과 후항을 더해 비의 합을 구한다',
+        '전체에 각 항/비의 합을 곱해 몫을 구한다',
+        '두 몫을 더해 전체와 같은지 확인한다'
+      ]}
+    ],
+    assessment:{ pool:[
+      /* ===== ratioBasics / 기본 (basic) ===== */
+      {id:'s4-b1', subunitId:'ratioBasics', tier:'basic', difficulty:'하', type:'mcq', prompt:'비 4:5에서 후항은 무엇인가요?', choices:['5','4','9','1'], answerIndex:0, explanation:'비에서 뒤에 있는 수 5가 후항이에요.'},
+      {id:'s4-b2', subunitId:'ratioBasics', tier:'basic', difficulty:'하', type:'fill', prompt:'비 7:9에서 전항은 ______입니다.', answer:'7', explanation:'비에서 앞에 있는 수 7이 전항이에요.'},
+      {id:'s4-b3', subunitId:'ratioBasics', tier:'basic', difficulty:'하', type:'mcq', prompt:'비의 성질을 이용하여 2:5와 비율이 같은 비를 찾으세요.', choices:['4:7','3:6','4:10','2:10'], answerIndex:2, explanation:'2:5의 전항과 후항에 2를 곱하면 4:10이에요.'},
+      {id:'s4-b4', subunitId:'ratioBasics', tier:'basic', difficulty:'하', type:'fill', prompt:'5:3의 전항과 후항에 각각 4를 곱하면 ______:12가 됩니다.', answer:'20', explanation:'5×4=20, 3×4=12이므로 20:12예요.'},
+      {id:'s4-b5', subunitId:'ratioBasics', tier:'basic', difficulty:'중', type:'mcq', prompt:'1/4:1/10을 간단한 자연수의 비로 나타내면?', choices:['2:5','1:4','5:2','4:10'], answerIndex:2, explanation:'두 분모 4와 10의 공배수 20을 곱하면 5:2예요.'},
+      {id:'s4-b6', subunitId:'ratioBasics', tier:'basic', difficulty:'중', type:'mcq', prompt:'1.2:1.8을 간단한 자연수의 비로 나타내면?', choices:['3:2','4:9','1:6','2:3'], answerIndex:3, explanation:'10을 곱해 12:18이고, 6으로 나누면 2:3이에요.'},
+      {id:'s4-b7', subunitId:'ratioBasics', tier:'basic', difficulty:'중', type:'fill', prompt:'0.5:1/20을 간단한 자연수의 비로 나타내세요. (예: 3:2 꼴로 쓰세요)', answer:'10:1', explanation:'0.5=1/2이므로 1/2:1/20에 20을 곱하면 10:1이에요.'},
+      {id:'s4-b8', subunitId:'ratioBasics', tier:'basic', difficulty:'중', type:'mcq', prompt:'비에 대한 설명이 잘못된 것을 고르세요.', choices:['4:7에서 7이 전항이고 4가 후항이다','12:6과 6:3은 비율이 같다','5:7과 25:35는 비율이 같다','2:3의 전항과 후항에 각각 2를 곱하면 4:6이다'], answerIndex:0, explanation:'4:7에서는 앞의 4가 전항, 뒤의 7이 후항이에요.'},
+      {id:'s4-b9', subunitId:'ratioBasics', tier:'basic', difficulty:'상', type:'mcq', prompt:'1.2:1.5=㉠:5, 3:㉡=9:24일 때 ㉠×㉡의 값은?', choices:['12','32','4','72'], answerIndex:1, explanation:'1.2:1.5=4:5이므로 ㉠=4, 3:8=9:24이므로 ㉡=8이에요. 4×8=32예요.'},
+      {id:'s4-b10', subunitId:'ratioBasics', tier:'basic', difficulty:'상', type:'mcq', prompt:'1/5:1/2, 35:15, 10:25 중에서 비율이 같은 두 비로 비례식을 바르게 세운 것은?', choices:['35:15=10:25','1/5:1/2=35:15','10:25=15:35','1/5:1/2=10:25'], answerIndex:3, explanation:'1/5:1/2와 10:25는 비율이 모두 2/5이므로 1/5:1/2=10:25가 돼요.'},
+      /* ===== ratioBasics / 보충 (extra) ===== */
+      {id:'s4-e1', subunitId:'ratioBasics', tier:'extra', difficulty:'하', type:'mcq', prompt:'비 11:7에서 후항은 무엇인가요?', choices:['11','18','4','7'], answerIndex:3, explanation:'뒤에 있는 수 7이 후항이에요.'},
+      {id:'s4-e2', subunitId:'ratioBasics', tier:'extra', difficulty:'하', type:'mcq', prompt:'다음 중 비례식은 어느 것인가요?', choices:['45÷5=9','3×4=2×6','4:12=2:6','8+10=24-6'], answerIndex:2, explanation:'비율이 같은 두 비를 =로 나타낸 식이 비례식이에요. 4:12와 2:6은 비율이 모두 1/3이에요.'},
+      {id:'s4-e3', subunitId:'ratioBasics', tier:'extra', difficulty:'하', type:'fill', prompt:'비례식 5:7=20:28에서 외항은 5와 ______ 입니다.', answer:'28', explanation:'바깥쪽의 5와 28이 외항이에요.'},
+      {id:'s4-e4', subunitId:'ratioBasics', tier:'extra', difficulty:'하', type:'fill', prompt:'0.5:1.7을 간단한 자연수의 비로 나타내세요. (예: 3:2 꼴로 쓰세요)', answer:'5:17', explanation:'전항과 후항에 10을 곱하면 5:17이에요.'},
+      {id:'s4-e5', subunitId:'ratioBasics', tier:'extra', difficulty:'중', type:'mcq', prompt:'다음 중 4:9와 비율이 같은 비는?', choices:['12:14','8:19','4:19','16:36'], answerIndex:3, explanation:'4:9의 전항과 후항에 4를 곱하면 16:36이에요.'},
+      {id:'s4-e6', subunitId:'ratioBasics', tier:'extra', difficulty:'중', type:'mcq', prompt:'다음 중 16:22와 비율이 같은 비는?', choices:['16:11','32:22','17:23','8:11'], answerIndex:3, explanation:'16:22의 전항과 후항을 2로 나누면 8:11이에요.'},
+      {id:'s4-e7', subunitId:'ratioBasics', tier:'extra', difficulty:'중', type:'fill', prompt:'1/2:1.5=□:3 에서 □에 알맞은 수를 구하세요.', answer:'1', explanation:'후항 1.5에 2를 곱하면 3이므로 전항 1/2에도 2를 곱해 1이에요.'},
+      {id:'s4-e8', subunitId:'ratioBasics', tier:'extra', difficulty:'중', type:'mcq', prompt:'반 학생 24명 중 안경을 낀 학생이 10명입니다. 안경을 낀 학생 수와 안경을 끼지 않은 학생 수의 비를 간단한 자연수의 비로 나타내면?', choices:['7:5','5:12','5:7','10:24'], answerIndex:2, explanation:'안경을 끼지 않은 학생은 14명이므로 10:14이고, 2로 나누면 5:7이에요.'},
+      {id:'s4-e9', subunitId:'ratioBasics', tier:'extra', difficulty:'상', type:'mcq', prompt:'1.2:1.5, 1/9:1/6, 0.2:1/4 중에서 비율이 같은 두 비로 비례식을 세운 것은?', choices:['1/9:1/6=1.5:1.2','1.2:1.5=0.2:1/4','1.2:1.5=1/9:1/6','1/9:1/6=0.2:1/4'], answerIndex:1, explanation:'1.2:1.5=4:5이고 0.2:1/4=0.2:0.25=4:5로 같아요. 1/9:1/6은 2:3이에요.'},
+      {id:'s4-e10', subunitId:'ratioBasics', tier:'extra', difficulty:'상', type:'mcq', prompt:'3:5의 전항에 6을 더했을 때 비율이 같으려면 후항에는 얼마를 더해야 하나요?', choices:['6','10','5','15'], answerIndex:1, explanation:'전항이 3에서 9가 되었으니 3배예요. 후항도 5×3=15가 되어야 하므로 10을 더해야 해요.'},
+      /* ===== ratioBasics / 심화 (advanced) ===== */
+      {id:'s4-a1', subunitId:'ratioBasics', tier:'advanced', difficulty:'하', type:'fill', prompt:'7:5의 전항과 후항에 각각 5를 곱하면 35:□ 입니다. □에 알맞은 수를 쓰세요.', answer:'25', explanation:'5×5=25이므로 35:25예요.'},
+      {id:'s4-a2', subunitId:'ratioBasics', tier:'advanced', difficulty:'하', type:'mcq', prompt:'비례식 9:7=36:28에서 내항이면서 후항인 수는?', choices:['9','36','7','28'], answerIndex:2, explanation:'내항은 7과 36이고, 그중 비 9:7의 후항은 7이에요.'},
+      {id:'s4-a3', subunitId:'ratioBasics', tier:'advanced', difficulty:'중', type:'mcq', prompt:'1/5:3/5를 간단한 자연수의 비로 나타내면?', choices:['3:1','1:3','5:3','1:5'], answerIndex:1, explanation:'전항과 후항에 5를 곱하면 1:3이에요.'},
+      {id:'s4-a4', subunitId:'ratioBasics', tier:'advanced', difficulty:'중', type:'fill', prompt:'비의 성질을 이용하여 3/4:5/4=12:□ 에서 □에 알맞은 수를 쓰세요.', answer:'20', explanation:'3/4에 16을 곱하면 12이므로 5/4에도 16을 곱해 20이에요.'},
+      {id:'s4-a5', subunitId:'ratioBasics', tier:'advanced', difficulty:'중', type:'mcq', prompt:'0.4:1.2와 비율이 같은 비는?', choices:['12:4','2:3','1:3','4:1'], answerIndex:2, explanation:'0.4:1.2에 10을 곱하면 4:12이고, 4로 나누면 1:3이에요.'},
+      {id:'s4-a6', subunitId:'ratioBasics', tier:'advanced', difficulty:'중', type:'mcq', prompt:'지아는 1.5:2.1을 5:7로, 선재는 2 3/5:1.6을 13:6으로 나타냈습니다. 바르게 나타낸 친구는?', choices:['선재','둘 다','지아','아무도 아니다'], answerIndex:2, explanation:'1.5:2.1=15:21=5:7은 맞아요. 2 3/5:1.6=13/5:8/5=13:8이므로 선재는 틀렸어요.'},
+      {id:'s4-a7', subunitId:'ratioBasics', tier:'advanced', difficulty:'중', type:'mcq', prompt:'비례식 4:7=24:42에 대한 설명 중 바른 것은?', choices:['외항은 4와 7이다','외항은 4와 42이고 내항은 7과 24이다','내항은 4와 42이다','외항은 24와 42이다'], answerIndex:1, explanation:'바깥쪽 4와 42가 외항, 안쪽 7과 24가 내항이에요.'},
+      {id:'s4-a8', subunitId:'ratioBasics', tier:'advanced', difficulty:'상', type:'fill', prompt:'0.36:3/50을 전항이 6인 간단한 자연수의 비로 나타낼 때 후항은 얼마인가요?', answer:'1', explanation:'3/50=0.06이므로 0.36:0.06=36:6=6:1이에요. 후항은 1이에요.'},
+      {id:'s4-a9', subunitId:'ratioBasics', tier:'advanced', difficulty:'상', type:'mcq', prompt:'비율이 3/8이고 외항의 곱이 240인 비례식은?', choices:['3:8=16:30','6:16=40:15','12:16=15:40','6:16=15:40'], answerIndex:3, explanation:'6:16의 비율은 3/8이고, 15:40의 비율도 3/8이에요. 외항 6×40=240이에요.'},
+      {id:'s4-a10', subunitId:'ratioBasics', tier:'advanced', difficulty:'상', type:'mcq', prompt:'▲가 같은 수일 때 11:▲=44:32, 56:32=□:▲입니다. □에 알맞은 수는?', choices:['8','14','11','32'], answerIndex:1, explanation:'11:▲=44:32에서 11×32=▲×44이므로 ▲=8이에요. 56:32=□:8에서 □=14예요.'},
+      /* ===== proportionApply / 기본 (basic) ===== */
+      {id:'s4-b11', subunitId:'proportionApply', tier:'basic', difficulty:'하', type:'mcq', prompt:'비례식 3:5=9:15에서 외항의 곱은?', choices:['27','45','14','24'], answerIndex:1, explanation:'외항 3과 15를 곱하면 3×15=45예요.'},
+      {id:'s4-b12', subunitId:'proportionApply', tier:'basic', difficulty:'하', type:'fill', prompt:'비례식 2:3=8:12에서 내항의 곱은 3×8= ______ 입니다.', answer:'24', explanation:'3×8=24예요.'},
+      {id:'s4-b13', subunitId:'proportionApply', tier:'basic', difficulty:'하', type:'mcq', prompt:'30을 2:3으로 비례배분하면 각각 얼마인가요?', choices:['20과 10','15와 15','6과 24','12와 18'], answerIndex:3, explanation:'30×2/5=12, 30×3/5=18이에요.'},
+      {id:'s4-b14', subunitId:'proportionApply', tier:'basic', difficulty:'하', type:'fill', prompt:'비례식 2:3=4:□ 에서 □에 알맞은 수를 쓰세요.', answer:'6', explanation:'전항 2에 2를 곱하면 4이므로 후항 3에도 2를 곱해 6이에요.'},
+      {id:'s4-b15', subunitId:'proportionApply', tier:'basic', difficulty:'중', type:'mcq', prompt:'밀가루와 설탕을 12:5의 비로 섞어 케이크를 만들려고 합니다. 설탕을 25g 넣는다면 밀가루는 몇 g 넣어야 하나요?', choices:['10g','30g','125g','60g'], answerIndex:3, explanation:'12:5=□:25이므로 5×□=12×25=300, □=60(g)이에요.'},
+      {id:'s4-b16', subunitId:'proportionApply', tier:'basic', difficulty:'중', type:'mcq', prompt:'다음 중 3:15와 비율이 같은 비는?', choices:['5:3','2:1','1:5','1:25'], answerIndex:2, explanation:'3:15의 전항과 후항을 3으로 나누면 1:5예요.'},
+      {id:'s4-b17', subunitId:'proportionApply', tier:'basic', difficulty:'중', type:'mcq', prompt:'외항의 곱이 108일 때, 9:4=□:□ 에 알맞은 두 수는?', choices:['18, 8','12, 27','36, 16','27, 12'], answerIndex:3, explanation:'9:4=27:12에서 외항의 곱은 9×12=108이에요.'},
+      {id:'s4-b18', subunitId:'proportionApply', tier:'basic', difficulty:'중', type:'fill', prompt:'270을 4:5로 비례배분할 때, 4에 해당하는 몫은 얼마인가요?', answer:'120', explanation:'270×4/9=120이에요.'},
+      {id:'s4-b19', subunitId:'proportionApply', tier:'basic', difficulty:'상', type:'mcq', prompt:'민수와 지아는 길이가 150cm인 밧줄을 2:3으로 나누어 가졌습니다. 지아가 가진 밧줄은 몇 cm인가요?', choices:['60cm','100cm','75cm','90cm'], answerIndex:3, explanation:'150×3/5=90(cm)이에요. 민수는 60cm예요.'},
+      {id:'s4-b20', subunitId:'proportionApply', tier:'basic', difficulty:'상', type:'mcq', prompt:'바둑알 42개를 영지와 성찬이가 3:4로 나누어 가지면 누가 바둑알을 몇 개 더 많이 가지게 되나요?', choices:['영지, 6개','성찬, 24개','성찬, 6개','영지, 18개'], answerIndex:2, explanation:'영지는 42×3/7=18개, 성찬이는 42×4/7=24개이므로 성찬이가 6개 더 많아요.'},
+      /* ===== proportionApply / 보충 (extra) ===== */
+      {id:'s4-e11', subunitId:'proportionApply', tier:'extra', difficulty:'하', type:'mcq', prompt:'비례식 3:12=9:36에서 외항의 곱은?', choices:['36','108','27','12'], answerIndex:1, explanation:'외항 3과 36을 곱하면 108이에요. 내항의 곱 12×9도 108이에요.'},
+      {id:'s4-e12', subunitId:'proportionApply', tier:'extra', difficulty:'하', type:'mcq', prompt:'98을 3:4로 비례배분하면 각각 얼마인가요?', choices:['49와 49','56과 42','28과 70','42와 56'], answerIndex:3, explanation:'98×3/7=42, 98×4/7=56이에요.'},
+      {id:'s4-e13', subunitId:'proportionApply', tier:'extra', difficulty:'하', type:'fill', prompt:'98을 5:2로 비례배분할 때, 5에 해당하는 몫은 얼마인가요?', answer:'70', explanation:'98×5/7=70이에요.'},
+      {id:'s4-e14', subunitId:'proportionApply', tier:'extra', difficulty:'하', type:'fill', prompt:'비례식 6:4=9:□ 에서 □에 알맞은 수를 쓰세요.', answer:'6', explanation:'6×□=4×9=36이므로 □=6이에요.'},
+      {id:'s4-e15', subunitId:'proportionApply', tier:'extra', difficulty:'중', type:'mcq', prompt:'지우개 8개가 4000원입니다. 똑같은 지우개 3개는 얼마인가요?', choices:['1200원','1500원','2000원','1000원'], answerIndex:1, explanation:'8:4000=3:□이므로 8×□=4000×3, □=1500(원)이에요.'},
+      {id:'s4-e16', subunitId:'proportionApply', tier:'extra', difficulty:'중', type:'mcq', prompt:'20:□=40:△에서 내항의 곱이 400일 때, □+△의 값은?', choices:['10','20','60','30'], answerIndex:3, explanation:'□×40=400이므로 □=10, 20×△=400이므로 △=20이에요. 10+20=30이에요.'},
+      {id:'s4-e17', subunitId:'proportionApply', tier:'extra', difficulty:'중', type:'mcq', prompt:'사탕 55개를 3:2로 나누어 가질 때, 3에 해당하는 몫은 몇 개인가요?', choices:['22개','55개','33개','18개'], answerIndex:2, explanation:'55×3/5=33(개)예요.'},
+      {id:'s4-e18', subunitId:'proportionApply', tier:'extra', difficulty:'중', type:'fill', prompt:'3분 동안 물이 20L 나오는 수도가 있습니다. 이 수도로 400L의 물통을 가득 채우려면 몇 분 동안 물을 받아야 하나요?', answer:'60', explanation:'3:20=□:400이므로 20×□=3×400=1200, □=60(분)이에요.'},
+      {id:'s4-e19', subunitId:'proportionApply', tier:'extra', difficulty:'상', type:'mcq', prompt:'어느 영화관에 온 남자 관객은 140명입니다. 여자 관객 수와 남자 관객 수의 비가 3:4일 때 남자는 여자보다 몇 명 더 많이 왔나요?', choices:['105명','35명','70명','140명'], answerIndex:1, explanation:'3:4=□:140이므로 여자는 105명이에요. 140-105=35(명)이에요.'},
+      {id:'s4-e20', subunitId:'proportionApply', tier:'extra', difficulty:'상', type:'mcq', prompt:'붙임딱지를 형준이와 동생이 2:3의 비로 나누어 가졌더니 형준이가 14개를 가졌습니다. 처음에 있던 붙임딱지는 모두 몇 개인가요?', choices:['28개','21개','42개','35개'], answerIndex:3, explanation:'2:3=14:□이므로 동생은 21개예요. 14+21=35(개)예요.'},
+      /* ===== proportionApply / 심화 (advanced) ===== */
+      {id:'s4-a11', subunitId:'proportionApply', tier:'advanced', difficulty:'하', type:'fill', prompt:'비례식 5:3=10:□ 에서 □에 알맞은 수를 쓰세요.', answer:'6', explanation:'전항 5에 2를 곱하면 10이므로 후항 3에도 2를 곱해 6이에요.'},
+      {id:'s4-a12', subunitId:'proportionApply', tier:'advanced', difficulty:'하', type:'mcq', prompt:'24를 5:7로 비례배분했을 때 7에 해당하는 몫은?', choices:['10','12','17','14'], answerIndex:3, explanation:'24×7/12=14예요.'},
+      {id:'s4-a13', subunitId:'proportionApply', tier:'advanced', difficulty:'중', type:'mcq', prompt:'어느 염전에서 소금물 12L를 증발시켜 소금 50g을 얻을 수 있다고 합니다. 소금물 36L를 증발시켰을 때 얻을 수 있는 소금은 몇 g인가요?', choices:['100g','200g','150g','600g'], answerIndex:2, explanation:'12:50=36:□이므로 12×□=50×36=1800, □=150(g)이에요.'},
+      {id:'s4-a14', subunitId:'proportionApply', tier:'advanced', difficulty:'중', type:'mcq', prompt:'일정한 빠르기로 4분에 12L의 물이 나오는 수도로 90L의 물을 받으려면 몇 분이 걸리나요?', choices:['20분','22분','27분','30분'], answerIndex:3, explanation:'4:12=□:90이므로 12×□=360, □=30(분)이에요.'},
+      {id:'s4-a15', subunitId:'proportionApply', tier:'advanced', difficulty:'중', type:'fill', prompt:'어느 날 낮과 밤의 길이의 비가 5:3이었습니다. 하루는 24시간이므로 이날 낮의 길이는 몇 시간이었나요?', answer:'15', explanation:'24를 5:3으로 비례배분하면 낮은 24×5/8=15(시간)이에요.'},
+      {id:'s4-a16', subunitId:'proportionApply', tier:'advanced', difficulty:'중', type:'mcq', prompt:'4:□=□:9에서 두 □에 같은 수가 들어갑니다. 그 수는 얼마인가요?', choices:['4','6','9','36'], answerIndex:1, explanation:'외항의 곱은 4×9=36이고, 내항의 곱 □×□도 36이어야 하므로 □=6이에요.'},
+      {id:'s4-a17', subunitId:'proportionApply', tier:'advanced', difficulty:'중', type:'mcq', prompt:'구슬을 3:5로 나누었더니 많은 쪽이 40개였습니다. 구슬은 모두 몇 개였나요?', choices:['24개','40개','64개','88개'], answerIndex:2, explanation:'3:5=□:40이므로 적은 쪽은 24개예요. 24+40=64(개)예요.'},
+      {id:'s4-a18', subunitId:'proportionApply', tier:'advanced', difficulty:'상', type:'mcq', prompt:'공책 240권을 학생 수의 비에 따라 1반과 2반에 나누어 주려고 합니다. 1반은 23명, 2반은 25명일 때 2반에 나누어 줄 공책은 몇 권인가요?', choices:['115권','120권','125권','130권'], answerIndex:2, explanation:'240×25/48=125(권)이에요. 1반은 115권이에요.'},
+      {id:'s4-a19', subunitId:'proportionApply', tier:'advanced', difficulty:'상', type:'mcq', prompt:'삼각형의 밑변의 길이와 높이의 비는 5:2입니다. 밑변의 길이가 35cm일 때 이 삼각형의 넓이는 몇 cm²인가요?', choices:['490cm²','70cm²','245cm²','175cm²'], answerIndex:2, explanation:'5:2=35:□이므로 높이는 14cm예요. 넓이는 35×14÷2=245(cm²)예요.'},
+      {id:'s4-a20', subunitId:'proportionApply', tier:'advanced', difficulty:'상', type:'fill', prompt:'가로와 세로의 비가 9:5이고 둘레가 280cm인 직사각형이 있습니다. 이 직사각형의 가로는 몇 cm인가요?', answer:'90', explanation:'(가로+세로)는 280÷2=140cm예요. 140을 9:5로 비례배분하면 가로는 140×9/14=90(cm)예요.'}
+    ]}
   }
 };
 
@@ -1318,7 +1723,7 @@ const Util = {
   // 주관식(fill) 채점: q.answer와 q.accept[](허용 답안) 중 하나와 맞으면 정답.
   // 숫자 답은 값으로 비교("5개"처럼 뒤에 붙은 단위는 떼고 비교), 글자 답은 띄어쓰기·문장부호를 무시하고 비교
   answerMatches(user, q){
-    const norm = s=>String(s).replace(/[\s.,!?~]/g,'').toLowerCase();
+    const norm = s=>String(s).replace(/：/g,':').replace(/[\s.,!?~]/g,'').toLowerCase();
     return [q.answer].concat(q.accept||[]).some(a=>{
       if(this.parseNumber(a)){
         return this.numbersEqual(user, a) || this.numbersEqual(String(user).replace(/\s*[가-힣a-zA-Z㎡]+$/,''), a);
@@ -2038,7 +2443,7 @@ Views.Assessment = {
   renderForm(unit, subunitId, tier){
     const su = unit.subunits.find(s=>s.id===subunitId);
     const tierDef = this.TIERS.find(t=>t.id===tier);
-    const fillPlaceholder = unit.id==='unit2' ? '예: 6.4' : unit.id==='unit3' ? '' : '예: 3/4 또는 1 1/2';
+    const fillPlaceholder = unit.id==='unit2' ? '예: 6.4' : (unit.id==='unit3' || unit.id==='unit4') ? '' : '예: 3/4 또는 1 1/2';
     this._main.innerHTML =
       UI.courseNav(4, unit.id)+
       '<h2>📝 '+Util.escapeHtml(su.title)+' · '+tierDef.icon+' '+tierDef.label+'</h2>'+

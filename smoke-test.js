@@ -157,6 +157,17 @@ const routes = [
   '#/unit3/assessment/viewAndShape',
   '#/unit3/assessment/viewAndShape/basic',
   '#/unit3/portfolio',
+  '#/unit4',
+  '#/unit4/compare',
+  '#/unit4/input',
+  '#/unit4/quiz',
+  '#/unit4/quiz/detective',
+  '#/unit4/quiz/order',
+  '#/unit4/quiz/speed',
+  '#/unit4/assessment',
+  '#/unit4/assessment/ratioBasics',
+  '#/unit4/assessment/ratioBasics/basic',
+  '#/unit4/portfolio',
 ];
 
 for (const route of routes) {
@@ -168,6 +179,10 @@ for (const route of routes) {
   }
   if (route === '#/unit3' && !main.innerHTML.includes('공간과 입체')) {
     console.error('unit3 home did not render the 3rd-unit title.');
+    process.exit(1);
+  }
+  if (route === '#/unit4' && !main.innerHTML.includes('비례식과 비례배분')) {
+    console.error('unit4 home did not render the 4th-unit title.');
     process.exit(1);
   }
 }
